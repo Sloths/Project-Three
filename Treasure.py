@@ -4,11 +4,11 @@ import random
 import time
 
 window = Tk()
-canvas = Canvas(window, width=854, height=480, bg='white')
+canvas = Canvas(window, width=854, height=480, bg="#3796da")
 canvas.pack()
 
 #Creates window and centers to any screen
-window.geometry('{}x{}'. format(874, 670)) #Setting size of window
+window.geometry('{}x{}'. format(1060, 670)) #Setting size of window
 window.withdraw() #Hide window to stop showing in wrong position
 window.update_idletasks() #Request screen size from sstem
 x = (window.winfo_screenwidth() - window.winfo_reqwidth()) / 2 #Calculate screen width
@@ -28,7 +28,7 @@ class landmark:                                   # Landmark class being created
         self.x2 = x2
         self.y1 = y1
         self.y2 = y2
-        self.colour  = "green"                      # the background colour for all landmarks is set here to green in the user interface
+        self.colour  = "#e7df63"                      # the background colour for all landmarks is set here to green in the user interface
         self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
         self.treasure = False                       #  setting the variable with the value of 'false'
         self.treasureID = ""                        #creating treasure ID for robot 
@@ -455,25 +455,25 @@ class Light():
         
         if self.number == 1: #if section 1, place in left most position
             lightcolour1=canvas.create_rectangle(2, 2, self.sectionWidth, 23, fill="#2ecc71", tag="1") #Create light block and tag number
-            section1=canvas.create_rectangle(0, self.height, self.sectionWidth, 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
+            section1=canvas.create_rectangle(0, self.height + 1, self.sectionWidth, 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
             light1Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71") #Create label to match colour of section
             light1Text.place(x=100, y=13) #Place label in correct position
             self.colour = "Green" #Change string to hold value of light
         elif self.number == 2: #If section 2, place in left mid position
             lightcolour2=canvas.create_rectangle(self.sectionWidth, 2, self.sectionWidth * self.number, 23, fill="#f39c12", tag="2") #Create light block and tag number
-            section2=canvas.create_rectangle(self.sectionWidth, self.height, self.sectionWidth * 2, 23, dash=(10,10), tag="Amber") #Create dashed section and tag colour
+            section2=canvas.create_rectangle(self.sectionWidth, self.height + 1, self.sectionWidth * 2, 23, dash=(10,10), tag="Amber") #Create dashed section and tag colour
             light2Text=Label(font=('Helvetica', 8), text='Amber', bg="#f39c12") #Create label to match colour of section
             light2Text.place(x=310, y=13) #Place label in correct position
             self.colour = "Amber" #Change string to hold value of light
         elif self.number == 3: #If section 3, place in right mid position
             lightcolour3=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, self.sectionWidth * self.number, 23, fill="#e74c3c", tag="3") #Create light block and tag number
-            section3=canvas.create_rectangle(self.sectionWidth * 2, self.height, self.sectionWidth * 3, 23, dash=(10,10), tag="Red") #Create dashed section and tag colour
+            section3=canvas.create_rectangle(self.sectionWidth * 2, self.height + 1, self.sectionWidth * 3, 23, dash=(10,10), tag="Red") #Create dashed section and tag colour
             light3Text=Label(font=('Helvetica', 8), text='Red', bg="#e74c3c")  #Create label to match colour of section
             light3Text.place(x=530, y=13) #Place label in correct position
             self.colour = "Red" #Change string to hold value of light
         elif self.number == 4: #If section 4, place in right most position
-            lightcolour4=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, ((self.sectionWidth * self.number) - 1), 23, fill="#2ecc71", tag="4") #Create light block and tag number
-            section4=canvas.create_rectangle(self.sectionWidth * 3, self.height, ((self.sectionWidth * 4) - 1), 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
+            lightcolour4=canvas.create_rectangle(self.sectionWidth * (self.number - 1), 2, ((self.sectionWidth * self.number) + 1), 23, fill="#2ecc71", tag="4") #Create light block and tag number
+            section4=canvas.create_rectangle(self.sectionWidth * 3, self.height + 1, ((self.sectionWidth * 4) + 1), 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
             light4Text=Label(font=('Helvetica', 8), text='Green', bg="#2ecc71") #Create label to match colour of section
             light4Text.place(x=740, y=13) #Place label in correct position
             self.colour = "Green" #Change string to hold value of light
@@ -643,6 +643,10 @@ Section3 = Frame(bd=1, relief=SUNKEN, height=79, width=689)
 Section3.place(x=174, y=500)
 Section4 = Frame(bd=1, relief=SUNKEN, height=79, width=689)
 Section4.place(x=174, y=581)
+Section5 = Frame(bd=1, relief=SUNKEN, height=480, width=175)
+Section5.place(x=872, y=11)
+Section6 = Frame(bd=1, relief=SUNKEN, height=158, width=175)
+Section6.place(x=872, y=500)
 
 #Creating Buttons
 btnStart=Button(window, text='Start', height=1, width=20, command=Start)
@@ -708,8 +712,8 @@ rb2Points.place(x=700, y=582)
 rb2Time.place(x=700, y=607)
 rb2Timer.place(x=735, y=607)
 
-#Padds canvas
-canvas.pack(padx=10, pady=10)
+#Placement of canvas
+canvas.place(x=10, y=10)
 
 #Creating light objects
 light1 = Light(1)
@@ -724,6 +728,6 @@ light3.CreateLight()
 light4.CreateLight()
 
 #Drawing line around canvas
-whole=canvas.create_rectangle(2, 480, 851, 2)
+whole=canvas.create_rectangle(2, 481, 855, 2)
 
 window.mainloop()
