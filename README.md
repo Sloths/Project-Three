@@ -1,6 +1,7 @@
 # Project Three - Virtual Robot Treasure Hunt 2.0
+The task we decided to implement was the Advanced scenario. The specification requirements were to allow the user to select the robot's position and set the countdown value. Also the user should be able to choose and place the treasures for the robot to find in the arena. The collected treasures should be put into a list and be sorted once the countdown reaches zero. Furthermore hidden traps should be placed in the arena and if encountered by the robot, the last treasure collected should be removed from the list and the treasure's point value should be deducted from the total points.
 
-Add description of program 
+Add description of our program 
 
 ## Installation
  
