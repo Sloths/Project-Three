@@ -571,22 +571,6 @@ def Start():
         R1.robotMove(obstacles)  # Deploy R1 movement behaviour
         #R2.robotMove(obstacles) # Deploy R1 movement behaviour  
         
-        
-def Stop():
-    global main
-    global rb1T
-    global rb2T
-    global m
-    R1.robotStop()
-    m.ClearMap()
-    main.Stop()
-    rb1T.Stop()
-    rb2T.Stop()
-    canvas.delete("Treasure0") # each treasure's ID starts from index 0 - 3, call each ID to delete when stop pressed 
-    canvas.delete("Treasure1")
-    canvas.delete("Treasure2")
-    canvas.delete("Treasure3")
-    ResetLabels() #Resetting labels to default
     
 # assigning a value to variable for map selection    
 def Map1():
@@ -623,94 +607,101 @@ class Map():
     def ClearMap(self):
         global canvas
         canvas.delete("Landmark")
-
-#Function to reset labels to default
-def ResetLabels():
-    rb1Name.config(text='Robot 1:')
-    rb1Position.config(text='Position:')
-    rb1Status.config(text='Status:')
-    rb1Landmark.config(text='Landmark:')
-    rb1Visited.config(text='Visited:')
-    rb1TreasurePos.config(text='Treasure Position:')
-    rb1Points.config(text='Points:')
                      
 #Creating frames to seperate controls
-Section1 = Frame(bd=1, relief=SUNKEN, height=121, width=161)
-Section1.place(x=11, y=500)
-Section2 = Frame(bd=1, relief=SUNKEN, height=37, width=161)
-Section2.place(x=11, y=623)
-Section3 = Frame(bd=1, relief=SUNKEN, height=79, width=689)
-Section3.place(x=174, y=500)
-Section4 = Frame(bd=1, relief=SUNKEN, height=79, width=689)
-Section4.place(x=174, y=581)
-Section5 = Frame(bd=1, relief=SUNKEN, height=480, width=175)
-Section5.place(x=872, y=11)
-Section6 = Frame(bd=1, relief=SUNKEN, height=158, width=175)
-Section6.place(x=872, y=500)
+robotSection = Frame(bd=1, relief=SUNKEN, height=158, width=854)
+robotSection.place(x=11, y=500)
+collectedSection = Frame(bd=1, relief=SUNKEN, height=85, width=180)
+collectedSection.place(x=275, y=565)
+thoughtsSection = Frame(bd=1, relief=SUNKEN, height=85, width=220)
+thoughtsSection.place(x=476, y=565)
+settingSection = Frame(bd=1, relief=SUNKEN, height=480, width=175)
+settingSection.place(x=872, y=11)
+treasureSection = Frame(bd=1, relief=SUNKEN, height=165, width=160)
+treasureSection.place(x=880, y=128)
+wishlistSection = Frame(bd=1, relief=SUNKEN, height=140, width=160)
+wishlistSection.place(x=880, y=344)
+countdownSection = Frame(bd=1, relief=SUNKEN, height=158, width=175)
+countdownSection.place(x=872, y=500)
 
 #Creating Buttons
-btnStart=Button(window, text='Start', height=1, width=20, command=Start)
-btnStop=Button(window, text='Stop', height=1, width=20, command=Stop)
-btnMap1=Button(window, text='1', height=1, width=2, command=Map1)
-btnMap2=Button(window, text='2', height=1, width=2, command=Map2)
-btnMap3=Button(window, text='3', height=1, width=2, command=Map3)
-btnMap4=Button(window, text='4', height=1, width=2, command=Map4)
+btnStart=Button(window, text='Start', height=1, width=22, command=Start)
+btnPoint1=Button(window, text='1', height=1, width=2)
+btnPoint2=Button(window, text='2', height=1, width=2)
+btnPoint3=Button(window, text='3', height=1, width=2)
+btnPoint4=Button(window, text='4', height=1, width=2)
+btnPoint5=Button(window, text='5', height=1, width=2)
+btnPoint6=Button(window, text='6', height=1, width=2)
 
 #Places buttons in correct positions
-btnStart.place(x=16, y=505)
-btnStop.place(x=16, y=535)
-btnMap1.place(x=16, y=629)
-btnMap2.place(x=59, y=629)
-btnMap3.place(x=101, y=629)
-btnMap4.place(x=141, y=629)
-
-#Creates timer label
-timer=Label(font=('Helvetica', 28), text='00:00:00')
-timer.place(x=15, y=568)
+btnStart.place(x=878, y=505)
+btnPoint1.place(x=877, y=77)
+btnPoint2.place(x=902, y=77)
+btnPoint3.place(x=927, y=77)
+btnPoint4.place(x=952, y=77)
+btnPoint5.place(x=977, y=77)
+btnPoint6.place(x=1002, y=77)
 
 #Creating robot1 labels
-rb1Name=Label(font=('Helvetica', 10, 'underline'), text='Robot 1:')
-rb1Position=Label(font=('Helvetica', 10), text='Position:')
-rb1Status=Label(font=('Helvetica', 10), text='Status:')
-rb1Landmark=Label(font=('Helvetica', 10), text='Landmark:')
-rb1Visited=Label(font=('Helvetica', 10), text='Visited:')
-rb1TreasurePos=Label(font=('Helvetica', 10), text='Treasure Position:')
-rb1Points=Label(font=('Helvetica', 10), text='Points:')
-rb1Time=Label(font=('Helvetica', 10), text='Time:')
-rb1Timer=Label(font=('Helvetica', 10))
+rbName=Label(font=('Helvetica', 18, 'underline'), text='Virtual Robot Pirate')
+rbPosition=Label(font=('Helvetica', 12), text='Position:')
+rbStatus=Label(font=('Helvetica', 12), text='Status:')
+rbPoints=Label(font=('Helvetica', 12), text='Points:')
+rbLookingFor=Label(font=('Helvetica', 12), text='Currently Looking For:')
+rbCollected=Label(font=('Helvetica', 12), text='Collected Treasure:')
+rbThoughts=Label(font=('Helvetica', 12), text='Thoughts:')
 
 #Places robot1 labels in correct positions
-rb1Name.place(x=179, y=505)
-rb1Position.place(x=179, y=530)
-rb1Status.place(x=179, y=555)
-rb1Landmark.place(x=425, y=505)
-rb1Visited.place(x=425, y=530)
-rb1TreasurePos.place(x=425, y=555)
-rb1Points.place(x=700, y=505)
-rb1Time.place(x=700, y=530)
-rb1Timer.place(x=735, y=530)
+rbName.place(x=15, y=505)
+rbPosition.place(x=15, y=540)
+rbStatus.place(x=15, y=570)
+rbPoints.place(x=15, y=600)
+rbLookingFor.place(x=15, y=630)
+rbCollected.place(x=270, y=540)
+rbThoughts.place(x=470, y=540)
 
-#Creating robot2 labels
-rb2Name=Label(font=('Helvetica', 10, 'underline'), text='Robot 2:')
-rb2Position=Label(font=('Helvetica', 10), text='Position:')
-rb2Status=Label(font=('Helvetica', 10), text='Status:')
-rb2Landmark=Label(font=('Helvetica', 10), text='Landmark:')
-rb2Visited=Label(font=('Helvetica', 10), text='Visited:')
-rb2TreasurePos=Label(font=('Helvetica', 10), text='Treasure Position:')
-rb2Points=Label(font=('Helvetica', 10), text='Points:')
-rb2Time=Label(font=('Helvetica', 10), text='Time:')
-rb2Timer=Label(font=('Helvetica', 10))
+#Pirate Image
+pirateImage = PhotoImage(file="assets\pirate.gif")
+pirateImageLabel=Label(image=pirateImage)
+pirateImageLabel.place(x=720, y=530)
 
-#Places robot1 labels in correct positions
-rb2Name.place(x=179, y=582)
-rb2Position.place(x=179, y=607)
-rb2Status.place(x=179, y=632)
-rb2Landmark.place(x=425, y=582)
-rb2Visited.place(x=425, y=607)
-rb2TreasurePos.place(x=425, y=632)
-rb2Points.place(x=700, y=582)
-rb2Time.place(x=700, y=607)
-rb2Timer.place(x=735, y=607)
+#Creating Settings labels
+settings=Label(font=('Helvetica', 12, 'underline'), text='Settings')
+timelimit=Label(font=('Helvetica', 10), text='Time Limit:')
+starting=Label(font=('Helvetica', 10), text='Starting Point:')
+treasureselection=Label(font=('Helvetica', 10), text='Treasure Selection:')
+coin=Label(font=('Helvetica', 10), text='Coin - 10 Points')
+greenjewel=Label(font=('Helvetica', 10), text='Jewel - 20 Points')
+redjewel=Label(font=('Helvetica', 10), text='Ruby - 30 Points')
+chest=Label(font=('Helvetica', 10), text='Chest - 50 Points')
+instruction=Label(font=('Helvetica', 10), text='Drag and drop on landmarks')
+wishlist=Label(font=('Helvetica', 10), text='Wishlist:')
+
+#Places settings labels in correct positions
+settings.place(x=877, y=13)
+timelimit.place(x=877, y=35)
+starting.place(x=877, y=55)
+treasureselection.place(x=877, y=106)
+coin.place(x=930, y=137)
+greenjewel.place(x=925, y=175)
+redjewel.place(x=927, y=215)
+chest.place(x=927, y=255)
+instruction.place(x=876, y=293)
+wishlist.place(x=877, y=320)
+
+#Treasure Images
+coinImage = PhotoImage(file="assets/coin.gif")
+coinImageLabel=Label(image=coinImage)
+coinImageLabel.place(x=884, y=130)
+greenjewelImage = PhotoImage(file="assets/greenjewel.gif")
+greenjewelLabel=Label(image=greenjewelImage)
+greenjewelLabel.place(x=884, y=168)
+redjewelImage = PhotoImage(file="assets/redjewel.gif")
+redjewelLabel=Label(image=redjewelImage)
+redjewelLabel.place(x=884, y=208)
+chestImage = PhotoImage(file="assets/chest.gif")
+chestLabel=Label(image=chestImage)
+chestLabel.place(x=884, y=247)
 
 #Placement of canvas
 canvas.place(x=10, y=10)
