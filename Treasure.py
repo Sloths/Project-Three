@@ -338,6 +338,68 @@ class Treasure:
         self.shape = canvas.create_oval(self.x,self.y,self.x + self.size, self.y + self.size,outline = self.colour, fill=self.colour,tag=self.id)
         # creating object, size goes against each x and y coordinates. tag inplace to call for deletion
 
+
+
+class treasureDrag:
+    def __init__(self):
+        #Frame(canvas) 
+        #self.window = Tk()
+        #self.draw = window.geometry
+        self.draw = canvas 
+        
+        self.draw.pack()#(expand = YES, fill = BOTH)
+        self.widgets()
+        #mainloop()
+        
+    def down(self, event):
+        self.xLast = event.x # coords of where the mouse went down
+        self.yLast = event.y
+
+    def move(self, event):
+        # whatever the mouse is over it will be tagged as current 
+        self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast)
+        self.xLast = event.x
+        self.yLast = event.y
+
+# callback for items on canvas
+
+    #def enter(self,event):
+        #self.draw.itemconfig(CURRENT) 
+    def Coin(self):
+        self.coinimg = PhotoImage(file = "coin.gif")
+        self.draw.create_image(700,130, image = self.coinimg, anchor = NW)
+
+    def Green(self):
+        self.greenimg = PhotoImage(file = 'greenjewel.gif')
+        self.draw.create_image(700,168, image = self.greenimg, anchor = NW)
+
+    def Red(self):
+        self.redimg = PhotoImage(file = 'redjewel.gif')
+        self.draw.create_image(700,208, image = self.redimg, anchor = NW)
+
+    def Chest(self):
+        self.chestimg = PhotoImage(file='chest.gif')
+        self.draw.create_image(700,247, image = self.chestimg, anchor = NW)
+        
+        
+    def widgets(self):   
+        Widget.bind(self.draw,"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
+        Widget.bind(self.draw,"<B1-Motion>", self.move) # movement of mouse when click is held down 
+
+
+
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
 class Timer:
     def __init__(self, label):
@@ -624,6 +686,49 @@ wishlistSection.place(x=880, y=344)
 countdownSection = Frame(bd=1, relief=SUNKEN, height=158, width=175)
 countdownSection.place(x=872, y=500)
 
+
+
+# creating instances of class for each treasure item. this will be called through as a command on the buttons 
+treasureCoin = treasureDrag()
+treasureGreen = treasureDrag()
+treasureRed = treasureDrag()
+treasureChest = treasureDrag()
+
+# import images into a variable 
+coinImage = PhotoImage(file="coin.gif")
+greenImage = PhotoImage(file="greenjewel.gif")
+redImage = PhotoImage(file="redjewel.gif")
+chestImage = PhotoImage(file="chest.gif")
+
+#buttons for each treasure, command calls the treasure variable and functin to draw
+
+btnCoin = Button(window, image = coinImage, command = treasureCoin.Coin)
+btnGreen = Button(window, image = greenImage, command=treasureGreen.Green)
+btnRed = Button(window, image = redImage, command=treasureRed.Red)
+btnChest = Button(window,image = chestImage,command= treasureChest.Chest)
+
+
+
+#place treasure buttons in correct place outside canvas 
+btnCoin.place(x=884,y=130)
+btnGreen.place(x=884,y=168)
+btnRed.place(x=884,y=208)
+btnChest.place(x=884,y=247)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #Creating Buttons
 btnStart=Button(window, text='Start', height=1, width=22, command=Start)
 btnPoint1=Button(window, text='1', height=1, width=2)
@@ -690,7 +795,7 @@ instruction.place(x=876, y=293)
 wishlist.place(x=877, y=320)
 
 #Treasure Images
-coinImage = PhotoImage(file="assets/coin.gif")
+'''coinImage = PhotoImage(file="assets/coin.gif")
 coinImageLabel=Label(image=coinImage)
 coinImageLabel.place(x=884, y=130)
 greenjewelImage = PhotoImage(file="assets/greenjewel.gif")
@@ -701,7 +806,7 @@ redjewelLabel=Label(image=redjewelImage)
 redjewelLabel.place(x=884, y=208)
 chestImage = PhotoImage(file="assets/chest.gif")
 chestLabel=Label(image=chestImage)
-chestLabel.place(x=884, y=247)
+chestLabel.place(x=884, y=247)'''
 
 #Placement of canvas
 canvas.place(x=10, y=10)
