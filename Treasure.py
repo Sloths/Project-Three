@@ -22,7 +22,6 @@ intPlay = 0
 SelectedMap = 1
 
 class landmark:                                   # Landmark class being created
-
     def __init__(self, x1, y1, x2, y2):             # this sets out the layout of how all future objects will be set in order to be created
         self.x1 = x1                                # whatever the objects name.x1 or x2 or y1 or y2, store the value in x1, which then places it in the user interface
         self.x2 = x2
@@ -35,55 +34,17 @@ class landmark:                                   # Landmark class being created
         
         self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline, tag="Landmark") # creates the landmark with the given coordinates and colours, but they're pre-set.
         
-
 def MapOneLandMarks():                              #creating a new function which will store all the landmarks in the first map
     global obstacles 
     obstacles = [
         # this code within the array creates the first landmark                        
-        landmark(30, 50, 180, 95),                 
-        landmark(600,50,800,200), 
-        landmark(150,200,370,270), 
-        landmark(370,50,440,150),                              
-        landmark(50,350,110,400),            
-        landmark(450,250,600,400),        
-        landmark(700,250,750,380)]
+        landmark(30,50,180,120),                 
+        landmark(670,50,825,120), 
+        landmark(30,460,180,330), 
+        landmark(670,460,825,330),                              
+        landmark(270,370,590,430),
+        landmark(160,160,690,230)]
         
-def MapTwoLandMarks():                              # this function stores all the landmarks for the second map
-    global obstacles
-    obstacles = [
-        # This code within the array draws the landmarks for the second map
-        landmark(50, 200, 350, 30),
-        landmark(450, 100, 750, 35),
-        landmark(400, 280, 780, 230),           
-        landmark(350, 350, 550, 430),
-        landmark(30, 250, 80, 420),
-        landmark(220, 250, 290, 290),
-        landmark(690, 400, 750, 350)]
-       
-def MapThreeLandMarks():
-    global obstacles
-    obstacles = [
-        #this code creates the landmarks for the third map
-        landmark(40, 50, 120, 95),
-        landmark(270, 50, 480, 100),
-        landmark(750, 54, 800, 105),
-        landmark(750, 154, 800, 300),
-        landmark(750, 350, 800, 400),
-        landmark(220, 150, 550, 300),
-        landmark(40, 350, 90, 400)]
-
-def MapFourLandMarks():
-    global obstacles
-    obstacles = [
-        #this code creates the landmark for the fourth map
-        landmark(30, 50, 90, 380),
-        landmark(160, 50, 260, 95),
-        landmark(550, 50, 600, 225),
-        landmark(550, 270, 600, 430),
-        landmark(130, 370, 260, 420),
-        landmark(130, 200, 280, 250),
-        landmark(670, 180, 800, 300)]
-
 class Robot:
     def __init__(self):
         self.vx = 10.0
@@ -384,23 +345,8 @@ class treasureDrag:
         
     def widgets(self):   
         Widget.bind(self.draw,"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
-        Widget.bind(self.draw,"<B1-Motion>", self.move) # movement of mouse when click is held down 
-
-
-
-        
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        Widget.bind(self.draw,"<B1-Motion>", self.move) # movement of mouse when click is held down            
+              
 class Timer:
     def __init__(self, label):
         self.second = 0
@@ -599,6 +545,28 @@ class Light():
                 light4Text.config(text='Red', bg="#e74c3c") #Change label text to correct value
                 canvas.itemconfig(lightcolour4, fill="#e74c3c") #Change light to correct colour
                 canvas.itemconfig(section4, tag="Red") #Change section tag to correct value
+
+class Trap:
+    def __init__(self):
+        self.draw = canvas 
+        self.draw.pack()
+        self.xpos = 0
+        self.ypos = 0
+        self.hit = False
+        self.points = 0
+        
+    def spawn(self):
+        self.xpos = random.randrange(20,800)
+        self.ypos = random.randrange(200,400)
+        
+    def hit(self):
+        #first check if hit is false
+        #take away points from robot total points
+        #show image
+        self.trapImage = PhotoImage(file = "trap.gif")
+        self.draw.create_image(self.xpos,self.ypos, image = self.trapImage)
+        #make last treasure grey
+        #flash canvas red
             
 def Start():
     global intPlay
@@ -617,8 +585,6 @@ def Start():
         main.Count()
         rb1T.Count()
         rb2T.Count()
-        m = Map(SelectedMap)
-        m.LoadMap()
         spawnTreasure= [] # creating an empty array for number of treasures using for loop
         
         for n in range (4): #giving a range between index 0 - 3 
@@ -631,44 +597,9 @@ def Start():
         #R2.robotSpawn() # Draw R1 onto screen
         
         R1.robotMove(obstacles)  # Deploy R1 movement behaviour
-        #R2.robotMove(obstacles) # Deploy R1 movement behaviour  
-        
-    
-# assigning a value to variable for map selection    
-def Map1():
-    global SelectedMap
-    SelectedMap = 1                         
+        #R2.robotMove(obstacles) # Deploy R1 movement behaviour  		 
 
-def Map2():
-    global SelectedMap
-    SelectedMap = 2                         
-def Map3():
-    global SelectedMap
-    SelectedMap = 3			 
-
-def Map4():
-    global SelectedMap
-    SelectedMap = 4			 
-
-class Map():
-    def __init__(self, SelectedMap):
-        self.SelectedMap = SelectedMap
-
-# function created for map selection and assigned landmarks
-    def LoadMap(self): 			 
-        if self.SelectedMap == 1:
-            MapOneLandMarks()
-        elif self.SelectedMap == 2:
-            MapTwoLandMarks()
-        elif self.SelectedMap == 3:
-            MapThreeLandMarks()
-        elif self.SelectedMap == 4:
-            MapFourLandMarks()
-
-# function created for clear the initial map and assigned landmarks
-    def ClearMap(self):
-        global canvas
-        canvas.delete("Landmark")
+MapOneLandMarks()
                      
 #Creating frames to seperate controls
 robotSection = Frame(bd=1, relief=SUNKEN, height=158, width=854)
@@ -684,15 +615,15 @@ treasureSection.place(x=880, y=128)
 wishlistSection = Frame(bd=1, relief=SUNKEN, height=140, width=160)
 wishlistSection.place(x=880, y=344)
 countdownSection = Frame(bd=1, relief=SUNKEN, height=158, width=175)
-countdownSection.place(x=872, y=500)
-
-
+countdownSection.place(x=872, y=500) 
 
 # creating instances of class for each treasure item. this will be called through as a command on the buttons 
 treasureCoin = treasureDrag()
 treasureGreen = treasureDrag()
 treasureRed = treasureDrag()
 treasureChest = treasureDrag()
+
+trap1 = Trap()
 
 # import images into a variable 
 coinImage = PhotoImage(file="coin.gif")
@@ -701,33 +632,16 @@ redImage = PhotoImage(file="redjewel.gif")
 chestImage = PhotoImage(file="chest.gif")
 
 #buttons for each treasure, command calls the treasure variable and functin to draw
-
 btnCoin = Button(window, image = coinImage, command = treasureCoin.Coin)
 btnGreen = Button(window, image = greenImage, command=treasureGreen.Green)
 btnRed = Button(window, image = redImage, command=treasureRed.Red)
 btnChest = Button(window,image = chestImage,command= treasureChest.Chest)
-
-
 
 #place treasure buttons in correct place outside canvas 
 btnCoin.place(x=884,y=130)
 btnGreen.place(x=884,y=168)
 btnRed.place(x=884,y=208)
 btnChest.place(x=884,y=247)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #Creating Buttons
 btnStart=Button(window, text='Start', height=1, width=22, command=Start)
@@ -766,7 +680,7 @@ rbCollected.place(x=270, y=540)
 rbThoughts.place(x=470, y=540)
 
 #Pirate Image
-pirateImage = PhotoImage(file="assets\pirate.gif")
+pirateImage = PhotoImage(file="pirate.gif")
 pirateImageLabel=Label(image=pirateImage)
 pirateImageLabel.place(x=720, y=530)
 
@@ -793,20 +707,6 @@ redjewel.place(x=927, y=215)
 chest.place(x=927, y=255)
 instruction.place(x=876, y=293)
 wishlist.place(x=877, y=320)
-
-#Treasure Images
-'''coinImage = PhotoImage(file="assets/coin.gif")
-coinImageLabel=Label(image=coinImage)
-coinImageLabel.place(x=884, y=130)
-greenjewelImage = PhotoImage(file="assets/greenjewel.gif")
-greenjewelLabel=Label(image=greenjewelImage)
-greenjewelLabel.place(x=884, y=168)
-redjewelImage = PhotoImage(file="assets/redjewel.gif")
-redjewelLabel=Label(image=redjewelImage)
-redjewelLabel.place(x=884, y=208)
-chestImage = PhotoImage(file="assets/chest.gif")
-chestLabel=Label(image=chestImage)
-chestLabel.place(x=884, y=247)'''
 
 #Placement of canvas
 canvas.place(x=10, y=10)
