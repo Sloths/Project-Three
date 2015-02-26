@@ -311,6 +311,11 @@ class treasureDrag:
         self.draw.pack()#(expand = YES, fill = BOTH)
         self.widgets()
         #mainloop()
+        self.coinPressed = 1
+        self.greenPressed = 2
+        self.redPressed = 3
+        self.chestPressed = 4
+        
         
     def down(self, event):
         self.xLast = event.x # coords of where the mouse went down
@@ -329,18 +334,26 @@ class treasureDrag:
     def Coin(self):
         self.coinimg = PhotoImage(file = "coin.gif")
         self.draw.create_image(700,130, image = self.coinimg, anchor = NW)
+        if self.coinPressed == 1:
+            btnCoin.config(stat='disabled')
 
     def Green(self):
         self.greenimg = PhotoImage(file = 'greenjewel.gif')
         self.draw.create_image(700,168, image = self.greenimg, anchor = NW)
+        if self.greenPressed == 2:
+            btnGreen.config(stat='disabled')
 
     def Red(self):
         self.redimg = PhotoImage(file = 'redjewel.gif')
         self.draw.create_image(700,208, image = self.redimg, anchor = NW)
+        if self.redPressed == 3:
+            btnRed.config(stat='disabled')
 
     def Chest(self):
         self.chestimg = PhotoImage(file='chest.gif')
         self.draw.create_image(700,247, image = self.chestimg, anchor = NW)
+        if self.chestPressed == 4:
+            btnChest.config(stat='disabled')
         
         
     def widgets(self):   
