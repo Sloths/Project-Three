@@ -549,18 +549,20 @@ class image(object):
         self.x = x
         self.y = y
         self.draw.create_image(self.x, self.y,image = self.image , anchor = NW)
+        if image == "coin.gif":
+            btnCoin.config(state="disabled")
+        elif image == "greenjewel.gif":
+            btnGreen.config(state="disabled")
+        elif image == "redjewel.gif":
+            btnRed.config(state="disabled")
+        elif image == "chest.gif":
+            btnChest.config(state="disabled")
 
 class treasure(image):
     def __init__(self):
         image.__init__(self) # use the init from image class to create images, inheritance 
         self.points = 0
-
-
-
-
-
-
-            
+     
 def Start():
     global intPlay
     intPlay += 1
@@ -609,12 +611,6 @@ wishlistSection = Frame(bd=1, relief=SUNKEN, height=140, width=160)
 wishlistSection.place(x=880, y=344)
 countdownSection = Frame(bd=1, relief=SUNKEN, height=158, width=175)
 countdownSection.place(x=872, y=500) 
-
-# creating instances of class for each treasure item. this will be called through as a command on the buttons 
-treasureCoin = treasureDrag()
-treasureGreen = treasureDrag()
-treasureRed = treasureDrag()
-treasureChest = treasureDrag()
 
 trap1 = Trap()
 
