@@ -763,6 +763,20 @@ pirateImage = PhotoImage(file="pirate.gif")
 pirateImageLabel=Label(image=pirateImage)
 pirateImageLabel.place(x=720, y=530)
 
+#Treasure Image
+coinImg = PhotoImage(file="coin.gif")
+coinImgLabel = Label(image=coinImg)
+coinImgLabel.place(x=280,y=576) 
+greenImg = PhotoImage(file="greenjewel.gif")
+greenImgLabel = Label(image=greenImg)
+greenImgLabel.place(x=310,y=575)
+redImg = PhotoImage(file="redjewel.gif")
+redImgLabel = Label(image=redImg)
+redImgLabel.place(x=340,y=575)
+chestImg = PhotoImage(file="chest.gif")
+chestImgLabel = Label(image=chestImg)
+chestImgLabel.place(x=370,y=580)
+
 #Creating Settings labels
 settings=Label(font=('Helvetica', 12, 'underline'), text='Settings')
 timelimit=Label(font=('Helvetica', 10), text='Time Limit:')
