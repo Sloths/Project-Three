@@ -300,65 +300,6 @@ class Treasure:
         # creating object, size goes against each x and y coordinates. tag inplace to call for deletion
 
 
-
-class treasureDrag:
-    def __init__(self):
-        #Frame(canvas) 
-        #self.window = Tk()
-        #self.draw = window.geometry
-        self.draw = canvas 
-        
-        self.draw.pack()#(expand = YES, fill = BOTH)
-        self.widgets()
-        #mainloop()
-        self.coinPressed = 1
-        self.greenPressed = 2
-        self.redPressed = 3
-        self.chestPressed = 4
-        
-        
-    def down(self, event):
-        self.xLast = event.x # coords of where the mouse went down
-        self.yLast = event.y
-
-    def move(self, event):
-        # whatever the mouse is over it will be tagged as current 
-        self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast)
-        self.xLast = event.x
-        self.yLast = event.y
-
-# callback for items on canvas
-
-    #def enter(self,event):
-        #self.draw.itemconfig(CURRENT) 
-    def Coin(self):
-        self.coinimg = PhotoImage(file = "coin.gif")
-        self.draw.create_image(700,130, image = self.coinimg, anchor = NW)
-        if self.coinPressed == 1:
-            btnCoin.config(stat='disabled')
-
-    def Green(self):
-        self.greenimg = PhotoImage(file = 'greenjewel.gif')
-        self.draw.create_image(700,168, image = self.greenimg, anchor = NW)
-        if self.greenPressed == 2:
-            btnGreen.config(stat='disabled')
-
-    def Red(self):
-        self.redimg = PhotoImage(file = 'redjewel.gif')
-        self.draw.create_image(700,208, image = self.redimg, anchor = NW)
-        if self.redPressed == 3:
-            btnRed.config(stat='disabled')
-
-    def Chest(self):
-        self.chestimg = PhotoImage(file='chest.gif')
-        self.draw.create_image(700,247, image = self.chestimg, anchor = NW)
-        if self.chestPressed == 4:
-            btnChest.config(stat='disabled')
-        
-        
-    def widgets(self):   
-        Widget.bind(self.draw,"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
-        Widget.bind(self.draw,"<B1-Motion>", self.move) # movement of mouse when click is held down            
               
 class Timer:
     def __init__(self, label):
@@ -580,6 +521,45 @@ class Trap:
         self.draw.create_image(self.xpos,self.ypos, image = self.trapImage)
         #make last treasure grey
         #flash canvas red
+        
+class image(object):
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.location = ""
+        self.draw = canvas
+        self.draw.pack()
+        self.widgets() 
+    def down(self, event):
+        self.xLast = event.x # coords of where the mouse went down
+        self.yLast = event.y
+
+    def move(self, event):
+        # whatever the mouse is over it will be tagged as current 
+        self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast)
+        self.xLast = event.x
+        self.yLast = event.y
+        
+    def widgets(self):   
+        Widget.bind(self.draw,"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
+        Widget.bind(self.draw,"<B1-Motion>", self.move) # movement of mouse when click is held down  
+        
+    def spawn(self, x, y, image):
+        self.image = PhotoImage(file=image)
+        self.x = x
+        self.y = y
+        self.draw.create_image(self.x, self.y,image = self.image , anchor = NW)
+
+class treasure(image):
+    def __init__(self):
+        image.__init__(self) # use the init from image class to create images, inheritance 
+        self.points = 0
+
+
+
+
+
+
             
 def Start():
     global intPlay
@@ -638,17 +618,35 @@ treasureChest = treasureDrag()
 
 trap1 = Trap()
 
-# import images into a variable 
+treasureitems = [] # empty list to populate with treasure 
+treasurex = [830,820] # create a fixed x position for treasure 
+treasurey = [123, 160, 200, 240] # give different y position for treasure 
+
+#iterate through loop and use treasure class to populate 
+for n in range(0,4):
+    treasureitems.append(treasure())
+
 coinImage = PhotoImage(file="coin.gif")
 greenImage = PhotoImage(file="greenjewel.gif")
 redImage = PhotoImage(file="redjewel.gif")
 chestImage = PhotoImage(file="chest.gif")
 
-#buttons for each treasure, command calls the treasure variable and functin to draw
-btnCoin = Button(window, image = coinImage, command = treasureCoin.Coin)
-btnGreen = Button(window, image = greenImage, command=treasureGreen.Green)
-btnRed = Button(window, image = redImage, command=treasureRed.Red)
-btnChest = Button(window,image = chestImage,command= treasureChest.Chest)
+#use lambda to create anonymous function, to allow buttons
+#treasureitems[0] index used to spawn chosen treasure
+#call spawn function from image class
+#treasurex position doesnt change, but treaasurey does, by choosing index
+#call image to be created
+btnCoin = Button(window, image = coinImage, command=lambda: treasureitems[0].spawn(treasurex[0], treasurey[0], "coin.gif"))
+btnGreen = Button(window, image = greenImage, command=lambda: treasureitems[1].spawn(treasurex[0], treasurey[1], "greenjewel.gif"))
+btnRed = Button(window, image = redImage, command=lambda: treasureitems[2].spawn(treasurex[0], treasurey[2], "redjewel.gif"))
+btnChest = Button(window,image = chestImage, command=lambda: treasureitems[3].spawn(treasurex[1], treasurey[3], "chest.gif"))
+
+btnCoin.place(x=884,y=130)
+btnGreen.place(x=884,y=168)
+btnRed.place(x=884,y=208)
+btnChest.place(x=884,y=247)
+
+
 
 #place treasure buttons in correct place outside canvas 
 btnCoin.place(x=884,y=130)
