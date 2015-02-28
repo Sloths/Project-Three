@@ -38,12 +38,12 @@ def MapOneLandMarks():                              #creating a new function whi
     global obstacles 
     obstacles = [
         # this code within the array creates the first landmark                        
-        landmark(30,50,180,120),                 
-        landmark(670,50,825,120), 
-        landmark(30,460,180,330), 
-        landmark(670,460,825,330),                              
-        landmark(270,370,590,430),
-        landmark(160,160,690,230)]
+        landmark(10,50,180,120),                 
+        landmark(670,50,825,220), 
+        landmark(10,460,180,330), 
+        landmark(600,400,850,250),                              
+        landmark(270,370,590,630),
+        landmark(160,160,390,300)]
         
 class Robot:
     def __init__(self):
@@ -52,13 +52,13 @@ class Robot:
         self.rXPos = 0
         self.rYPos = 0   
         self.status = "" #String to display status of robot
-        self.points = 0 #Integer to display points of robot
+        self.points = 100 #Integer to display points of robot
         self.run = False #Used for when robot should run
         self.done = False #Used for when robot is done i.e. got all treasures
         self.shipSprite = PhotoImage(file="ship.gif")
         
 
-    def robotSpawn(self):
+    def robotLoad(self):
         self.rXPos = random.randint(20, 854)
         self.rYPos = random.randint(30, 400)
         
@@ -66,19 +66,21 @@ class Robot:
             ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
 
             if (self.rXPos > ox1 - 10.0 and self.rXPos < ox2 + 10.0) and (self.rYPos > oy1 - 10.0 and self.rYPos < oy2 + 10.0):
-                self.robotSpawn()
+                self.robotLoad()
 
             else:
                 self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10.0, self.rYPos + 10.0, fill = "blue")
-                self.rSprite = canvas.create_image(self.rXPos, self.rYPos, image = self.shipSprite)
                 self.run = True
 
     def robotMove(self):        
         while True:            
             x1, y1, x2, y2 = canvas.coords(self.robot)
             self.bypassLandmark(x1, y1, x2, y2)
-            
-            if x2 > 850.0:
+            self.trapCollision(x1, y1, x2, y2, trap1)
+            self.trapCollision(x1, y1, x2, y2, trap2)
+
+            # Boundary Response            
+            if x2 > 840.0:
                 self.vx = -10.0
                 self.vy = 0.0
 
@@ -87,59 +89,83 @@ class Robot:
                 self.vy = 0.0
 
             if y2 > 470.0:
+                self.vx = 0.0
                 self.vy = -5.0
-
+                '''if x2 > 840.0:
+                    self.vx = 0.0
+                    self.vy = -5.0
+                elif x2 < 850.0:
+                    self.vx = 10.0
+                    self.vy = 0.0'''
+            
             if y1 < 30.0:
+                self.vx = 0.0
                 self.vy = 5.0
-  
+                '''if x1 < 10.0:
+                    self.vx = 0.0
+                    self.vy = 5.0
+                elif x1 > 10.0:                    
+                    self.vx = -10.0
+                    self.vy = 0.0'''
+
+            # Add velocity value to Robot position
             self.rXPos += self.vx
             self.rYPos += self.vy            
 
             canvas.coords(self.robot, x1 + self.vx, y1 + self.vy, x2 + self.vx, y2 + self.vy)
 
             canvas.update()                
-            time.sleep(0.01)
+            time.sleep(0.1)
+
+    def trapCollision(self, x1, y1, x2, y2, trap):
+        print self.points
+        if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
+            self.points -= 10
+            print self.points
 
     def bypassLandmark(self, x1, y1, x2, y2):
         for o in obstacles:
             ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
             
-            if (x2 > ox1 - 5.0 and x1 < ox1 + 5.0) and y2 > oy1 and y1 < oy2: # APPROACH FROM LEFT
-                if self.vy == -5.0:
+            if (x2 > ox1 - 10.0 and x2 < ox1 + 10.0) and y2 > oy1 and y1 < oy2: # APPROACH FROM LEFT
+                if self.vy == -5.0 or self.vy == 0.0:
                     self.vx = 0.0
                     self.vy = -5.0
-                else:
+                elif self.vy == 5.0:
                     self.vx = 0.0
                     self.vy = 5.0
+                else:
+                    continue
             
-            if (x1 < ox2 + 5.0 and x2 > ox2 - 5.0) and y2 > oy1 and y1 < oy2: # APPROACH FROM RIGHT
-                if self.vy == -5.0:
+            if (x1 < ox2 + 10.0 and x1 > ox2 - 10.0) and y2 > oy1 and y1 < oy2: # APPROACH FROM RIGHT
+                if self.vy == -5.0 or self.vy == 0.0:
                     self.vx = 0.0
                     self.vy = -5.0
-                else:
+                elif self.vy == -5.0:
                     self.vx = 0.0
                     self.vy = 5.0
+                else:
+                    continue
 
-            if (y2 > oy1 - 2.5 and y1 < oy1 + 2.5) and x2 > ox1 and x1 < ox2:
-                self.vx = 10.0
-                if self.vx == -10.0:
+            if (y2 > oy1 - 10.0 and y2 < oy1 + 10.0) and x2 > ox1 and x1 < ox2: # APPROACH FROM TOP
+                if self.vx == -10.0 or self.vx == 0.0:
                     self.vx = -10.0
                     self.vy = 0.0
-                else:                  
+                elif self.vx == 10.0:                
                     self.vx = 10.0
-                    self.vy = 0.0
-
-            if (y1 < oy2 + 2.5 and y2 > oy1 - 2.5) and x2 > ox1 and x1 < ox2:
-                if self.vx == -10.0:
-                    self.vx = -10.0
                     self.vy = 0.0
                 else:
-                    self.vx = 10.0
-                    self.vx = 0.0
+                    continue
 
-            print self.vx
-            print self.vy
-            print
+            if (y1 < oy2 + 10.0 and y1 > oy2 - 10.0) and x1 > ox1 and x2 < ox2: # APPROACH FROM BOTTOM
+                if self.vx == -10.0 or self.vx == 0.0:
+                    self.vx = -10.0
+                    self.vy = 0.0
+                elif self.vx == 10.0:
+                    self.vx = 10.0
+                    self.vy = 0.0
+                else:
+                    continue
 
     # def lightResponse(self):                  
 
@@ -582,17 +608,25 @@ class Trap:
         self.points = 0
         
     def spawn(self):
-        self.xpos = random.randrange(20,800)
-        self.ypos = random.randrange(200,400)
+        self.xpos = random.randint(20,800)
+        self.ypos = random.randint(200,400)
+
+        for o in obstacles:            
+            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
+
+            if (self.xpos > ox1 - 10.0 and self.xpos < ox2 + 10.0) and (self.ypos > oy1 - 10.0 and self.ypos < oy2 + 10.0):
+                self.spawn()
+            else:
+                self.trapImage = PhotoImage(file = "trap.gif")
+                self.trapObject = self.draw.create_image(self.xpos,self.ypos, image = self.trapImage)              
+                
         
-    def hit(self):
+    '''def hit(self):
         #first check if hit is false
         #take away points from robot total points
         #show image
-        self.trapImage = PhotoImage(file = "trap.gif")
-        self.draw.create_image(self.xpos,self.ypos, image = self.trapImage)
         #make last treasure grey
-        #flash canvas red
+        #flash canvas red'''
         
 class image(object):
     def __init__(self):
@@ -656,15 +690,8 @@ def Start():
         
         for n in range (4): #giving a range between index 0 - 3 
             spawnTreasure.append(Treasure(n)) #update empty array with given argument 
-            spawnTreasure[n].DrawTreasure(canvas)# draw treasure onto canvas
-            
-        R1 = Robot() # Create instance of robot class (R1)
-        #R2 = Robot() # Create instance of robot class (R1)
-        R1.robotSpawn() # Draw R1 onto screen
-        #R2.robotSpawn() # Draw R1 onto screen
-        
-        R1.robotMove(obstacles)  # Deploy R1 movement behaviour
-        #R2.robotMove(obstacles) # Deploy R1 movement behaviour  		 
+            spawnTreasure[n].DrawTreasure(canvas)# draw treasure onto canvas           
+  		 
 
 MapOneLandMarks()
                      
@@ -685,6 +712,10 @@ countdownSection = Frame(bd=1, relief=SUNKEN, height=158, width=175)
 countdownSection.place(x=872, y=500) 
 
 trap1 = Trap()
+trap2 = Trap()
+trap1.spawn()
+trap2.spawn()
+
 
 treasureitems = [] # empty list to populate with treasure 
 treasurex = [830,820] # create a fixed x position for treasure 
@@ -713,8 +744,6 @@ btnCoin.place(x=884,y=130)
 btnGreen.place(x=884,y=168)
 btnRed.place(x=884,y=208)
 btnChest.place(x=884,y=247)
-
-
 
 #place treasure buttons in correct place outside canvas 
 btnCoin.place(x=884,y=130)
@@ -820,7 +849,10 @@ light4.CreateLight()
 whole=canvas.create_rectangle(2, 481, 855, 2)
 
 R1 = Robot() # Create instance of robot class (R1)
-R1.robotSpawn() # Draw R1 onto screen
+R1.robotLoad() # Draw R1 onto screen
 R1.robotMove()
+R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap1)
+R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap2)
+
 
 window.mainloop()
