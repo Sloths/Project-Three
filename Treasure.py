@@ -623,14 +623,14 @@ class image(object):
         self.yLast = event.y
         
     def widgets(self):   
-        Widget.bind(self.draw,"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
-        Widget.bind(self.draw,"<B1-Motion>", self.move) # movement of mouse when click is held down  
+        self.draw.tag_bind(test',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
+        self.draw.tag_bind('test',"<B1-Motion>", self.move) # movement of mouse when click is held down  
         
     def spawn(self, x, y, image):
         self.image = PhotoImage(file=image)
         self.x = x
         self.y = y
-        self.draw.create_image(self.x, self.y,image = self.image , anchor = NW)
+        self.draw.create_image(self.x, self.y,image = self.image , anchor = NW,tag ='test')
         if image == "coin.gif":
             TreasureButtons[0].config(state="disabled")
         elif image == "greenjewel.gif":
