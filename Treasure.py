@@ -38,12 +38,12 @@ def MapOneLandMarks():                              #creating a new function whi
     global obstacles 
     obstacles = [
         # this code within the array creates the first landmark                        
-        landmark(10,50,180,120),                 
-        landmark(670,50,825,220), 
-        landmark(10,460,180,330), 
-        landmark(600,400,850,250),                              
-        landmark(270,370,590,630),
-        landmark(160,160,390,300)]
+        landmark(30,50,180,120),                 
+        landmark(670,50,825,120), 
+        landmark(30,460,180,330), 
+        landmark(670,460,825,330),                              
+        landmark(270,370,590,430),
+        landmark(160,160,690,230)]
         
 class Robot:
     def __init__(self):
