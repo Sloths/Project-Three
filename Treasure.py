@@ -632,13 +632,13 @@ class image(object):
         self.y = y
         self.draw.create_image(self.x, self.y,image = self.image , anchor = NW)
         if image == "coin.gif":
-            btnCoin.config(state="disabled")
+            TreasureButtons[0].config(state="disabled")
         elif image == "greenjewel.gif":
-            btnGreen.config(state="disabled")
+            TreasureButtons[1].config(state="disabled")
         elif image == "redjewel.gif":
-            btnRed.config(state="disabled")
+            TreasureButtons[2].config(state="disabled")
         elif image == "chest.gif":
-            btnChest.config(state="disabled")
+            TreasureButtons[3].config(state="disabled")
 
 class treasure(image):
     def __init__(self):
