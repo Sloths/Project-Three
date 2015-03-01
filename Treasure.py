@@ -76,8 +76,8 @@ class Robot:
         while True:            
             x1, y1, x2, y2 = canvas.coords(self.robot)
             self.bypassLandmark(x1, y1, x2, y2)
-            self.trapCollision(x1, y1, x2, y2, trap1)
-            self.trapCollision(x1, y1, x2, y2, trap2)
+            self.trapCollision(x1, y1, x2, y2, traps[0])
+            self.trapCollision(x1, y1, x2, y2, traps[1])
 
             # Boundary Response            
             if x2 > 840.0:
@@ -597,36 +597,6 @@ class Light():
                 light4Text.config(text='Red', bg="#e74c3c") #Change label text to correct value
                 canvas.itemconfig(lightcolour4, fill="#e74c3c") #Change light to correct colour
                 canvas.itemconfig(section4, tag="Red") #Change section tag to correct value
-
-class Trap:
-    def __init__(self):
-        self.draw = canvas 
-        self.draw.pack()
-        self.xpos = 0
-        self.ypos = 0
-        self.hit = False
-        self.points = 0
-        
-    def spawn(self):
-        self.xpos = random.randint(20,800)
-        self.ypos = random.randint(200,400)
-
-        for o in obstacles:            
-            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
-
-            if (self.xpos > ox1 - 10.0 and self.xpos < ox2 + 10.0) and (self.ypos > oy1 - 10.0 and self.ypos < oy2 + 10.0):
-                self.spawn()
-            else:
-                self.trapImage = PhotoImage(file = "trap.gif")
-                self.trapObject = self.draw.create_image(self.xpos,self.ypos, image = self.trapImage)              
-                
-        
-    '''def hit(self):
-        #first check if hit is false
-        #take away points from robot total points
-        #show image
-        #make last treasure grey
-        #flash canvas red'''
         
 class image(object):
     def __init__(self):
@@ -668,7 +638,35 @@ class treasure(image):
     def __init__(self):
         image.__init__(self) # use the init from image class to create images, inheritance 
         self.points = 0
-     
+
+class Trap(image):
+    def __init__(self):
+        image.__init__(self)
+        self.xpos = 0
+        self.ypos = 0
+        self.hit = False
+        self.points = 0
+
+    #def points(self):
+        #get points from last collected treasure
+        
+    def create(self): #Creates the x,y position of trap to check in 
+        self.xpos = random.randint(20,800)
+        self.ypos = random.randint(200,400)
+        for o in obstacles:            
+            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
+            if (self.xpos > ox1 - 25.0 and self.xpos < ox2 + 25.0) and (self.ypos > oy1 - 25.0 and self.ypos < oy2 + 25.0):
+                self.create()
+            else:
+                self.spawn(self.xpos, self.ypos, "trap.gif")
+                     
+    #def hit(self):
+        #show image of trap
+        #deduct points from score
+        #change pirate thought
+        #
+                
+                
 def Start():
     global intPlay
     intPlay += 1
@@ -711,11 +709,11 @@ wishlistSection.place(x=880, y=344)
 countdownSection = Frame(bd=1, relief=SUNKEN, height=158, width=175)
 countdownSection.place(x=872, y=500) 
 
-trap1 = Trap()
-trap2 = Trap()
-trap1.spawn()
-trap2.spawn()
 
+traps = []
+for n in range(0,2):
+    traps.append(Trap())
+    traps[n].create()
 
 treasureitems = [] # empty list to populate with treasure 
 treasurex = [830,820] # create a fixed x position for treasure 
