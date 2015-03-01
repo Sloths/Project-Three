@@ -21,6 +21,12 @@ window.deiconify() #Redraw window in correct position
 intPlay = 0
 SelectedMap = 1
 
+coinImage = PhotoImage(file="coin.gif")
+greenImage = PhotoImage(file="greenjewel.gif")
+redImage = PhotoImage(file="redjewel.gif")
+chestImage = PhotoImage(file="chest.gif")
+pirateImage = PhotoImage(file="pirate.gif")
+
 class landmark:                                   # Landmark class being created
     def __init__(self, x1, y1, x2, y2):             # this sets out the layout of how all future objects will be set in order to be created
         self.x1 = x1                                # whatever the objects name.x1 or x2 or y1 or y2, store the value in x1, which then places it in the user interface
@@ -692,24 +698,7 @@ def Start():
   		 
 
 MapOneLandMarks()
-                     
-#Creating frames to seperate controls
-robotSection = Frame(bd=1, relief=SUNKEN, height=158, width=854)
-robotSection.place(x=11, y=500)
-collectedSection = Frame(bd=1, relief=SUNKEN, height=85, width=180)
-collectedSection.place(x=275, y=565)
-thoughtsSection = Frame(bd=1, relief=SUNKEN, height=85, width=220)
-thoughtsSection.place(x=476, y=565)
-settingSection = Frame(bd=1, relief=SUNKEN, height=480, width=175)
-settingSection.place(x=872, y=11)
-treasureSection = Frame(bd=1, relief=SUNKEN, height=165, width=160)
-treasureSection.place(x=880, y=128)
-wishlistSection = Frame(bd=1, relief=SUNKEN, height=140, width=160)
-wishlistSection.place(x=880, y=344)
-countdownSection = Frame(bd=1, relief=SUNKEN, height=158, width=175)
-countdownSection.place(x=872, y=500) 
-
-
+        
 traps = []
 for n in range(0,2):
     traps.append(Trap())
@@ -723,125 +712,68 @@ treasurey = [123, 160, 200, 240] # give different y position for treasure
 for n in range(0,4):
     treasureitems.append(treasure())
 
-coinImage = PhotoImage(file="coin.gif")
-greenImage = PhotoImage(file="greenjewel.gif")
-redImage = PhotoImage(file="redjewel.gif")
-chestImage = PhotoImage(file="chest.gif")
+frames = []
+FrameHeight = [158, 85, 85, 480, 165, 140, 158]
+FrameWidth = [854, 180, 220, 175, 160, 160, 175]
+FramePlacementx = [11, 275, 476, 872, 880, 880, 872]
+FramePlacementy = [500, 565, 565, 11, 128, 344, 500]
+for n in range(0,7):
+    frames.append(Frame(bd=1, relief=SUNKEN, height=FrameHeight[n], width=FrameWidth[n]))
+    frames[n].place(x=FramePlacementx[n], y=FramePlacementy[n])
 
-#use lambda to create anonymous function, to allow buttons
-#treasureitems[0] index used to spawn chosen treasure
-#call spawn function from image class
-#treasurex position doesnt change, but treaasurey does, by choosing index
-#call image to be created
-btnCoin = Button(window, image = coinImage, command=lambda: treasureitems[0].spawn(treasurex[0], treasurey[0], "coin.gif"))
-btnGreen = Button(window, image = greenImage, command=lambda: treasureitems[1].spawn(treasurex[0], treasurey[1], "greenjewel.gif"))
-btnRed = Button(window, image = redImage, command=lambda: treasureitems[2].spawn(treasurex[0], treasurey[2], "redjewel.gif"))
-btnChest = Button(window,image = chestImage, command=lambda: treasureitems[3].spawn(treasurex[1], treasurey[3], "chest.gif"))
+TreasureButtons = []
+TreasureButtonImage = [coinImage, greenImage, redImage, chestImage]
+TreasureButtonCommand = [lambda: treasureitems[0].spawn(treasurex[0], treasurey[0], "coin.gif"), lambda: treasureitems[1].spawn(treasurex[0], treasurey[1], "greenjewel.gif"),
+                         lambda: treasureitems[2].spawn(treasurex[0], treasurey[2], "redjewel.gif"), lambda: treasureitems[3].spawn(treasurex[1], treasurey[3], "chest.gif")]
+TreasureButtonPlacementy = [130, 168, 208, 247]
+for n in range(0,4):
+    TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
+    TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
 
-btnCoin.place(x=884,y=130)
-btnGreen.place(x=884,y=168)
-btnRed.place(x=884,y=208)
-btnChest.place(x=884,y=247)
+def test1():
+    print "works"
 
-#place treasure buttons in correct place outside canvas 
-btnCoin.place(x=884,y=130)
-btnGreen.place(x=884,y=168)
-btnRed.place(x=884,y=208)
-btnChest.place(x=884,y=247)
+ButtonList = []
+ButtonString = ["Start", "1", "2", "3", "4", "5", "6"]
+ButtonPlacementx = [878, 877, 902, 927, 952, 977, 1002]
+ButtonPlacementy = [505, 77, 77, 77, 77, 77, 77]
+ButtonWidth = [22, 2, 2, 2, 2, 2, 2]
+ButtonCommand = [Start, test1, test1, test1, test1, test1, test1]
+for n in range (0,7):
+    ButtonList.append(Button(window, text=ButtonString[n], height=1, width=ButtonWidth[n], command=ButtonCommand[n]))
+    ButtonList[n].place(x=ButtonPlacementx[n], y=ButtonPlacementy[n])
 
-#Creating Buttons
-btnStart=Button(window, text='Start', height=1, width=22, command=Start)
-btnPoint1=Button(window, text='1', height=1, width=2)
-btnPoint2=Button(window, text='2', height=1, width=2)
-btnPoint3=Button(window, text='3', height=1, width=2)
-btnPoint4=Button(window, text='4', height=1, width=2)
-btnPoint5=Button(window, text='5', height=1, width=2)
-btnPoint6=Button(window, text='6', height=1, width=2)
+#Creating labels
+LabelList = []
+LabelStrings = ["Position:", "Status:", "Points:", "Currently Looking For:", "Collected Treasure:", "Thoughts:", "Time Limit:", "Starting Point:", "Treasure Selection:", "Coin - 10 Points",
+                "Jewel - 20 Points", "Ruby - 30 Points", "Chest - 50 Points", "Drag and drop on landmarks", "Wishlist:"]
+LabelPlacementx = [15, 15, 15, 15, 270, 470, 877, 877, 877, 930, 925, 927, 927, 876, 877]
+LabelPlacementy = [540, 570, 600, 630, 540, 540, 35, 55, 106, 137, 175, 215, 255, 293, 320]
+LabelSize = [12, 12, 12, 12, 12, 12, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+for n in range (0,15):
+    LabelList.append(Label(font=('Helvetica', LabelSize[n]), text=LabelStrings[n]))
+    LabelList[n].place(x=LabelPlacementx[n], y=LabelPlacementy[n])        
 
-#Places buttons in correct positions
-btnStart.place(x=878, y=505)
-btnPoint1.place(x=877, y=77)
-btnPoint2.place(x=902, y=77)
-btnPoint3.place(x=927, y=77)
-btnPoint4.place(x=952, y=77)
-btnPoint5.place(x=977, y=77)
-btnPoint6.place(x=1002, y=77)
+Images = []
+ImageList = [pirateImage, coinImage, greenImage, redImage, chestImage]
+ImagePlacementx = [720, 280, 310, 340, 370]
+ImagePlacementy = [530, 576, 575, 575, 580]
+for n in range(0,5):
+    Images.append(Label(image=ImageList[n]))
+    Images[n].place(x=ImagePlacementx[n], y=ImagePlacementy[n])
 
-#Creating robot1 labels
 rbName=Label(font=('Helvetica', 18, 'underline'), text='Virtual Robot Pirate')
-rbPosition=Label(font=('Helvetica', 12), text='Position:')
-rbStatus=Label(font=('Helvetica', 12), text='Status:')
-rbPoints=Label(font=('Helvetica', 12), text='Points:')
-rbLookingFor=Label(font=('Helvetica', 12), text='Currently Looking For:')
-rbCollected=Label(font=('Helvetica', 12), text='Collected Treasure:')
-rbThoughts=Label(font=('Helvetica', 12), text='Thoughts:')
-
-#Places robot1 labels in correct positions
-rbName.place(x=15, y=505)
-rbPosition.place(x=15, y=540)
-rbStatus.place(x=15, y=570)
-rbPoints.place(x=15, y=600)
-rbLookingFor.place(x=15, y=630)
-rbCollected.place(x=270, y=540)
-rbThoughts.place(x=470, y=540)
-
-#Pirate Image
-pirateImage = PhotoImage(file="pirate.gif")
-pirateImageLabel=Label(image=pirateImage)
-pirateImageLabel.place(x=720, y=530)
-
-#Treasure Image
-coinImg = PhotoImage(file="coin.gif")
-coinImgLabel = Label(image=coinImg)
-coinImgLabel.place(x=280,y=576) 
-greenImg = PhotoImage(file="greenjewel.gif")
-greenImgLabel = Label(image=greenImg)
-greenImgLabel.place(x=310,y=575)
-redImg = PhotoImage(file="redjewel.gif")
-redImgLabel = Label(image=redImg)
-redImgLabel.place(x=340,y=575)
-chestImg = PhotoImage(file="chest.gif")
-chestImgLabel = Label(image=chestImg)
-chestImgLabel.place(x=370,y=580)
-
-#Creating Settings labels
 settings=Label(font=('Helvetica', 12, 'underline'), text='Settings')
-timelimit=Label(font=('Helvetica', 10), text='Time Limit:')
-starting=Label(font=('Helvetica', 10), text='Starting Point:')
-treasureselection=Label(font=('Helvetica', 10), text='Treasure Selection:')
-coin=Label(font=('Helvetica', 10), text='Coin - 10 Points')
-greenjewel=Label(font=('Helvetica', 10), text='Jewel - 20 Points')
-redjewel=Label(font=('Helvetica', 10), text='Ruby - 30 Points')
-chest=Label(font=('Helvetica', 10), text='Chest - 50 Points')
-instruction=Label(font=('Helvetica', 10), text='Drag and drop on landmarks')
-wishlist=Label(font=('Helvetica', 10), text='Wishlist:')
-
-#Places settings labels in correct positions
+rbName.place(x=15, y=505)
 settings.place(x=877, y=13)
-timelimit.place(x=877, y=35)
-starting.place(x=877, y=55)
-treasureselection.place(x=877, y=106)
-coin.place(x=930, y=137)
-greenjewel.place(x=925, y=175)
-redjewel.place(x=927, y=215)
-chest.place(x=927, y=255)
-instruction.place(x=876, y=293)
-wishlist.place(x=877, y=320)
 
 #Placement of canvas
 canvas.place(x=10, y=10)
 
-#Creating light objects
-light1 = Light(1)
-light2 = Light(2)
-light3 = Light(3)
-light4 = Light(4)
-
-#Drawing lights onto canvas using function in light class
-light1.CreateLight()
-light2.CreateLight()
-light3.CreateLight()
-light4.CreateLight()
+lightlist = []
+for n in range(1,5):
+    lightlist.append(Light(n))
+    lightlist[n-1].CreateLight()
 
 #Drawing line around canvas
 whole=canvas.create_rectangle(2, 481, 855, 2)
@@ -851,6 +783,5 @@ R1.robotLoad() # Draw R1 onto screen
 R1.robotMove()
 R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap1)
 R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap2)
-
 
 window.mainloop()
