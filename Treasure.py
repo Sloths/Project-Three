@@ -19,9 +19,6 @@ window.title('Sloths - Virtual Robot Treasure Hunt') #Adds name to window
 window.resizable(width=FALSE, height=FALSE) #Disabled resizable function of window
 window.deiconify() #Redraw window in correct position
 
-intPlay = 0
-SelectedMap = 1
-
 coinImage = PhotoImage(file="coin.gif")
 greenImage = PhotoImage(file="greenjewel.gif")
 redImage = PhotoImage(file="redjewel.gif")
