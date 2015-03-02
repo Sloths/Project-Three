@@ -649,7 +649,7 @@ class image(object):
         self.x = x
         self.y = y
         self.tag= tag
-        self.draw.create_image(self.x, self.y,image = self.image , anchor = NW,tag =self.tag)
+        self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag)
         
 wishlist = []
 wishlistx = [885, 925, 965, 1005]
@@ -759,8 +759,8 @@ for n in range(0,2):
     traps[n].create()
 
 treasureitems = [] # empty list to populate with treasure 
-treasurex = [830,820] # create a fixed x position for treasure 
-treasurey = [123, 160, 200, 240] # give different y position for treasure 
+treasurex = [840,835] # create a fixed x position for treasure 
+treasurey = [138, 178, 217, 254] # give different y position for treasure 
 
 #iterate through loop and use treasure class to populate 
 for n in range(0,4):
