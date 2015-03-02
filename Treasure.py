@@ -640,11 +640,21 @@ class image(object):
         self.draw.tag_bind('test',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
         self.draw.tag_bind('test',"<B1-Motion>", self.move) # movement of mouse when click is held down  
         
-    def spawn(self, x, y, image):
+    def spawn(self, x, y, image, tag):
         self.image = PhotoImage(file=image)
         self.x = x
         self.y = y
-        self.draw.create_image(self.x, self.y,image = self.image , anchor = NW,tag ='test')
+        self.tag= tag
+        self.draw.create_image(self.x, self.y,image = self.image , anchor = NW,tag =self.tag)
+        
+
+class treasure(image):
+    def __init__(self):
+        image.__init__(self) # use the init from image class to create images, inheritance 
+        self.points = 0
+        
+    def create(self,x,y,image,tag):
+        self.spawn(x,y,image,tag)
         if image == "coin.gif":
             TreasureButtons[0].config(state="disabled")
         elif image == "greenjewel.gif":
@@ -653,11 +663,6 @@ class image(object):
             TreasureButtons[2].config(state="disabled")
         elif image == "chest.gif":
             TreasureButtons[3].config(state="disabled")
-
-class treasure(image):
-    def __init__(self):
-        image.__init__(self) # use the init from image class to create images, inheritance 
-        self.points = 0
 
 class Trap(image):
     def __init__(self):
@@ -678,7 +683,7 @@ class Trap(image):
             if (self.xpos > ox1 - 25.0 and self.xpos < ox2 + 25.0) and (self.ypos > oy1 - 25.0 and self.ypos < oy2 + 25.0):
                 self.create()
             else:
-                self.spawn(self.xpos, self.ypos, "trap.gif")
+                self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
                      
     #def hit(self):
         #show image of trap
@@ -737,8 +742,8 @@ for n in range(0,7):
 
 TreasureButtons = []
 TreasureButtonImage = [coinImage, greenImage, redImage, chestImage]
-TreasureButtonCommand = [lambda: treasureitems[0].spawn(treasurex[0], treasurey[0], "coin.gif"), lambda: treasureitems[1].spawn(treasurex[0], treasurey[1], "greenjewel.gif"),
-                         lambda: treasureitems[2].spawn(treasurex[0], treasurey[2], "redjewel.gif"), lambda: treasureitems[3].spawn(treasurex[1], treasurey[3], "chest.gif")]
+TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'test'), lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'test'),
+                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'test'), lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'test')]
 TreasureButtonPlacementy = [130, 168, 208, 247]
 for n in range(0,4):
     TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
