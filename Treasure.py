@@ -116,7 +116,7 @@ class Robot:
                     self.vx = 0.0
                     self.vy = 5.0
                 elif x1 > 10.0:                    
-                    self.vx = -10.0
+                    self.vx = -10.0self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
                     self.vy = 0.0'''
 
             # Add velocity value to Robot position
@@ -131,8 +131,9 @@ class Robot:
     def trapCollision(self, x1, y1, x2, y2, trap):
         print self.points
         if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
-            self.points -= 10
-            print self.points
+            if trap.hit == False:
+                trap.collision()
+                self.points -= 10
 
     def bypassLandmark(self, x1, y1, x2, y2):
         for o in obstacles:
@@ -740,16 +741,19 @@ class Trap(image):
         #get points from last collected treasure
         
     def create(self): #Creates the x,y position of trap to check in 
-        self.xpos = random.randint(20,800)
-        self.ypos = random.randint(200,400)
+        self.xpos = random.randint(25,829)
+        self.ypos = random.randint(25,455)
         for o in obstacles:            
             ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
             if (self.xpos > ox1 - 25.0 and self.xpos < ox2 + 25.0) and (self.ypos > oy1 - 25.0 and self.ypos < oy2 + 25.0):
                 self.create()
             else:
                 self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
-                     
-    #def hit(self):
+                      
+    def collision(self):
+        print "hit"
+        self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
+        self.hit = True
         #show image of trap
         #deduct points from score
         #change pirate thought
