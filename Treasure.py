@@ -623,7 +623,7 @@ class image(object):
         self.yLast = event.y
         
     def widgets(self):   
-        self.draw.tag_bind(test,"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
+        self.draw.tag_bind('test',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
         self.draw.tag_bind('test',"<B1-Motion>", self.move) # movement of mouse when click is held down  
         
     def spawn(self, x, y, image):
