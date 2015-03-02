@@ -504,6 +504,29 @@ class StartingPoint:
 
     def create(self):
         self.position = canvas.create_rectangle(self.x1, self.y1, self.x2, self.y2, fill = "white")
+
+class MapSelection:
+    def __init__(self, SelectedMap):
+        self.SelectedMap = SelectedMap
+
+    def LoadingTheMap(self):
+        if self.SelectedMap == 1:
+            StartingPoint(300, 50, 320, 70).create()
+        elif self.SelectedMap == 2:
+            StartingPoint(60, 130, 80, 150).create()
+        elif self.SelectedMap == 3:
+            StartingPoint(450, 130, 470, 150).create()
+        elif self.SelectedMap == 4:
+            StartingPoint(200, 350, 220, 370).create()
+        elif self.SelectedMap == 5:
+            StartingPoint(700, 150, 720, 170).create()
+        elif self.SelectedMap == 6:
+            StartingPoint(600, 410, 620, 430).create()
+    
+
+        
+        
+        
         
 
 
@@ -748,16 +771,25 @@ TreasureButtonPlacementy = [130, 168, 208, 247]
 for n in range(0,4):
     TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
     TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
-
-def test1():
-    print "works"
+def FirstButton():
+    MapSelection(1).LoadingTheMap()
+def SecondButton():
+    MapSelection(2).LoadingTheMap()
+def ThirdButton():
+    MapSelection(3).LoadingTheMap()
+def FourthButton():
+    MapSelection(4).LoadingTheMap()
+def FithButton():
+    MapSelection(5).LoadingTheMap()
+def SixthButton():
+    MapSelection(6).LoadingTheMap()
 
 ButtonList = []
 ButtonString = ["Start", "1", "2", "3", "4", "5", "6"]
 ButtonPlacementx = [878, 877, 902, 927, 952, 977, 1002]
 ButtonPlacementy = [505, 77, 77, 77, 77, 77, 77]
 ButtonWidth = [22, 2, 2, 2, 2, 2, 2]
-ButtonCommand = [Start, test1, test1, test1, test1, test1, test1]
+ButtonCommand = [Start, FirstButton, SecondButton, ThirdButton, FourthButton, FithButton, SixthButton]
 for n in range (0,7):
     ButtonList.append(Button(window, text=ButtonString[n], height=1, width=ButtonWidth[n], command=ButtonCommand[n]))
     ButtonList[n].place(x=ButtonPlacementx[n], y=ButtonPlacementy[n])
