@@ -494,6 +494,20 @@ class Timer:
             else:
                 # display of timer when Stop is pressed
                 exec str(self.label.config(text="00:00:00"))
+                
+class StartingPoint:                                   
+    def __init__(self, x1, y1, x2, y2):
+        self.x1 = x1                               
+        self.x2 = x2
+        self.y1 = y1
+        self.y2 = y2
+
+    def create(self):
+        self.position = canvas.create_rectangle(self.x1, self.y1, self.x2, self.y2, fill = "white")
+        
+
+
+
 
 #Class for lights
 class Light():
