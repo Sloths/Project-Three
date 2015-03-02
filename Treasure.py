@@ -628,7 +628,8 @@ class image(object):
         self.location = ""
         self.draw = canvas
         self.draw.pack()
-        self.widgets() 
+        self.widgets()
+        
     def down(self, event):
         self.xLast = event.x # coords of where the mouse went down
         self.yLast = event.y
@@ -638,6 +639,8 @@ class image(object):
         self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast)
         self.xLast = event.x
         self.yLast = event.y
+        global position
+        position = (self.xLast, self.yLast)
         
     def widgets(self):   
         self.draw.tag_bind('treasure',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
@@ -650,9 +653,19 @@ class image(object):
         self.tag= tag
         self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag)
         
+position = ""
 wishlist = []
 wishlistx = [885, 925, 965, 1005]
-wishlisty = [346, 346, 346, 346] 
+wishlisty = [346, 346, 346, 346]
+treasurelist = []
+locationlist = []
+def SortTreasure(treasurelist):
+    for i in range(len(treasurelist)-1, 0, -1):
+        for n in range(i):
+            if treasurelist[n].points < treasurelist[n+1].points:
+                temp = treasurelist[n]
+                treasurelist[n] = treasurelist[n+1]
+                treasurelist[n+1] = temp
 
 class treasure(image):
     def __init__(self):
@@ -693,11 +706,28 @@ class treasure(image):
         elif placement == 3:
             lbl4 = Label(image=i)
             lbl4.place(x=wishlistx[3], y=wishlisty[3])
+
+        treasurelist.append(self)
         
     def create(self,x,y,image,tag):
         self.spawn(x,y,image,tag)
         self.wishList(image)
 
+    def locate(self):
+        xpos = position[0]
+        ypos = position[1]
+        i = 0
+        for o in obstacles:
+            i = i + 1
+            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
+            if (xpos > ox1 and xpos < ox2) and (ypos > oy1 and ypos < oy2):
+                x1 = obstacles[i-1].x1
+                x2 = obstacles[i-1].x2
+                y1 = obstacles[i-1].y1
+                y2 = obstacles[i-1].y2
+                cords = x1, y1, x2, y2
+                locationlist.append(cords)
+          
 class Trap(image):
     def __init__(self):
         image.__init__(self)
@@ -727,28 +757,11 @@ class Trap(image):
                 
                 
 def Start():
-    global intPlay
-    intPlay += 1
-    if intPlay <= 1:
-        global main
-        global rb1T
-        global rb2T
-        global m
-        #global spawnTreasure # no need for this global variable 
-        global R1
-        global R2
-        main = Timer(timer)
-        rb1T = Timer(rb1Timer)
-        rb2T = Timer(rb2Timer)
-        main.Count()
-        rb1T.Count()
-        rb2T.Count()
-        spawnTreasure= [] # creating an empty array for number of treasures using for loop
-        
-        for n in range (4): #giving a range between index 0 - 3 
-            spawnTreasure.append(Treasure(n)) #update empty array with given argument 
-            spawnTreasure[n].DrawTreasure(canvas)# draw treasure onto canvas           
-  		 
+    SortTreasure(treasurelist)
+    print treasurelist
+    for n in range (0, len(treasurelist)):
+        treasurelist[n].locate()
+    print locationlist	 
 
 MapOneLandMarks()
         
@@ -756,6 +769,7 @@ traps = []
 for n in range(0,2):
     traps.append(Trap())
     traps[n].create()
+
 
 treasureitems = [] # empty list to populate with treasure 
 treasurex = [840,835] # create a fixed x position for treasure 
@@ -784,6 +798,7 @@ TreasureButtonPlacementy = [130, 168, 208, 247]
 for n in range(0,4):
     TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
     TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
+    
 #These functions below are linked to the buttons for starting position on the GUI, they load up different positions
 # for the robot to spawn in.
 def FirstButton():                  
