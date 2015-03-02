@@ -500,17 +500,16 @@ class Timer:
                 # display of timer when Stop is pressed
                 exec str(self.label.config(text="00:00:00"))
                 
-class StartingPoint:                                   
-    def __init__(self, x1, y1, x2, y2):
+class StartingPoint:                
+    # This class creates takes the coordinates which will be used to place the robot.
+    def __init__(self, x1, y1, x2, y2):                
         self.x1 = x1                               
         self.x2 = x2
         self.y1 = y1
         self.y2 = y2
 
-    def create(self):
-        self.position = canvas.create_rectangle(self.x1, self.y1, self.x2, self.y2, fill = "white")
-
 class MapSelection:
+# This code uses the coords and places the robot at a pre-set loation within the GUI 
     def __init__(self, SelectedMap):
         self.SelectedMap = SelectedMap
 
@@ -785,7 +784,9 @@ TreasureButtonPlacementy = [130, 168, 208, 247]
 for n in range(0,4):
     TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
     TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
-def FirstButton():
+#These functions below are linked to the buttons for starting position on the GUI, they load up different positions
+# for the robot to spawn in.
+def FirstButton():                  
     MapSelection(1).LoadingTheMap()
 def SecondButton():
     MapSelection(2).LoadingTheMap()
