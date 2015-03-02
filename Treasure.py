@@ -26,6 +26,11 @@ greenImage = PhotoImage(file="greenjewel.gif")
 redImage = PhotoImage(file="redjewel.gif")
 chestImage = PhotoImage(file="chest.gif")
 pirateImage = PhotoImage(file="pirate.gif")
+ClockG = PhotoImage(file="clock-grey.gif")
+Clock1 = PhotoImage(file="1.gif")
+Clock2 = PhotoImage(file="2.gif")
+Clock3 = PhotoImage(file="3.gif")
+Clock4 = PhotoImage(file="4.gif")
 
 class landmark:                                   # Landmark class being created
     def __init__(self, x1, y1, x2, y2):             # this sets out the layout of how all future objects will be set in order to be created
@@ -820,6 +825,9 @@ settings.place(x=877, y=13)
 
 #Placement of canvas
 canvas.place(x=10, y=10)
+
+clock=Label(image=ClockG)
+clock.place(x=916, y=534)
 
 lightlist = []
 for n in range(1,5):
