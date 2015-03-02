@@ -527,16 +527,8 @@ class MapSelection:
             StartingPoint(700, 150, 720, 170).create()
         elif self.SelectedMap == 6:
             StartingPoint(600, 410, 620, 430).create()
+
     
-
-        
-        
-        
-        
-
-
-
-
 #Class for lights
 class Light():
     def __init__(self, number):
@@ -547,20 +539,6 @@ class Light():
         self.colour = "" #string to hold colour of section
 
     def CreateLight(self): #Function to create the lights for GUI
-        #globalising objects to be made
-        global lightcolour1
-        global lightcolour2
-        global lightcolour3
-        global lightcolour4
-        global section1
-        global section2
-        global section3
-        global section4
-        global light1Text
-        global light2Text
-        global light3Text
-        global light4Text
-        
         if self.number == 1: #if section 1, place in left most position
             lightcolour1=canvas.create_rectangle(2, 2, self.sectionWidth, 23, fill="#2ecc71", tag="1") #Create light block and tag number
             section1=canvas.create_rectangle(0, self.height + 1, self.sectionWidth, 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
@@ -588,8 +566,6 @@ class Light():
         
     def ChangeLight(self): #Function to change lights, called in timer class count function
         intColour = random.randrange(1,4) # Random selection of traffic lights ranging from 1 - 3
-        
-        global canvas
         
         if intColour == 1: #If random number = 1 (Green)
             self.colour = "Green" #Change value of colour string
@@ -665,8 +641,8 @@ class image(object):
         self.yLast = event.y
         
     def widgets(self):   
-        self.draw.tag_bind('test',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
-        self.draw.tag_bind('test',"<B1-Motion>", self.move) # movement of mouse when click is held down  
+        self.draw.tag_bind('treasure',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
+        self.draw.tag_bind('treasure',"<B1-Motion>", self.move) # movement of mouse when click is held down  
         
     def spawn(self, x, y, image, tag):
         self.image = PhotoImage(file=image)
@@ -675,22 +651,53 @@ class image(object):
         self.tag= tag
         self.draw.create_image(self.x, self.y,image = self.image , anchor = NW,tag =self.tag)
         
+wishlist = []
+wishlistx = [885, 925, 965, 1005]
+wishlisty = [346, 346, 346, 346] 
 
 class treasure(image):
     def __init__(self):
         image.__init__(self) # use the init from image class to create images, inheritance 
         self.points = 0
+
+    def wishList(self, image):
+        if image == "coin.gif":
+            TreasureButtons[0].config(state="disabled")
+            i = coinImage
+            self.points = 10
+        elif image == "greenjewel.gif":
+            TreasureButtons[1].config(state="disabled")
+            i = greenImage
+            self.points = 20
+        elif image == "redjewel.gif":
+            TreasureButtons[2].config(state="disabled")
+            i = redImage
+            self.points = 30
+        elif image == "chest.gif":
+            TreasureButtons[3].config(state="disabled")
+            i = chestImage
+            self.points = 50
+
+        image.replace(".gif", "")
+        wishlist.append(image)
+        placement = wishlist.index(image)
+
+        if placement == 0:  
+            lbl1 = Label(image=i)
+            lbl1.place(x=wishlistx[0], y=wishlisty[0])
+        elif placement == 1:
+            lbl2 = Label(image=i)
+            lbl2.place(x=wishlistx[1], y=wishlisty[1])
+        elif placement == 2:
+            lbl3 = Label(image=i)
+            lbl3.place(x=wishlistx[2], y=wishlisty[2])
+        elif placement == 3:
+            lbl4 = Label(image=i)
+            lbl4.place(x=wishlistx[3], y=wishlisty[3])
         
     def create(self,x,y,image,tag):
         self.spawn(x,y,image,tag)
-        if image == "coin.gif":
-            TreasureButtons[0].config(state="disabled")
-        elif image == "greenjewel.gif":
-            TreasureButtons[1].config(state="disabled")
-        elif image == "redjewel.gif":
-            TreasureButtons[2].config(state="disabled")
-        elif image == "chest.gif":
-            TreasureButtons[3].config(state="disabled")
+        self.wishList(image)
 
 class Trap(image):
     def __init__(self):
@@ -770,8 +777,10 @@ for n in range(0,7):
 
 TreasureButtons = []
 TreasureButtonImage = [coinImage, greenImage, redImage, chestImage]
-TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'test'), lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'test'),
-                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'test'), lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'test')]
+TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'treasure'),
+                         lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'treasure'),
+                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'treasure'),
+                         lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'treasure')]
 TreasureButtonPlacementy = [130, 168, 208, 247]
 for n in range(0,4):
     TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
