@@ -1,4 +1,5 @@
 from Tkinter import *
+from PIL import Image, ImageTk
 import ttk
 import random
 import time
@@ -31,6 +32,9 @@ Clock1 = PhotoImage(file="1.gif")
 Clock2 = PhotoImage(file="2.gif")
 Clock3 = PhotoImage(file="3.gif")
 Clock4 = PhotoImage(file="4.gif")
+
+flash = Image.open("flash.png")
+flashImage = ImageTk.PhotoImage(flash)
 
 class landmark:                                   # Landmark class being created
     def __init__(self, x1, y1, x2, y2):             # this sets out the layout of how all future objects will be set in order to be created
@@ -745,7 +749,7 @@ class Trap(image):
         self.ypos = random.randint(25,455)
         for o in obstacles:            
             ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
-            if (self.xpos > ox1 - 25.0 and self.xpos < ox2 + 25.0) and (self.ypos > oy1 - 25.0 and self.ypos < oy2 + 25.0):
+            if (self.xpos > ox1 - 35.0 and self.xpos < ox2 + 35.0) and (self.ypos > oy1 - 35.0 and self.ypos < oy2 + 35.0):
                 self.create()
             else:
                 self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
@@ -753,6 +757,7 @@ class Trap(image):
     def collision(self):
         print "hit"
         self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
+        #f=canvas.create_image(429,263,image=flashImage, tag="flash")
         self.hit = True
         #show image of trap
         #deduct points from score
