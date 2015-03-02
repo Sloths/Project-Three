@@ -116,7 +116,7 @@ class Robot:
                     self.vx = 0.0
                     self.vy = 5.0
                 elif x1 > 10.0:                    
-                    self.vx = -10.0self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
+                    self.vx = -10.0
                     self.vy = 0.0'''
 
             # Add velocity value to Robot position
