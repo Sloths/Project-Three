@@ -716,4 +716,59 @@ for n in range(1,5):
 #Drawing line around canvas
 whole=canvas.create_rectangle(2, 481, 855, 2)
 
+class LabelsThoughts:
+    def __init__ (self, x, y)
+    self.x = x
+    self.y = y
+    self.font = ("Helvetica", 14)
+    self.text = text
+
+
+
+#Function to create the Labels Thoughts 
+def CreatedThoughts (self):
+    thoug0=Label (font=("Helvetica," 14), text="Change settings to start!")
+    thoug1=Label (font=("Helvetica," 14), text="Click Start!")
+    thoug2=Label (font=("Helvetica," 14), text="Ahoy, Matey!")
+    thoug3=Label (font=("Helvetica," 14), text="Batten down the hatches!")
+    thoug4=Label (font=("Helvetica," 14), text="Aaaarrrrgggghhhh")
+    thoug5=Label (font=("Helvetica," 14), text="Me Booty!")
+    thoug6=Label (font=("Helvetica," 14), text="Blimey Doubloons!")
+    thoug7=Label (font=("Helvetica," 14), text="Heave Ho!")
+    thoug8=Label (font=("Helvetica," 14), text="Avast ye, time up!")
+    thoug9=Label (font=("Helvetica," 14), text="Shiver me timbers!")
+
+
+def ResetThoughts():
+    rbth0.config ()
+    rbth1.config ()
+    rbth2.config ()
+    rbth3.config ()
+    rbth4.config ()
+    rbth5.config ()
+    rbth6.config ()
+    rbth7.config ()
+    rbth8.config ()
+    rbth9.config ()
+
+
+
+
+#placement of labels Thoughts
+thoug0.place (x=470, y=550)
+thoug1.place (x=470, y=550)
+thoug2.place (x=470, y=550)
+thoug3.place (x=470, y=550)
+thoug4.place (x=470, y=550)
+thoug5.place (x=470, y=550)
+thoug6.place (x=470, y=550)
+thoug7.place (x=470, y=550)
+thoug8.place (x=470, y=550)
+thoug9.place (x=470, y=550)
+
+label.pack()
+
+
 window.mainloop()
+
+
