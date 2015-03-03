@@ -40,9 +40,9 @@ class landmark:                                   # Landmark class being created
         self.y1 = y1
         self.y2 = y2
         self.colour  = "#e7df63"                      # the background colour for all landmarks is set here to green in the user interface
-        self.outline = "black"                      # the outline colour of all landmarks is set to black in the user interface
-        self.treasure = False                       #  setting the variable with the value of 'false'
-        self.treasureID = ""                        #creating treasure ID for robot 
+        self.outline = "black"                      #   the outline colour of all landmarks is set to black in the user interface
+        self.treasure = False                       #   setting the variable with the value of 'false'
+        self.treasureID = ""                        #   creating treasure ID for robot 
         
         self.lndmrk = canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2, fill=self.colour, outline = self.outline, tag="Landmark") # creates the landmark with the given coordinates and colours, but they're pre-set.
         
@@ -87,7 +87,7 @@ class Robot:
     def robotMove(self):        
         while True:            
             x1, y1, x2, y2 = canvas.coords(self.robot)
-            self.treasureTrack(x1, y1, x2, y2, locationlist) 
+            self.treasureTrack(x1, y1, x2, y2) 
             self.bypassLandmark(x1, y1, x2, y2)
             self.trapCollision(x1, y1, x2, y2, traps[0])
             self.trapCollision(x1, y1, x2, y2, traps[1])
@@ -180,24 +180,43 @@ class Robot:
                 else:
                     continue
 
-    def treasureTrack(self, x1, y1, x2, y2, treasures):
+    def treasureTrack(self, x1, y1, x2, y2):
         if self.run == True:
             if self.done == False:
-                for t in treasures:
-                    tx1, ty1, tx2, ty2 = canvas.coords(t.lndmrk)
+                   
+                lx1 = locationlist[0][0]
+                ly1 = locationlist[0][1]
+                lx2 = locationlist[0][2]
+                ly2 = locationlist[0][3]
+                                   
+                if (x2 < lx1 - 20.0) and (y2 < ly1 - 20.0): # Approaching from top left.
+                    self.vx = 10.0
+                    self.vy = 5.0
+                if (x2 < lx1 - 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom left.
+                    self.vx = 10.0
+                    self.vy = -5.0
+                if (x1 > lx2 + 20.0) and (y2 < ly1 - 20.0): # Approaching from top right.
+                    self.vx = -10.0
+                    self.vy = 5.0
+                if (x1 > lx2 + 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom right.
+                    self.vx = -10.0
+                    self.vy = -5.0
 
-                    if x2 < tx1 and y2 < ty1:
-                        self.vx = 10.0
-                        self.vy = 5.0
-                    if x2 < tx1 and y1 > ty1:
-                        self.vx = 10.0
-                        self.vy = -5.0
-                    if x1 > tx2 and y2 < ty1:
-                        self.vx = -10.0
-                        self.vy = 5.0
-                    if x1 > tx2 and y1 > ty2:
-                        self.vx = -10.0
-                        self.vy = -5.0                       
+                if (x2 < lx1 - 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
+                    self.vx = 10.0
+                    self.vy = 0.0
+                if (x1 > lx2 + 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
+                    self.vx = -10.0
+                    self.vy = 0.0
+                if (y2 < ly1 - 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
+                    self.vx = 0.0
+                    self.vy = 5.0
+                if (y1 > ly2 + 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
+                    self.vx = 0.0
+                    self.vy = -5.0
+
+                if ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
+                    print "treasure collected"
 
     # def lightResponse(self):
     
@@ -229,9 +248,7 @@ class Treasure:
         self.checkLandmark() # call checkLandmark to make sure no treasure is present before creating 
         self.shape = canvas.create_oval(self.x,self.y,self.x + self.size, self.y + self.size,outline = self.colour, fill=self.colour,tag=self.id)
         # creating object, size goes against each x and y coordinates. tag inplace to call for deletion
-
-
-              
+     
 class Timer:
     def __init__(self, label):
         self.second = 0
@@ -545,8 +562,10 @@ class treasure(image):
                 x2 = obstacles[i-1].x2
                 y1 = obstacles[i-1].y1
                 y2 = obstacles[i-1].y2
-                cords = x1, y1, x2, y2
-                locationlist.append(cords)
+                coords = x1, y1, x2, y2
+                locationlist.append(coords)                
+
+                print locationlist[0][1]
           
 class Trap(image):
     def __init__(self):
