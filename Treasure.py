@@ -549,14 +549,8 @@ class treasure(image):
             i = i + 1
             ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
             if (xpos > ox1 and xpos < ox2) and (ypos > oy1 and ypos < oy2):
-                x1 = obstacles[i-1].x1
-                x2 = obstacles[i-1].x2
-                y1 = obstacles[i-1].y1
-                y2 = obstacles[i-1].y2
-                coords = x1, y1, x2, y2
-                locationlist.append(coords)                
-
-                print locationlist[0][1]
+                lnd = obstacles[i-1]
+                locationlist.append(lnd)                
           
 class Trap(image):
     def __init__(self):
@@ -720,9 +714,7 @@ class LabelsThoughts:
     self.y = y
     self.font = ("Helvetica", 14)
     self.text = text
-
-
-
+    
 #Function to create the Labels Thoughts 
 def CreatedThoughts (self):
     thoug0=Label (font=("Helvetica," 14), text="Change settings to start!")
