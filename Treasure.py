@@ -67,7 +67,7 @@ class Robot:
         self.points = 100 #Integer to display points of robot
         self.run = False #Used for when robot should run
         self.done = False #Used for when robot is done i.e. got all treasures
-        self.shipSprite = PhotoImage(file="ship.gif")
+        self.shipSprite = PhotoImage(file = "ship.gif")
         
 
     def robotLoad(self):
@@ -87,11 +87,12 @@ class Robot:
     def robotMove(self):        
         while True:            
             x1, y1, x2, y2 = canvas.coords(self.robot)
+            self.treasureTrack(x1, y1, x2, y2, locationlist) 
             self.bypassLandmark(x1, y1, x2, y2)
             self.trapCollision(x1, y1, x2, y2, traps[0])
             self.trapCollision(x1, y1, x2, y2, traps[1])
 
-            # Boundary Response            
+            '''# Boundary Response            
             if x2 > 840.0:
                 self.vx = -10.0
                 self.vy = 0.0
@@ -103,17 +104,17 @@ class Robot:
             if y2 > 470.0:
                 self.vx = 0.0
                 self.vy = -5.0
-                '''if x2 > 840.0:
+                if x2 > 840.0:
                     self.vx = 0.0
                     self.vy = -5.0
                 elif x2 < 850.0:
                     self.vx = 10.0
-                    self.vy = 0.0'''
+                    self.vy = 0.0
             
             if y1 < 30.0:
                 self.vx = 0.0
                 self.vy = 5.0
-                '''if x1 < 10.0:
+                if x1 < 10.0:
                     self.vx = 0.0
                     self.vy = 5.0
                 elif x1 > 10.0:                    
@@ -129,8 +130,7 @@ class Robot:
             canvas.update()                
             time.sleep(0.1)
 
-    def trapCollision(self, x1, y1, x2, y2, trap):
-        print self.points
+    def trapCollision(self, x1, y1, x2, y2, trap):        
         if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
             if trap.hit == False:
                 trap.collision()
@@ -180,207 +180,27 @@ class Robot:
                 else:
                     continue
 
-    # def lightResponse(self):                  
-
-    '''def robotMove(self, treasures):
+    def treasureTrack(self, x1, y1, x2, y2, treasures):
         if self.run == True:
             if self.done == False:
-                for o in obstacles: # Iterate through obstacle list
-                    ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk) # Creating coordinates for landmark object
-                    while o.treasure == True:
-                        
-                        self.x1, self.y1, self.x2, self.y2 = canvas.coords(self.robot) # Creating coordinates for robot object
+                for t in treasures:
+                    tx1, ty1, tx2, ty2 = canvas.coords(t.lndmrk)
 
-                        # GENERAL ROBOT MOVEMENT
-                        if self.x1 > 0.0 and self.x2 < (213.5 - 10.0): # Is robot in section 1?
-                            tag = str(canvas.gettags(section1))
-                            tag = tag.replace("('", "")
-                            tag = tag.replace("',)", "")
-                            self.status = tag
-                            
-                            if tag == "Red": # If section 1 is red, stop robot movement.
-                                self.vx = 0.0
-                                self.vy = 0.0
-                                                
-                            elif tag == "Amber": # If section 1 is amber, decrease movement speed by half.
-                                if self.x2 < ox1:
-                                    self.vx = 5.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -5.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 5.0
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -5.0
-                                    self.vx = 0.0
-                                                        
-                            elif tag == "Green": # If section 1 is green, movement speed is normal.
-                                if self.x2 < ox1:
-                                    self.vx = 10.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -10.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 10.0                        
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -10.0
-                                    self.vx = 0.0
+                    if x2 < tx1 and y2 < ty1:
+                        self.vx = 10.0
+                        self.vy = 5.0
+                    if x2 < tx1 and y1 > ty1:
+                        self.vx = 10.0
+                        self.vy = -5.0
+                    if x1 > tx2 and y2 < ty1:
+                        self.vx = -10.0
+                        self.vy = 5.0
+                    if x1 > tx2 and y1 > ty2:
+                        self.vx = -10.0
+                        self.vy = -5.0                       
 
-                        if self.x1 > (213.5 + 10.0) and self.x2 < (427.0 - 10.0): # Is robot in section 2?
-                            tag = str(canvas.gettags(section2))
-                            tag = tag.replace("('", "")
-                            tag = tag.replace("',)", "")
-                            self.status = tag
-                            
-                            if tag == "Red": # If section 2 is red, stop robot movement.
-                                self.vx = 0.0
-                                self.vy = 0.0
-                                
-                            elif tag == "Amber": # If section 2 is amber, decrease movement speed by half.
-                                if self.x2 < ox1:
-                                    self.vx = 5.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -5.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 5.0
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -5.0
-                                    self.vx = 0.0
-                                                        
-                            elif tag == "Green": # If section 2 is green, movement speed is normal.
-                                if self.x2 < ox1:
-                                    self.vx = 10.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -10.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 10.0
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -10.0
-                                    self.vx = 0.0
-
-                        if self.x1 > (427.0 + 10.0) and self.x2 < (640.5 - 10.0): # Is robot in section 3?
-                            tag = str(canvas.gettags(section3))
-                            tag = tag.replace("('", "")
-                            tag = tag.replace("',)", "")
-                            self.status = tag
-                            
-                            if tag == "Red": # If section 3 is red, stop robot movement.
-                                self.vx = 0.0
-                                self.vy = 0.0               
-                            elif tag == "Amber": # If section 3 is amber, decrease movement speed by half.
-                                if self.x2 < ox1:
-                                    self.vx = 5.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -5.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 5.0
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -5.0
-                                    self.vx = 0.0
-                                                        
-                            elif tag == "Green": # If section 3 is green, movement speed is normal.
-                                if self.x2 < ox1:
-                                    self.vx = 10.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -10.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 10.0
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -10.0
-                                    self.vx = 0.0
-
-                        if self.x1 > (640.5 + 10.0) and self.x2 < (854.0 - 10.0): # Is robot in section 4?
-                            tag = str(canvas.gettags(section4))
-                            tag = tag.replace("('", "")
-                            tag = tag.replace("',)", "")
-                            self.status = tag
-                            
-                            if tag == "Red": # If section 4 is red, stop robot movement.
-                                self.vx = 0.0
-                                self.vy = 0.0
-                                
-                            elif tag == "Amber": # If section 4 is amber, decrease movement speed by half.
-                                if self.x2 < ox1:
-                                    self.vx = 5.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -5.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 5.0
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -5.0
-                                    self.vx = 0.0
-                                                        
-                            elif tag == "Green": # If section 4 is green, movement speed is normal.
-                                if self.x2 < ox1:
-                                    self.vx = 10.0
-                                    self.vy = 0.0
-                                if self.x1 > ox2:
-                                    self.vx = -10.0
-                                    self.vy = 0.0
-                                if self.y2 < oy1:
-                                    self.vy = 10.0
-                                    self.vx = 0.0
-                                if self.y1 > oy2:
-                                    self.vy = -10.0
-                                    self.vx = 0.0			
-
-                        # LOCATION CHECK
-                        if self.x2 > ox1 - 20.0 and self.x2 < ox2 + 20.0 and self.y1 > oy1 - 20.0 and self.y2 < oy2 + 20.0:
-                            o.treasure = False # If robot contacts landmark with treasure
-                            ID = o.treasureID 
-                            canvas.delete(ID) # Delete treasure object from list
-                            o.treasureID = ""
-                            self.points += 100 #Add 100 to points as treasure has been found
-                            
-                        self.rXPos += self.vx                
-                        self.rYPos += self.vy
-                        
-                        canvas.delete(self.robot)
-                        self.robotDraw()                
-                        canvas.update()
-                        self.updateInfo()
-                        time.sleep(0.1)
-                self.done = True
-                self.updateInfo()'''
-                
-    '''def robotStop(self): #Function to stop robot by changing values
-        self.run = False #Run changes to false to stop
-        self.done = False #Done changes back to default
-        canvas.delete("robotTag") #Deletes robot from canvas'''
-            
-    '''def updateInfo(self): #Function to update info about robot in GUI
-        if self.done == True: #If robot is done
-            self.run = False
-            rb1Status.config(text='Status: Done') #Change status to done
-            global rb1T
-            rb1T.Done() #Stop timer but still display time
-        elif self.run == True: #Constantly update info if robot is running
-            rb1Position.config(text='Position: x:' + str(int(self.x1)) + " y:" + str(int(self.y1))) #Change x/y position info
-            rb1Status.config(text='Status: ' + self.status) #Chnage status
-            #Yet to add other labels yet
-            rb1Points.config(text='Points: ' + str(self.points)) #Update points
-        else:
-            ResetLabels() #Run function to reset labels to default if robot not running anymore'''
-            
+    # def lightResponse(self):
+    
 class Treasure:
    #create random spawn location of treasure, coordinates need adjusting with landmarks 
     def __init__(self, n, x=0,y=0,size = 12,colour='#ffd700'):
@@ -765,7 +585,13 @@ def Start():
     print treasurelist
     for n in range (0, len(treasurelist)):
         treasurelist[n].locate()
-    print locationlist	 
+    print locationlist
+
+    R1 = Robot() # Create instance of robot class (R1)
+    R1.robotLoad() # Draw R1 onto screen
+    R1.robotMove()
+    R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap1)
+    R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap2)
 
 MapOneLandMarks()
         
@@ -773,7 +599,6 @@ traps = []
 for n in range(0,2):
     traps.append(Trap())
     traps[n].create()
-
 
 treasureitems = [] # empty list to populate with treasure 
 treasurex = [840,835] # create a fixed x position for treasure 
@@ -865,11 +690,5 @@ for n in range(1,5):
 
 #Drawing line around canvas
 whole=canvas.create_rectangle(2, 481, 855, 2)
-
-R1 = Robot() # Create instance of robot class (R1)
-R1.robotLoad() # Draw R1 onto screen
-R1.robotMove()
-R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap1)
-R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap2)
 
 window.mainloop()
