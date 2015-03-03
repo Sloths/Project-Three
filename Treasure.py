@@ -280,12 +280,16 @@ class Countdown:
         self.done = True
          
     def Count(self):
+        sevenEighths = self.totalTime * 0.875
         # when the countdown has three quarters of the totalTime left to go
         threeq = self.totalTime * 0.75
+        fiveEighths = self.totalTime * 0.625
         # when the countdown is halfway
         half = self.totalTime * 0.5
+        threeEighths = self.totalTime * 0.375
         # when the countdown has one quarter of the totalTime left to go
         oneq = self.totalTime * 0.25
+        oneEighth = self.totalTime * 0.125
         
         # condition - if the program is running
         if self.done == False:
@@ -335,18 +339,30 @@ class Countdown:
             exec str(self.label.config(text=(self.time)))
             
         #countdown image change
-        if (float(threeq) < self.ticks <= self.totalTime):
-            #display first clock image
+        if (float(sevenEighths) < self.ticks <= self.totalTime):
+            # display first clock image
             clock.config(image=Clock1)
-        elif (float(half) < self.ticks <= float(threeq)):
-            #display second clock image
+        elif (float(threeq) < self.ticks <= float(sevenEighths)):
+            # display second clock image
+            clock.config(image=Clock45)
+        elif (float(fiveEighths) < self.ticks <= float(threeq)):
+            # display third clock image
             clock.config(image=Clock4)
-        elif (float(oneq) < self.ticks <= float(half)):
-            #display third clock image
-            clock.config(image=Clock3)
-        elif (0 < self.ticks <= float(oneq)):
+        elif (float(half) < self.ticks <= float(fiveEighths)):
             # display fourth clock image
+            clock.config(image=Clock35)
+        elif (float(threeEighths) < self.ticks <= float(half)):
+            # display fifth clock image
+            clock.config(image=Clock3)
+        elif (float(oneq) < self.ticks <= float(threeEighths)):
+            # display sixth clock image
+            clock.config(image=Clock25)
+        elif (float(oneEighth) < self.ticks <= float(oneq)):
+            # display seventh clock image
             clock.config(image=Clock2)
+        elif (0 < self.ticks <= int(oneEighth)):
+            # display eighth clock image
+            clock.config(image=Clock15)
         else:
             # display greyed out clock
             clock.config(image=ClockG)
