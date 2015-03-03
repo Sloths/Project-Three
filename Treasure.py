@@ -1,5 +1,5 @@
 from Tkinter import *
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 import ttk
 import random
 import time
@@ -30,8 +30,8 @@ Clock2 = PhotoImage(file="2.gif")
 Clock3 = PhotoImage(file="3.gif")
 Clock4 = PhotoImage(file="4.gif")
 
-flash = Image.open("flash.png")
-flashImage = ImageTk.PhotoImage(flash)
+#flash = Image.open("flash.png")
+#flashImage = ImageTk.PhotoImage(flash)
 
 class landmark:                                   # Landmark class being created
     def __init__(self, x1, y1, x2, y2):             # this sets out the layout of how all future objects will be set in order to be created
@@ -641,8 +641,6 @@ class image(object):
         self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast)
         self.xLast = event.x
         self.yLast = event.y
-        global position
-        position = (self.xLast, self.yLast)
         
     def widgets(self):   
         self.draw.tag_bind('treasure',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
@@ -653,9 +651,8 @@ class image(object):
         self.x = x
         self.y = y
         self.tag= tag
-        self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag)
+        self.location = self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag)
         
-position = ""
 wishlist = []
 wishlistx = [885, 925, 965, 1005]
 wishlisty = [346, 346, 346, 346]
@@ -716,8 +713,9 @@ class treasure(image):
         self.wishList(image)
 
     def locate(self):
-        xpos = position[0]
-        ypos = position[1]
+        pos = canvas.coords(self.location)
+        xpos = pos[0]
+        ypos = pos[1]
         i = 0
         for o in obstacles:
             i = i + 1
