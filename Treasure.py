@@ -255,6 +255,7 @@ class Countdown:
         self.minute = 0
         self.time = ""
         self.totalTime = 0
+        self.ticks = 0
         self.done = False
         self.label = label
          
@@ -266,14 +267,25 @@ class Countdown:
         #set the seconds as an int
         self.second = int(time[3:5])
         self.second = self.second + 1
+        # for the clock countdown calculations
+        self.ticks = (self.second + (self.minute * 60)) - 1
+        self.totalTime = (self.second + (self.minute * 60)) - 1   
  
     def Done(self): #Change to done if robot is done
         #used so that timer countdown but still displays time
         self.done = True
          
     def Count(self):
+        # when the countdown has three quarters of the totalTime left to go
+        threeq = self.totalTime * 0.75
+        # when the countdown is halfway
+        half = self.totalTime * 0.5
+        # when the countdown has one quarter of the totalTime left to go
+        oneq = self.totalTime * 0.25
+        
         # condition - if the program is running
         if self.done == False:
+            self.ticks = self.ticks - 1
             # seconds decrease by 1
             self.second = self.second - 1
             if self.second == 0:
@@ -294,8 +306,8 @@ class Countdown:
                 lightlist[3].ChangeLight()
  
             # formatting of timer display mm:ss
-            if self.minute > 10:
-                if self.second > 10:
+            if self.minute >= 10:
+                if self.second >= 10:
                     # e.g. 12:34
                     self.time = str(self.minute) + ":" + str(self.second)
                 else:
@@ -303,12 +315,12 @@ class Countdown:
                     self.time = str(self.minute) + ":0" + str(self.second)
             else:
                 if self.minute < 10:
-                    if self.second > 10:
+                    if self.second >= 10:
                         # e.g. 01:23
-                        self.time = str(self.minute) + ":" + str(self.second)
+                        self.time = "0" + str(self.minute) + ":" + str(self.second)
                     else:
                         # e.g. 01:02
-                        self.time = str(self.minute) + ":0" + str(self.second)
+                        self.time = "0" + str(self.minute) + ":0" + str(self.second)
         # executing the timer display as a string so it can display as a label
         exec str(self.label.config(text=(self.time)))
         # 1000 ticks == 1 second delay and continues the Count function
@@ -317,7 +329,24 @@ class Countdown:
         # when the robot has found the treasures the timer is stopped, and the time the robot found the treasures in is displayed
         if self.done == True:
             exec str(self.label.config(text=(self.time)))
-                
+            
+        #countdown image change
+        if (float(threeq) < self.ticks <= self.totalTime):
+            #display first clock image
+            clock.config(image=Clock1)
+        elif (float(half) < self.ticks <= float(threeq)):
+            #display second clock image
+            clock.config(image=Clock4)
+        elif (float(oneq) < self.ticks <= float(half)):
+            #display third clock image
+            clock.config(image=Clock3)
+        elif (0 < self.ticks <= float(oneq)):
+            # display fourth clock image
+            clock.config(image=Clock2)
+        else:
+            # display greyed out clock
+            clock.config(image=ClockG)
+            
 class StartingPoint:                
     # This class creates takes the coordinates which will be used to place the robot.
     def __init__(self, x1, y1, x2, y2):                
