@@ -8,8 +8,6 @@ window = Tk()
 canvas = Canvas(window, width=854, height=480, bg="#3796da")
 canvas.pack()
 
-intPlay = 0
-
 #Creates window and centers to any screen
 window.geometry('{}x{}'. format(1060, 670)) #Setting size of window
 window.withdraw() #Hide window to stop showing in wrong position
@@ -595,13 +593,10 @@ class Trap(image):
                 
                 
 def Start():
-    global intPlay
-    intPlay += 1
-    if intPlay <= 1:
-        global main
-        main = Countdown(countdown)
-        main.getTime()
-        main.Count()
+    #global main
+    main = Countdown(countdown)
+    main.getTime()
+    main.Count()
     SortTreasure(treasurelist)
     print treasurelist
     for n in range (0, len(treasurelist)):
