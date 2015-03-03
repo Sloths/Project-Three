@@ -634,6 +634,7 @@ class Trap(image):
                 
                 
 def Start():
+    ChangeThought(2)
     #global main
     main = Countdown(countdown)
     main.getTime()
@@ -712,7 +713,7 @@ for n in range (0,7):
 
 #Creating labels
 LabelList = []
-LabelStrings = ["Position:", "Status:", "Points:", "Currently Looking For:", "Collected Treasure:", "Thoughts:", "Time Limit (mm:ss):", "Starting Point:", "Treasure Selection:", "Coin - 10 Points",
+LabelStrings = ["Position:", "Status:", "Points:", "Currently Looking For:", "Collected Treasure:", "Thoughts:", "Time Limit:", "Starting Point:", "Treasure Selection:", "Coin - 10 Points",
                 "Jewel - 20 Points", "Ruby - 30 Points", "Chest - 50 Points", "Drag and drop on landmarks", "Wishlist:"]
 LabelPlacementx = [15, 15, 15, 15, 270, 470, 877, 877, 877, 930, 925, 927, 927, 876, 877]
 LabelPlacementy = [540, 570, 600, 630, 540, 540, 35, 55, 106, 137, 175, 215, 255, 293, 320]
@@ -745,68 +746,26 @@ countdown=Label(font=('Helvetica', 20), text='00:00')
 countdown.place(x=922, y=620)
 
 #create entry for countdown
-E = Entry(font=('Helvetica', 10), textvariable = "mm:ss", width = 5)
+E = Entry(font=('Helvetica', 10), width = 12)
+E.insert(0, "01:00")
 #placement of entry
-E.place(x= 997,y= 37)
+E.place(x= 947,y= 37)
 
 lightlist = []
 for n in range(1,5):
     lightlist.append(Light(n))
     lightlist[n-1].CreateLight()
 
+thoughts = ("Change settings to start!", "Click Start!", "Ahoy, Matey!", "Batten down the hatches!",
+            "Aaaarrrrgggghhhh", "Me Booty!", "Heave Ho!", "Avast ye, time up!", "Shiver me timbers!")
+thoughtLabel = Label(font=("Helvetica", 12), text=thoughts[0])
+thoughtLabel.place(x=480, y=567)
+
+def ChangeThought(number):
+    thoughtLabel.config(text=thoughts[0])
+
 #Drawing line around canvas
 whole=canvas.create_rectangle(2, 481, 855, 2)
-
-class LabelsThoughts:
-    def __init__ (self, x, y)
-    self.x = x
-    self.y = y
-    self.font = ("Helvetica", 14)
-    self.text = text
-    
-#Function to create the Labels Thoughts 
-def CreatedThoughts (self):
-    thoug0=Label (font=("Helvetica," 14), text="Change settings to start!")
-    thoug1=Label (font=("Helvetica," 14), text="Click Start!")
-    thoug2=Label (font=("Helvetica," 14), text="Ahoy, Matey!")
-    thoug3=Label (font=("Helvetica," 14), text="Batten down the hatches!")
-    thoug4=Label (font=("Helvetica," 14), text="Aaaarrrrgggghhhh")
-    thoug5=Label (font=("Helvetica," 14), text="Me Booty!")
-    thoug6=Label (font=("Helvetica," 14), text="Blimey Doubloons!")
-    thoug7=Label (font=("Helvetica," 14), text="Heave Ho!")
-    thoug8=Label (font=("Helvetica," 14), text="Avast ye, time up!")
-    thoug9=Label (font=("Helvetica," 14), text="Shiver me timbers!")
-
-
-def ResetThoughts():
-    rbth0.config ()
-    rbth1.config ()
-    rbth2.config ()
-    rbth3.config ()
-    rbth4.config ()
-    rbth5.config ()
-    rbth6.config ()
-    rbth7.config ()
-    rbth8.config ()
-    rbth9.config ()
-
-
-
-
-#placement of labels Thoughts
-thoug0.place (x=470, y=550)
-thoug1.place (x=470, y=550)
-thoug2.place (x=470, y=550)
-thoug3.place (x=470, y=550)
-thoug4.place (x=470, y=550)
-thoug5.place (x=470, y=550)
-thoug6.place (x=470, y=550)
-thoug7.place (x=470, y=550)
-thoug8.place (x=470, y=550)
-thoug9.place (x=470, y=550)
-
-label.pack()
-
 
 window.mainloop()
 
