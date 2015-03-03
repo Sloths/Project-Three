@@ -255,7 +255,6 @@ class Countdown:
         self.minute = 0
         self.time = ""
         self.totalTime = 0
-        self.stop = False
         self.done = False
         self.label = label
          
@@ -270,12 +269,11 @@ class Countdown:
  
     def Done(self): #Change to done if robot is done
         #used so that timer countdown but still displays time
-        self.stop = True
         self.done = True
          
     def Count(self):
         # condition - if the program is running
-        if self.stop == False:
+        if self.done == False:
             # seconds decrease by 1
             self.second = self.second - 1
             if self.second == 0:
