@@ -8,6 +8,8 @@ window = Tk()
 canvas = Canvas(window, width=854, height=480, bg="#3796da")
 canvas.pack()
 
+intPlay = 0
+
 #Creates window and centers to any screen
 window.geometry('{}x{}'. format(1060, 670)) #Setting size of window
 window.withdraw() #Hide window to stop showing in wrong position
@@ -249,95 +251,76 @@ class Treasure:
         self.shape = canvas.create_oval(self.x,self.y,self.x + self.size, self.y + self.size,outline = self.colour, fill=self.colour,tag=self.id)
         # creating object, size goes against each x and y coordinates. tag inplace to call for deletion
      
-class Timer:
+class Countdown:
     def __init__(self, label):
         self.second = 0
         self.minute = 0
-        self.hour = 0
         self.time = ""
+        self.totalTime = 0
         self.stop = False
         self.done = False
         self.label = label
-        self.sections = {}
-
-    def Stop(self):
-        #used to stop timer and get rid of time i.e. when game is done
-        global intPlay
-        intPlay = 0
-        # used so the timer stops
-        self.stop = True
-        # used as the robot has not found the treasure
-        self.done = False
-        
+         
+    def getTime(self):
+        time = E.get()
+        #split the time string input
+        #set the minutes as an int
+        self.minute = int(time[0:2])
+        #set the seconds as an int
+        self.second = int(time[3:5])
+        self.second = self.second + 1
+ 
     def Done(self): #Change to done if robot is done
-        #used so that timer stops but still displays time
+        #used so that timer countdown but still displays time
         self.stop = True
         self.done = True
-        
+         
     def Count(self):
         # condition - if the program is running
         if self.stop == False:
-             # second increments by 1
-            self.second = self.second + 1
-            if self.second == 60:
-                # once the timer reaches 60 seconds, a minute is reached and the seconds are set back to 0 to repeat process
-                self.minute = self.minute + 1
-                self.second = 0
-            if self.minute == 60:
-                # once the timer reaches 60 minutes, an hour is reached and the minutes are set to 0 to repeat the process
-                self.hour = self.hour + 1
-                self.minute = 0
-
+            # seconds decrease by 1
+            self.second = self.second - 1
+            if self.second == 0:
+                # once the countdown reaches 60 seconds, the minutes decreases and the seconds are set back to 0 to repeat process
+                self.minute = self.minute - 1
+                self.second = 59
+                if self.minute < 0:
+                    self.stop = True
+                    self.second = 0
+                    self.minute = 0
+            
             #Generate 4 random numbers between 1 - 3 for lights
             # lights change every 5 seconds
             if self.second % 5 == 0:
-                light1.ChangeLight()
-                light2.ChangeLight()
-                light3.ChangeLight()
-                light4.ChangeLight()
+                lightlist[0].ChangeLight()
+                lightlist[1].ChangeLight()
+                lightlist[2].ChangeLight()
+                lightlist[3].ChangeLight()
+ 
+            # formatting of timer display mm:ss
+            if self.minute > 10:
+                if self.second > 10:
+                    # e.g. 12:34
+                    self.time = str(self.minute) + ":" + str(self.second)
+                else:
+                    # e.g. 12:03
+                    self.time = str(self.minute) + ":0" + str(self.second)
+            else:
+                if self.minute < 10:
+                    if self.second > 10:
+                        # e.g. 01:23
+                        self.time = str(self.minute) + ":" + str(self.second)
+                    else:
+                        # e.g. 01:02
+                        self.time = str(self.minute) + ":0" + str(self.second)
+        # executing the timer display as a string so it can display as a label
+        exec str(self.label.config(text=(self.time)))
+        # 1000 ticks == 1 second delay and continues the Count function
+        self.label.after(1000, self.Count)
 
-            # formatting of timer display hh:mm:ss
-            if self.hour < 10:
-                if self.minute < 10:
-                    if self.second < 10:
-                        # e.g. 01:02:03
-                        self.time = "0" + str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second)
-                    else:
-                        # e.g. 01:02:34
-                        self.time = "0" + str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second)
-                else:
-                    if self.second < 10:
-                        # e.g. 01:23:04
-                        self.time = "0" + str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second)
-                    else:
-                        # e.g. 01:23:45
-                        self.time = "0" + str(self.hour) + ":" + str(self.minute) + ":" + str(self.second)
-            else:
-                if self.minute < 10:
-                    if self.second < 10:
-                        # e.g. 12:03:04
-                        self.time = str(self.hour) + ":0" + str(self.minute) + ":0" + str(self.second)
-                    else:
-                        # e.g. 12:03:45
-                        self.time = str(self.hour) + ":0" + str(self.minute) + ":" + str(self.second)
-                else:
-                    if self.second < 10:
-                        # e.g. 12:34:05
-                        self.time = str(self.hour) + ":" + str(self.minute) + ":0" + str(self.second)
-                    else:
-                        #12:34:56
-                        self.time = str(self.hour) + ":" + str(self.minute) + ":" + str(self.second)
-            # executing the timer display as a string so it can display as a label
+        # when the robot has found the treasures the timer is stopped, and the time the robot found the treasures in is displayed
+        if self.done == True:
             exec str(self.label.config(text=(self.time)))
-            # 1000 ticks == 1 second delay and continues the Count function
-            self.label.after(1000, self.Count)
-        else:
-            # when the robot has found the treasures the timer is stopped, and the time the robot found the treasures in is displayed
-            if self.done == True:
-                exec str(self.label.config(text=(self.time)))
-            else:
-                # display of timer when Stop is pressed
-                exec str(self.label.config(text="00:00:00"))
                 
 class StartingPoint:                
     # This class creates takes the coordinates which will be used to place the robot.
@@ -377,6 +360,18 @@ class Light():
         self.colour = "" #string to hold colour of section
 
     def CreateLight(self): #Function to create the lights for GUI
+        global lightcolour1
+        global lightcolour2
+        global lightcolour3
+        global lightcolour4
+        global section1
+        global section2
+        global section3
+        global section4
+        global light1Text
+        global light2Text
+        global light3Text
+        global light4Text
         if self.number == 1: #if section 1, place in left most position
             lightcolour1=canvas.create_rectangle(2, 2, self.sectionWidth, 23, fill="#2ecc71", tag="1") #Create light block and tag number
             section1=canvas.create_rectangle(0, self.height + 1, self.sectionWidth, 23, dash=(10,10), tag="Green") #Create dashed section and tag colour
@@ -600,6 +595,13 @@ class Trap(image):
                 
                 
 def Start():
+    global intPlay
+    intPlay += 1
+    if intPlay <= 1:
+        global main
+        main = Countdown(countdown)
+        main.getTime()
+        main.Count()
     SortTreasure(treasurelist)
     print treasurelist
     for n in range (0, len(treasurelist)):
@@ -674,7 +676,7 @@ for n in range (0,7):
 
 #Creating labels
 LabelList = []
-LabelStrings = ["Position:", "Status:", "Points:", "Currently Looking For:", "Collected Treasure:", "Thoughts:", "Time Limit:", "Starting Point:", "Treasure Selection:", "Coin - 10 Points",
+LabelStrings = ["Position:", "Status:", "Points:", "Currently Looking For:", "Collected Treasure:", "Thoughts:", "Time Limit (mm:ss):", "Starting Point:", "Treasure Selection:", "Coin - 10 Points",
                 "Jewel - 20 Points", "Ruby - 30 Points", "Chest - 50 Points", "Drag and drop on landmarks", "Wishlist:"]
 LabelPlacementx = [15, 15, 15, 15, 270, 470, 877, 877, 877, 930, 925, 927, 927, 876, 877]
 LabelPlacementy = [540, 570, 600, 630, 540, 540, 35, 55, 106, 137, 175, 215, 255, 293, 320]
@@ -701,6 +703,15 @@ canvas.place(x=10, y=10)
 
 clock=Label(image=ClockG)
 clock.place(x=916, y=534)
+
+#Creates countdown label
+countdown=Label(font=('Helvetica', 20), text='00:00')
+countdown.place(x=922, y=620)
+
+#create entry for countdown
+E = Entry(font=('Helvetica', 10), textvariable = "mm:ss", width = 5)
+#placement of entry
+E.place(x= 997,y= 37)
 
 lightlist = []
 for n in range(1,5):
