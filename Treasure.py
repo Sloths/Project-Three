@@ -11,7 +11,7 @@ canvas.pack()
 #Creates window and centers to any screen
 window.geometry('{}x{}'. format(1060, 670)) #Setting size of window
 window.withdraw() #Hide window to stop showing in wrong position
-window.update_idletasks() #Request screen size from sstem
+window.update_idletasks() #Request screen size from system
 x = (window.winfo_screenwidth() - window.winfo_reqwidth()) / 2 #Calculate screen width
 y = ((window.winfo_screenheight() - window.winfo_reqheight()) / 2) - 70 #Calculate screen height
 window.geometry("+%d+%d" % (x, y)) #Change position of window
@@ -19,6 +19,7 @@ window.title('Sloths - Virtual Robot Treasure Hunt') #Adds name to window
 window.resizable(width=FALSE, height=FALSE) #Disabled resizable function of window
 window.deiconify() #Redraw window in correct position
 
+#Importing images to use through out program
 coinImage = PhotoImage(file="coin.gif")
 greenImage = PhotoImage(file="greenjewel.gif")
 redImage = PhotoImage(file="redjewel.gif")
@@ -34,6 +35,7 @@ Clock35 = PhotoImage(file="3.5.gif")
 Clock4 = PhotoImage(file="4.gif")
 Clock45 = PhotoImage(file="4.5.gif")
 
+#Importing png using PIL
 #flash = Image.open("flash.png")
 #flashImage = ImageTk.PhotoImage(flash)
 
@@ -73,9 +75,9 @@ class Robot:
         self.done = False #Used for when robot is done i.e. got all treasures
         self.shipSprite = PhotoImage(file = "ship.gif")
 
-    def setSpawn(self, xpos, ypos):
-        self.rXPos = xpos
-        self.rYPos= ypos
+    def setSpawn(self, xpos, ypos): #Function to set spawn variables
+        self.rXPos = xpos #Setting xpos
+        self.rYPos= ypos #Setting ypos
         
     def robotLoad(self):
         for o in obstacles:            
@@ -223,36 +225,7 @@ class Robot:
                     print "treasure collected"
 
     # def lightResponse(self):
-    
-class Treasure:
-   #create random spawn location of treasure, coordinates need adjusting with landmarks 
-    def __init__(self, n, x=0,y=0,size = 12,colour='#ffd700'):
-        
-        self.colour = colour
-        self.size = size
-        self.n = n # the given number of treasures to give IDs
-        self.id = "Treasure" + str(n)  # giving the treasure different IDs, easier for robot to detect 
-        #print self.id - put in place to test Treasure IDs
-        
-    def checkLandmark(self):
-        global intPlay 
-        if intPlay <=1:  # if intial play is less than or equal to one, create random search of objects for treasure 
-            n = random.randint(0,len(obstacles)-1) # chooses random object within obstacle array. index 0 - 8 but -1, because 7 landmarks 
-            
-            if obstacles[n].treasure == False: # if no treasure in landmark 
-                x1,y1,x2,y2=canvas.coords(obstacles[n].lndmrk) # place within middle of random object chosen.
-                self.x = (x1+x2)/2 # average of the x axis for object
-                self.y = (y1+y2)/2 # average of the y axis for object to get centre
-                obstacles[n].treasure = True # random obstacle has treasure inside it
-                obstacles[n].treasureID = self.id #each treasure in landmark is given an ID 
-            else:
-                self.checkLandmark() # checks landmarks if there is a treasure present, if so choose another. 
-        
-    def DrawTreasure(self,canvas): #creating the attributes for the treasure
-        self.checkLandmark() # call checkLandmark to make sure no treasure is present before creating 
-        self.shape = canvas.create_oval(self.x,self.y,self.x + self.size, self.y + self.size,outline = self.colour, fill=self.colour,tag=self.id)
-        # creating object, size goes against each x and y coordinates. tag inplace to call for deletion
-     
+         
 class Countdown:
     def __init__(self, label):
         self.second = 0
@@ -502,18 +475,19 @@ class image(object):
         self.tag= tag
         self.location = self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag)
         
-wishlist = []
-wishlistx = [885, 925, 965, 1005]
-wishlisty = [346, 346, 346, 346]
-treasurelist = []
-locationlist = []
-def SortTreasure(treasurelist):
-    for i in range(len(treasurelist)-1, 0, -1):
-        for n in range(i):
-            if treasurelist[n].points < treasurelist[n+1].points:
-                temp = treasurelist[n]
-                treasurelist[n] = treasurelist[n+1]
-                treasurelist[n+1] = temp
+wishlist = [] #Creating empty wishlist to be filled when selecting treasure
+wishlistx = [885, 925, 965, 1005] #X position of images to be placed
+wishlisty = [346, 346, 346, 346] #Y position of images to be placed
+treasurelist = [] #Creating empty treasure list to be filled with sorted treasure items
+locationlist = [] #Creating emtpy location list of landmarks that contain treasure in sorted order
+
+def SortTreasure(treasurelist): #Function to sort treasure list (using bubble sort)
+    for i in range(len(treasurelist)-1, 0, -1): #Loop counting down from last item in list
+        for n in range(i): #Nested loop
+            if treasurelist[n].points < treasurelist[n+1].points: #If current item is less then next item
+                temp = treasurelist[n] #Put current item in temp
+                treasurelist[n] = treasurelist[n+1] #Swap next item with current item
+                treasurelist[n+1] = temp #Put current item at place of next item
 
 class treasure(image):
     def __init__(self):
