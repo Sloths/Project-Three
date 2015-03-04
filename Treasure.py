@@ -445,35 +445,38 @@ class Light():
                 canvas.itemconfig(lightcolour4, fill="#e74c3c") #Change light to correct colour
                 canvas.itemconfig(section4, tag="Red") #Change section tag to correct value
         
-class image(object):
+class image(object): # base class
     def __init__(self):
-        self.x = 0
+        self.x = 0 # used for both trap and treasure coords when called.
         self.y = 0
-        self.location = ""
+        self.location = "" # empty string to help treasure & traps detection 
         self.draw = canvas
-        self.draw.pack()
-        self.widgets()
+        self.draw.pack() # pack canvas anywhere as it's running throughout 
+        self.widgets() # call mouse movement and drag instantly 
         
     def down(self, event):
         self.xLast = event.x # coords of where the mouse went down
-        self.yLast = event.y
+        self.yLast = event.y # event allows the mouse and movement function on coords 
 
     def move(self, event):
-        # whatever the mouse is over it will be tagged as current 
+        # CURRENT used to tag any object under mouse as current, and moves
+        #one object at a time. 
         self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast)
+        #call events for x & y again to movement 
         self.xLast = event.x
         self.yLast = event.y
         
     def widgets(self):   
         self.draw.tag_bind('treasure',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
         self.draw.tag_bind('treasure',"<B1-Motion>", self.move) # movement of mouse when click is held down  
+        #when putting on canvas, we bind the tag with the mouse so it looks for the given tag ' treasyre'
         
     def spawn(self, x, y, image, tag):
-        self.image = PhotoImage(file=image)
-        self.x = x
+        self.image = PhotoImage(file=image) # allow different images to be uploaded
+        self.x = x # empty coords to be changed once inherited 
         self.y = y
-        self.tag= tag
-        self.location = self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag)
+        self.tag= tag # tag placed to prevent other objects than treasure to be dragged 
+        self.location = self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag) # location is assigned with a chosen image. used for trap & treasure 
         
 wishlist = [] #Creating empty wishlist to be filled when selecting treasure
 wishlistx = [885, 925, 965, 1005] #X position of images to be placed
@@ -492,31 +495,31 @@ def SortTreasure(treasurelist): #Function to sort treasure list (using bubble so
 class treasure(image):
     def __init__(self):
         image.__init__(self) # use the init from image class to create images, inheritance 
-        self.points = 0
+        self.points = 0 #set points to 0 by default, will populate later on when treasure collected 
 
     def wishList(self, image):
-        if image == "coin.gif":
-            TreasureButtons[0].config(state="disabled")
-            i = coinImage
-            self.points = 10
+        if image == "coin.gif": 
+            TreasureButtons[0].config(state="disabled") # button disabled once pressed, preventing spawning more of the same 
+            i = coinImage # used for creating wishlist 
+            self.points = 10 # points assigned to help with sorting algorithm 
         elif image == "greenjewel.gif":
-            TreasureButtons[1].config(state="disabled")
-            i = greenImage
-            self.points = 20
+            TreasureButtons[1].config(state="disabled")# button disabled once pressed, preventing spawning more of the same 
+            i = greenImage # used for creating wishlist 
+            self.points = 20 # points assigned to help with sorting algorithm 
         elif image == "redjewel.gif":
-            TreasureButtons[2].config(state="disabled")
-            i = redImage
-            self.points = 30
+            TreasureButtons[2].config(state="disabled")# button disabled once pressed, preventing spawning more of the same 
+            i = redImage # used for creating wishlist 
+            self.points = 30 # points assigned to help with sorting algorithm 
         elif image == "chest.gif":
-            TreasureButtons[3].config(state="disabled")
-            i = chestImage
-            self.points = 50
+            TreasureButtons[3].config(state="disabled")# button disabled once pressed, preventing spawning more of the same 
+            i = chestImage # used for creating wishlist 
+            self.points = 50 # points assigned to help with sorting algorithm 
 
-        image.replace(".gif", "")
-        wishlist.append(image)
-        placement = wishlist.index(image)
+        image.replace(".gif", " ") # once treasure button pressed, image placed in wishlist in clicked order 
+        wishlist.append(image)# append wishlist from clicked treasure order 
+        placement = wishlist.index(image) # place in correct position in wishlist 
 
-        if placement == 0:  
+        if placement == 0:   
             lbl1 = Label(image=i)
             lbl1.place(x=wishlistx[0], y=wishlisty[0])
         elif placement == 1:
@@ -532,8 +535,8 @@ class treasure(image):
         treasurelist.append(self)
         
     def create(self,x,y,image,tag):
-        self.spawn(x,y,image,tag)
-        self.wishList(image)
+        self.spawn(x,y,image,tag) # create treasure calling spawn function from base class 
+        self.wishList(image) # create withlist using base class
 
     def locate(self):
         pos = canvas.coords(self.location)
@@ -613,12 +616,12 @@ for n in range(0,2):
     traps[n].create()
 
 treasureitems = [] # empty list to populate with treasure 
-treasurex = [840,835] # create a fixed x position for treasure 
-treasurey = [138, 178, 217, 254] # give different y position for treasure 
+treasurex = [840,835] # create a x position for treasure in a list 
+treasurey = [138, 178, 217, 254] # give different y position for treasure in a list 
 
-#iterate through loop and use treasure class to populate 
+#iterate through loop and use treasure class to populate. 4 treasures given in argument 
 for n in range(0,4):
-    treasureitems.append(treasure())
+    treasureitems.append(treasure()) #
 
 frames = []
 FrameHeight = [158, 85, 85, 480, 165, 140, 158]
@@ -629,16 +632,18 @@ for n in range(0,7):
     frames.append(Frame(bd=1, relief=SUNKEN, height=FrameHeight[n], width=FrameWidth[n]))
     frames[n].place(x=FramePlacementx[n], y=FramePlacementy[n])
 
-TreasureButtons = []
-TreasureButtonImage = [coinImage, greenImage, redImage, chestImage]
-TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'treasure'),
-                         lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'treasure'),
-                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'treasure'),
-                         lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'treasure')]
-TreasureButtonPlacementy = [130, 168, 208, 247]
-for n in range(0,4):
-    TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
-    TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
+TreasureButtons = [] # empty list for treasure buttons to populate after 
+TreasureButtonImage = [coinImage, greenImage, redImage, chestImage] # give images for treasure buttons in a list 
+TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'treasure'), # lambda is a anonymous function used within a list. 
+                         lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'treasure'), # list calls the treasure empty list, index.
+                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'treasure'),    # then calls the create function from treasure class
+                         lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'treasure')] # selecting index from treasrex list and treasure y list for coords placement. 
+                        # call coorect image after then call tag to help with mouse detection 
+
+TreasureButtonPlacementy = [130, 168, 208, 247] # button y coords for placement, x not needed as its coords is fixed
+for n in range(0,4): # loop through each treasure item 
+    TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n])) # placement is on the window not canvas, button function called
+    TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n]) # update list with image, and call button command. 
     
 #These functions below are linked to the buttons for starting position on the GUI, they load up different positions
 # for the robot to spawn in.
