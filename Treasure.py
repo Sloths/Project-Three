@@ -301,7 +301,7 @@ class Countdown:
                 self.minute = self.minute - 1
                 self.second = 59
                 if self.minute < 0:
-                    self.stop = True
+                    self.done = True
                     self.second = 0
                     self.minute = 0
             
