@@ -15,12 +15,12 @@ Add planned enhancements to program
  
 | Person        | Role                   |
 | ------------- |:----------------------:|
-| Chris         |                        |
-| Gurjeet       |                        |
-| Harry         |                        |
-| Jessica       |                        |
-| Raz           |                        |
-| Adam          |                        |
+| Chris         | Robot Movement         |
+| Gurjeet       | Treasure               |
+| Harry         | GUI and Traps          |
+| Jessica       | Countdown              |
+| Raz           | Robot Thoughts         |
+| Adam          | Robot Starting Points  |
 
 
 ## License
