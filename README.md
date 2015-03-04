@@ -16,7 +16,7 @@ Add planned enhancements to program
 | Person        | Role                   |
 | ------------- |:----------------------:|
 | Chris         | Robot Movement         |
-| Gurjeet       | Treasure               |
+| Gurjeet       | Treasure, Image                |
 | Harry         | GUI, Traps & Sorting   |
 | Jessica       | Countdown              |
 | Raz           | Robot Thoughts         |
