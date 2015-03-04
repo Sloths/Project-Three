@@ -17,7 +17,7 @@ Add planned enhancements to program
 | ------------- |:----------------------:|
 | Chris         | Robot Movement         |
 | Gurjeet       | Treasure               |
-| Harry         | GUI and Traps          |
+| Harry         | GUI, Traps & Sorting   |
 | Jessica       | Countdown              |
 | Raz           | Robot Thoughts         |
 | Adam          | Robot Starting Points  |
