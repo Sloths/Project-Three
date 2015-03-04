@@ -261,6 +261,7 @@ class Countdown:
                     self.done = True
                     self.second = 0
                     self.minute = 0
+                    ChangeThought(7)
             
             #Generate 4 random numbers between 1 - 3 for lights
             # lights change every 5 seconds
@@ -533,12 +534,16 @@ class treasure(image):
                 locationlist[-1].treasure = True
                 if self.points == 10:
                     locationlist[-1].treasureID = coinImage
+                    #ChangeThought(4)
                 elif self.points == 20:
                     locationlist[-1].treasureID = greenImage
+                    #ChangeThought(5)
                 elif self.points == 30:
                     locationlist[-1].treasureID = redImage
+                    #ChangeThought(8)
                 elif self.points == 50:
                     locationlist[-1].treasureID = chestImage
+                    #ChangeThought(6)
           
 class Trap(image):
     def __init__(self):
@@ -562,6 +567,7 @@ class Trap(image):
                 self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
                       
     def collision(self):
+        ChangeThought(3)
         print "hit"
         self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
         #f=canvas.create_image(429,263,image=flashImage, tag="flash")
@@ -630,16 +636,22 @@ for n in range(0,4):
 # for the robot to spawn in.
 def FirstButton():
     R1.setSpawn(300, 50)
+    ChangeThought(1) 
 def SecondButton():
     R1.setSpawn(60, 130)
+    ChangeThought(1)
 def ThirdButton():
     R1.setSpawn(450, 130)
+    ChangeThought(1)
 def FourthButton():
     R1.setSpawn(200, 350)
+    ChangeThought(1)
 def FithButton():
     R1.setSpawn(700, 150)
+    ChangeThought(1)
 def SixthButton():
     R1.setSpawn(600, 410)
+    ChangeThought(1)
 
 ButtonList = []
 ButtonString = ["Start", "1", "2", "3", "4", "5", "6"]
@@ -698,6 +710,7 @@ for n in range(1,5):
 thoughts = ("Change settings to start!", "Click Start!", "Ahoy, Matey!", "Batten down the hatches!",
             "Aaaarrrrgggghhhh", "Me Booty!", "Heave Ho!", "Avast ye, time up!", "Shiver me timbers!")
 thoughtLabel = Label(font=("Helvetica", 12), text=thoughts[0])
+
 thoughtLabel.place(x=480, y=567)
 
 def ChangeThought(number):
