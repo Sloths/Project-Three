@@ -72,12 +72,12 @@ class Robot:
         self.run = False #Used for when robot should run
         self.done = False #Used for when robot is done i.e. got all treasures
         self.shipSprite = PhotoImage(file = "ship.gif")
-        
 
-    def robotLoad(self):
-        self.rXPos = random.randint(20, 854)
-        self.rYPos = random.randint(30, 400)
+    def setSpawn(self, xpos, ypos):
+        self.rXPos = xpos
+        self.rYPos= ypos
         
+    def robotLoad(self):
         for o in obstacles:            
             ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
 
@@ -367,34 +367,6 @@ class Countdown:
             # display greyed out clock
             clock.config(image=ClockG)
             
-class StartingPoint:                
-    # This class creates takes the coordinates which will be used to place the robot.
-    def __init__(self, x1, y1, x2, y2):                
-        self.x1 = x1                               
-        self.x2 = x2
-        self.y1 = y1
-        self.y2 = y2
-
-class MapSelection:
-# This code uses the coords and places the robot at a pre-set loation within the GUI 
-    def __init__(self, SelectedMap):
-        self.SelectedMap = SelectedMap
-
-    def LoadingTheMap(self):
-        if self.SelectedMap == 1:
-            StartingPoint(300, 50, 320, 70).create()
-        elif self.SelectedMap == 2:
-            StartingPoint(60, 130, 80, 150).create()
-        elif self.SelectedMap == 3:
-            StartingPoint(450, 130, 470, 150).create()
-        elif self.SelectedMap == 4:
-            StartingPoint(200, 350, 220, 370).create()
-        elif self.SelectedMap == 5:
-            StartingPoint(700, 150, 720, 170).create()
-        elif self.SelectedMap == 6:
-            StartingPoint(600, 410, 620, 430).create()
-
-    
 #Class for lights
 class Light():
     def __init__(self, number):
@@ -599,7 +571,16 @@ class treasure(image):
             ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
             if (xpos > ox1 and xpos < ox2) and (ypos > oy1 and ypos < oy2):
                 lnd = obstacles[i-1]
-                locationlist.append(lnd)                
+                locationlist.append(lnd)
+                locationlist[-1].treasure = True
+                if self.points == 10:
+                    locationlist[-1].treasureID = "coin"
+                elif self.points == 20:
+                    locationlist[-1].treasureID = "greenjewel"
+                elif self.points == 30:
+                    locationlist[-1].treasureID = "redjewel"
+                elif self.points == 50:
+                    locationlist[-1].treasureID = "chest"
           
 class Trap(image):
     def __init__(self):
@@ -644,8 +625,7 @@ def Start():
     for n in range (0, len(treasurelist)):
         treasurelist[n].locate()
     print locationlist
-
-    R1 = Robot() # Create instance of robot class (R1)
+    
     R1.robotLoad() # Draw R1 onto screen
     R1.robotMove()
     R1.trapCollision(r1.x1, r1.y1, r1.x2, r1.y2, trap1)
@@ -688,18 +668,18 @@ for n in range(0,4):
     
 #These functions below are linked to the buttons for starting position on the GUI, they load up different positions
 # for the robot to spawn in.
-def FirstButton():                  
-    MapSelection(1).LoadingTheMap()
+def FirstButton():
+    R1.setSpawn(300, 50)
 def SecondButton():
-    MapSelection(2).LoadingTheMap()
+    R1.setSpawn(60, 130)
 def ThirdButton():
-    MapSelection(3).LoadingTheMap()
+    R1.setSpawn(450, 130)
 def FourthButton():
-    MapSelection(4).LoadingTheMap()
+    R1.setSpawn(200, 350)
 def FithButton():
-    MapSelection(5).LoadingTheMap()
+    R1.setSpawn(700, 150)
 def SixthButton():
-    MapSelection(6).LoadingTheMap()
+    R1.setSpawn(600, 410)
 
 ButtonList = []
 ButtonString = ["Start", "1", "2", "3", "4", "5", "6"]
@@ -762,10 +742,13 @@ thoughtLabel = Label(font=("Helvetica", 12), text=thoughts[0])
 thoughtLabel.place(x=480, y=567)
 
 def ChangeThought(number):
-    thoughtLabel.config(text=thoughts[0])
+    thoughtLabel.config(text=thoughts[number])
 
 #Drawing line around canvas
 whole=canvas.create_rectangle(2, 481, 855, 2)
+
+R1 = Robot() # Create instance of robot class (R1)
+R1.setSpawn(300, 50)
 
 window.mainloop()
 
