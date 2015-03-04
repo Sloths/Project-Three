@@ -141,6 +141,7 @@ class Robot:
                     continue
 
     def treasureTrack(self):
+        c = -1
         if self.run == True:
             if self.done == False:                
 
@@ -186,8 +187,9 @@ class Robot:
                             print l
                             print "treasure collected"
                             l.treasure = False
-                            
-                            
+                            c = c + 1
+                            CollectedList.append(Label(image=l.treasureID))
+                            CollectedList[c].place(x=CollectedImagex[c], y=CollectedImagey[c])
 
                         self.rXPos += self.vx
                         self.rYPos += self.vy            
@@ -521,13 +523,13 @@ class treasure(image):
                 locationlist.append(lnd)
                 locationlist[-1].treasure = True
                 if self.points == 10:
-                    locationlist[-1].treasureID = "coin"
+                    locationlist[-1].treasureID = coinImage
                 elif self.points == 20:
-                    locationlist[-1].treasureID = "greenjewel"
+                    locationlist[-1].treasureID = greenImage
                 elif self.points == 30:
-                    locationlist[-1].treasureID = "redjewel"
+                    locationlist[-1].treasureID = redImage
                 elif self.points == 50:
-                    locationlist[-1].treasureID = "chest"
+                    locationlist[-1].treasureID = chestImage
           
 class Trap(image):
     def __init__(self):
@@ -649,12 +651,17 @@ for n in range (0,15):
     LabelList[n].place(x=LabelPlacementx[n], y=LabelPlacementy[n])        
 
 Images = []
-ImageList = [pirateImage, coinImage, greenImage, redImage, chestImage]
-ImagePlacementx = [720, 280, 310, 340, 370]
-ImagePlacementy = [530, 576, 575, 575, 580]
-for n in range(0,5):
+ImageList = [pirateImage]
+ImagePlacementx = [720]
+ImagePlacementy = [530]
+for n in range(0,1):
     Images.append(Label(image=ImageList[n]))
     Images[n].place(x=ImagePlacementx[n], y=ImagePlacementy[n])
+
+CollectedList = []
+CollectedImage = [coinImage, greenImage, redImage, chestImage]
+CollectedImagex = [280, 315, 345, 375]
+CollectedImagey = [575, 575, 575, 575]
 
 rbName=Label(font=('Helvetica', 18, 'underline'), text='Virtual Robot Pirate')
 settings=Label(font=('Helvetica', 12, 'underline'), text='Settings')
