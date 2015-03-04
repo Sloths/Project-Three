@@ -8,6 +8,8 @@ window = Tk()
 canvas = Canvas(window, width=854, height=480, bg="#3796da")
 canvas.pack()
 
+intPlay = 0
+
 #Creates window and centers to any screen
 window.geometry('{}x{}'. format(1060, 670)) #Setting size of window
 window.withdraw() #Hide window to stop showing in wrong position
@@ -224,23 +226,30 @@ class Countdown:
         self.totalTime = (self.second + (self.minute * 60)) - 1   
  
     def Done(self): #Change to done if robot is done
-        #used so that timer countdown but still displays time
+        #used so that the countdown still displays time
         self.done = True
          
     def Count(self):
+        # when the countdown has seven eighths of the totalTime to go
         sevenEighths = self.totalTime * 0.875
         # when the countdown has three quarters of the totalTime left to go
         threeq = self.totalTime * 0.75
+        # when the countdown has five eighths of the totalTime to go
         fiveEighths = self.totalTime * 0.625
         # when the countdown is halfway
         half = self.totalTime * 0.5
+        # when the countdown has three eighths of the totalTime to go
         threeEighths = self.totalTime * 0.375
         # when the countdown has one quarter of the totalTime left to go
         oneq = self.totalTime * 0.25
+        # when the countdown has one eighths of the totalTime to go
         oneEighth = self.totalTime * 0.125
         
+        global intPlay
+        if intPlay == 0:
+            self.done = True
         # condition - if the program is running
-        if self.done == False:
+        elif self.done == False:
             self.ticks = self.ticks - 1
             # seconds decrease by 1
             self.second = self.second - 1
@@ -565,10 +574,13 @@ class Trap(image):
                 
 def Start():
     ChangeThought(2)
-    #global main
-    main = Countdown(countdown)
-    main.getTime()
-    main.Count()
+    global intPlay
+    intPlay += 1
+    if intPlay <= 1:
+        #global main
+        main = Countdown(countdown)
+        main.getTime()
+        main.Count()
     SortTreasure(treasurelist)
     print treasurelist
     for n in range (0, len(treasurelist)):
@@ -698,5 +710,3 @@ R1 = Robot() # Create instance of robot class (R1)
 R1.setSpawn(300, 50)
 
 window.mainloop()
-
-
