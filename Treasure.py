@@ -650,13 +650,10 @@ for n in range (0,15):
     LabelList.append(Label(font=('Helvetica', LabelSize[n]), text=LabelStrings[n]))
     LabelList[n].place(x=LabelPlacementx[n], y=LabelPlacementy[n])        
 
-Images = []
-ImageList = [pirateImage]
-ImagePlacementx = [720]
-ImagePlacementy = [530]
-for n in range(0,1):
-    Images.append(Label(image=ImageList[n]))
-    Images[n].place(x=ImagePlacementx[n], y=ImagePlacementy[n])
+pirateLabel = Label(image=pirateImage)
+pirateLabel.place(x=720, y=530)
+clock=Label(image=ClockG)
+clock.place(x=916, y=534)
 
 CollectedList = []
 CollectedImage = [coinImage, greenImage, redImage, chestImage]
@@ -670,9 +667,6 @@ settings.place(x=877, y=13)
 
 #Placement of canvas
 canvas.place(x=10, y=10)
-
-clock=Label(image=ClockG)
-clock.place(x=916, y=534)
 
 #Creates countdown label
 countdown=Label(font=('Helvetica', 20), text='00:00')
