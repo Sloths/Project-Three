@@ -72,7 +72,7 @@ class Robot:
         self.rXPos = 0
         self.rYPos = 0        
         self.status = "" #String to display status of robot
-        self.points = 100 #Integer to display points of robot
+        self.points = 0 #Integer to display points of robot
         self.run = False #Used for when robot should run
         self.done = False #Used for when robot is done i.e. got all treasures
         self.shipSprite = PhotoImage(file = "ship.gif")
@@ -190,8 +190,12 @@ class Robot:
                             print "treasure collected"
                             l.treasure = False
                             c = c + 1
+                            canvas.delete(treasurelist[c].location)
                             CollectedList.append(Label(image=l.treasureID))
                             CollectedList[c].place(x=CollectedImagex[c], y=CollectedImagey[c])
+                            self.points = self.points + treasurelist[c].points
+                            InfoLabels[2].config(text=self.points)
+                            
 
                         self.rXPos += self.vx
                         self.rYPos += self.vy            
@@ -579,6 +583,7 @@ class Trap(image):
                 
                 
 def Start():
+    Disable()
     ChangeThought(2)
     global intPlay
     intPlay += 1
@@ -595,6 +600,13 @@ def Start():
     
     R1.robotLoad() # Draw R1 onto screen
     R1.treasureTrack()
+
+def Disable():
+    E.config(state=DISABLED)
+    for n in range (0,7):
+        ButtonList[n].config(state=DISABLED)
+    for n in range (0,4):
+        TreasureButtons[n].config(state=DISABLED)
     
 
 MapOneLandMarks()
@@ -672,7 +684,15 @@ LabelPlacementy = [540, 570, 600, 630, 540, 540, 35, 55, 106, 137, 175, 215, 255
 LabelSize = [12, 12, 12, 12, 12, 12, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 for n in range (0,15):
     LabelList.append(Label(font=('Helvetica', LabelSize[n]), text=LabelStrings[n]))
-    LabelList[n].place(x=LabelPlacementx[n], y=LabelPlacementy[n])        
+    LabelList[n].place(x=LabelPlacementx[n], y=LabelPlacementy[n])
+
+InfoLabels = []
+InfoLabelString = ["", "", "0"]
+InfoPlacementx = [80, 66, 66]
+InfoPlacementy = [540, 570, 600]
+for n in range (0, 3):
+    InfoLabels.append(Label(font=('Helvetica', 12), text=InfoLabelString[n]))
+    InfoLabels[n].place(x=InfoPlacementx[n], y=InfoPlacementy[n])
 
 pirateLabel = Label(image=pirateImage)
 pirateLabel.place(x=720, y=530)
