@@ -148,13 +148,17 @@ class Robot:
                             CollectedList.append(Label(image=l.treasureID))
                             CollectedList[c].place(x=CollectedImagex[c], y=CollectedImagey[c])
                             self.points = self.points + treasurelist[c].points
+                            for n in range (0,2):
+                                traps[n].points = treasurelist[c].points
+                                traps[n].previous = l.treasureID
+                                traps[n].colpos = c
                             InfoLabels[2].config(text=self.points)                          
                             
                         self.rXPos += vx
                         self.rYPos += vy            
 
                         canvas.coords(self.robot, x1 + vx, y1 + vy, x2 + vx, y2 + vy)
-
+                        InfoLabels[0].config(text="x:" + str(int(x1)) + " y:" + str(int(y1)))
                         canvas.update()                
                         time.sleep(0.1)
 
@@ -162,7 +166,6 @@ class Robot:
         if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
             if trap.hit == False:
                 trap.collision()
-                self.points -= 10
 
     def bypassLandmark(self, x1, y1, x2, y2, lx1, ly1, lx2, ly2):           
 
