@@ -207,7 +207,8 @@ class Robot:
                         self.rYPos += self.vy            
 
                         canvas.coords(self.robot, x1 + self.vx, y1 + self.vy, x2 + self.vx, y2 + self.vy)
-
+                        
+                        InfoLabels[0].config(text="x:" + str(int(x1)) + " y:" + str(int(y1)))
                         canvas.update()                
                         time.sleep(0.1)
 
