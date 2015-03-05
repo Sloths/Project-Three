@@ -265,7 +265,7 @@ class Countdown:
                     self.done = True
                     self.second = 0
                     self.minute = 0
-                    ChangeThought(7)
+                    ChangeThought(7) #Displays text from thoughts nr.7
             
             #Generate 4 random numbers between 1 - 3 for lights
             # lights change every 5 seconds
@@ -539,16 +539,16 @@ class treasure(image):
                 locationlist[-1].treasure = True
                 if self.points == 10:
                     locationlist[-1].treasureID = coinImage
-                    #ChangeThought(4)
+                    #ChangeThought(4) #Displays text from thoughts nr.4
                 elif self.points == 20:
                     locationlist[-1].treasureID = greenImage
-                    #ChangeThought(5)
+                    #ChangeThought(5) #Displays text from thoughts nr.5
                 elif self.points == 30:
                     locationlist[-1].treasureID = redImage
-                    #ChangeThought(8)
+                    #ChangeThought(8) #Displays text from thoughts nr.8
                 elif self.points == 50:
                     locationlist[-1].treasureID = chestImage
-                    #ChangeThought(6)
+                    #ChangeThought(6) #Displays text from thoughts nr.6
           
 class Trap(image):
     def __init__(self):
@@ -572,7 +572,7 @@ class Trap(image):
                 self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
                       
     def collision(self):
-        ChangeThought(3)
+        ChangeThought(3) #Displays text from thoughts nr.3
         print "hit"
         self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
         #f=canvas.create_image(429,263,image=flashImage, tag="flash")
@@ -580,12 +580,12 @@ class Trap(image):
         #show image of trap
         #deduct points from score
         #change pirate thought
-        #
+        
                 
                 
 def Start():
     Disable()
-    ChangeThought(2)
+    ChangeThought(2) #Displays text from thoughts nr.2
     global intPlay
     intPlay += 1
     if intPlay <= 1:
@@ -656,22 +656,22 @@ for n in range(0,4): # iterates through each treasure item 0-3 (4 objects)
 # for the robot to spawn in.
 def FirstButton():
     R1.setSpawn(300, 50)
-    ChangeThought(1) 
+    ChangeThought(1) #Displays text from thoughts nr.1
 def SecondButton():
     R1.setSpawn(60, 130)
-    ChangeThought(1)
+    ChangeThought(1) #Displays text from thoughts nr.1
 def ThirdButton():
     R1.setSpawn(450, 130)
-    ChangeThought(1)
+    ChangeThought(1) #Displays text from thoughts nr.1
 def FourthButton():
     R1.setSpawn(200, 350)
-    ChangeThought(1)
+    ChangeThought(1) #Displays text from thoughts nr.1
 def FithButton():
     R1.setSpawn(700, 150)
-    ChangeThought(1)
+    ChangeThought(1) #Displays text from thoughts nr.1
 def SixthButton():
     R1.setSpawn(600, 410)
-    ChangeThought(1)
+    ChangeThought(1) #Displays text from thoughts nr.1
 
 ButtonList = []
 ButtonString = ["Start", "1", "2", "3", "4", "5", "6"]
@@ -734,10 +734,11 @@ lightlist = []
 for n in range(1,5):
     lightlist.append(Light(n))
     lightlist[n-1].CreateLight()
-
+    
+#create thoughts label
 thoughts = ("Change settings to start!", "Click Start!", "Ahoy, Matey!", "Batten down the hatches!",
             "Aaaarrrrgggghhhh", "Me Booty!", "Heave Ho!", "Avast ye, time up!", "Shiver me timbers!")
-thoughtLabel = Label(font=("Helvetica", 12), text=thoughts[0])
+thoughtLabel = Label(font=("Helvetica", 12), text=thoughts[0]) #Displays text from thoughts nr.0
 
 thoughtLabel.place(x=480, y=567)
 
