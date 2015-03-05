@@ -434,35 +434,36 @@ class Light():
                 canvas.itemconfig(lightcolour4, fill="#e74c3c") #Change light to correct colour
                 canvas.itemconfig(section4, tag="Red") #Change section tag to correct value
         
-class image(object):
+class image(object): # base class 
     def __init__(self):
-        self.x = 0
+        self.x = 0 # coords used for both treasure & trap once classed is called 
         self.y = 0
-        self.location = ""
+        self.location = "" # location set as empty string for trap to use
         self.draw = canvas
-        self.draw.pack()
-        self.widgets()
+        self.draw.pack() # pack draw anywhere on canvas as coords will decide where to put it 
+        self.widgets() # call mouse click and drag instantly 
         
     def down(self, event):
         self.xLast = event.x # coords of where the mouse went down
-        self.yLast = event.y
+        self.yLast = event.y # event of each coords allows mouse to interact 
 
     def move(self, event):
-        # whatever the mouse is over it will be tagged as current 
-        self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast)
-        self.xLast = event.x
+        # CURRENT use to tag any object under the mouse, and only move one object at a time 
+        self.draw.move(CURRENT, event.x - self.xLast, event.y - self.yLast) # use event of x and y on what object is present to keep it under the mouse once dragged 
+        self.xLast = event.x # recall event coords when moving object with mouse 
         self.yLast = event.y
         
-    def widgets(self):   
+    def widgets(self):
+        #tag will be binded with movement of mouse and click of mouse, so it is looking for 'treasure' tags and no other 
         self.draw.tag_bind('treasure',"<1>", self.down) # 1 indicates the left click on the mouse, 2 is middle and 3 is right
         self.draw.tag_bind('treasure',"<B1-Motion>", self.move) # movement of mouse when click is held down  
         
     def spawn(self, x, y, image, tag):
-        self.image = PhotoImage(file=image)
-        self.x = x
+        self.image = PhotoImage(file=image) # allows images to be added once file given 
+        self.x = x # coords for image once uploaded, both x & y 
         self.y = y
-        self.tag= tag
-        self.location = self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag)
+        self.tag= tag # tag in place to separate the treasure from trap when using mouse 
+        self.location = self.draw.create_image(self.x, self.y,image = self.image,tag =self.tag) # able to create an image given the correct arugments  
         
 wishlist = [] #Creating empty wishlist to be filled when selecting treasure
 wishlistx = [885, 925, 965, 1005] #X position of images to be placed
@@ -481,29 +482,29 @@ def SortTreasure(treasurelist): #Function to sort treasure list (using bubble so
 class treasure(image):
     def __init__(self):
         image.__init__(self) # use the init from image class to create images, inheritance 
-        self.points = 0
+        self.points = 0 # set points to default '0', it will change once each treasure is populated in wishlist 
 
     def wishList(self, image):
         if image == "coin.gif":
-            TreasureButtons[0].config(state="disabled")
-            i = coinImage
-            self.points = 10
+            TreasureButtons[0].config(state="disabled") # disbale each treasure button once pressed, index indicates fist item'coin' 
+            i = coinImage # used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
+            self.points = 10 # giving treasure a point value 
         elif image == "greenjewel.gif":
-            TreasureButtons[1].config(state="disabled")
-            i = greenImage
-            self.points = 20
+            TreasureButtons[1].config(state="disabled")# disbale each treasure button once pressed, index indicates fist item'green jewel' 
+            i = greenImage# used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
+            self.points = 20 # giving treasure a point value
         elif image == "redjewel.gif":
-            TreasureButtons[2].config(state="disabled")
-            i = redImage
-            self.points = 30
+            TreasureButtons[2].config(state="disabled")# disbale each treasure button once pressed, index indicates fist item'red jewel' 
+            i = redImage# used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
+            self.points = 30 # giving treasure a point value
         elif image == "chest.gif":
-            TreasureButtons[3].config(state="disabled")
-            i = chestImage
-            self.points = 50
+            TreasureButtons[3].config(state="disabled")# disbale each treasure button once pressed, index indicates fist item'chest' 
+            i = chestImage# used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
+            self.points = 50 # giving treasure a point value
 
-        image.replace(".gif", "")
-        wishlist.append(image)
-        placement = wishlist.index(image)
+        image.replace(".gif", "") # replace treasure in wishlist with correct sorted treasure, highest to lowest 
+        wishlist.append(image) # append the wishlist with images of treasures, using the base class attributes 
+        placement = wishlist.index(image) 
 
         if placement == 0:  
             lbl1 = Label(image=i)
@@ -520,9 +521,9 @@ class treasure(image):
 
         treasurelist.append(self)
         
-    def create(self,x,y,image,tag):
-        self.spawn(x,y,image,tag)
-        self.wishList(image)
+    def create(self,x,y,image,tag): # call the base class to use its attributes 
+        self.spawn(x,y,image,tag) # using spawn function from image class 
+        self.wishList(image) # the wishlist will use the image class for its functions 
 
     def locate(self):
         pos = canvas.coords(self.location)
@@ -633,15 +634,22 @@ for n in range(0,7):
     frames.append(Frame(bd=1, relief=SUNKEN, height=FrameHeight[n], width=FrameWidth[n]))
     frames[n].place(x=FramePlacementx[n], y=FramePlacementy[n])
 
-TreasureButtons = []
-TreasureButtonImage = [coinImage, greenImage, redImage, chestImage]
+TreasureButtons = [] # creating empty list to be popualted by treasure image for buttons 
+TreasureButtonImage = [coinImage, greenImage, redImage, chestImage] #  # images for each treasure button in a list
+
+#lambda is an an anonymous function without defining specific attributes
+# it will call the treasure index first [0] and then create it with the index for each treasure x and & y coords,
+#once down, the image is loaded and tag is placed 
 TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'treasure'),
                          lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'treasure'),
                          lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'treasure'),
                          lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'treasure')]
-TreasureButtonPlacementy = [130, 168, 208, 247]
-for n in range(0,4):
-    TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n]))
+
+TreasureButtonPlacementy = [130, 168, 208, 247] # placement for each buttons on window 
+for n in range(0,4): # iterates through each treasure item 0-3 (4 objects)
+    # update treasure button list with button function, called the window to place it, the image of the treasure, and the command to execute the button,
+    #and then placement coords for each button
+    TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n])) 
     TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
     
 #These functions below are linked to the buttons for starting position on the GUI, they load up different positions
