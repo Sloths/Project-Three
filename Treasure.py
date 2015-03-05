@@ -94,99 +94,50 @@ class Robot:
 
             else:
                 self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10.0, self.rYPos + 10.0, fill = "blue")
-                self.run = True    
+                self.run = True
+                self.treasureTrack(self.vx, self.vy)
 
-    def trapCollision(self, x1, y1, x2, y2, trap):        
-        if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
-            if trap.hit == False:
-                trap.collision()
-
-    def bypassLandmark(self, x1, y1, x2, y2):
-        for o in obstacles:
-            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
-            
-            if (x2 > ox1 - 10.0 and x2 < ox1 + 10.0) and y2 > oy1 and y1 < oy2: # APPROACH FROM LEFT
-                if self.vy == -5.0 or self.vy == 0.0:
-                    self.vx = 0.0
-                    self.vy = -5.0
-                elif self.vy == 5.0:
-                    self.vx = 0.0
-                    self.vy = 5.0
-                else:
-                    continue
-            
-            if (x1 < ox2 + 10.0 and x1 > ox2 - 10.0) and y2 > oy1 and y1 < oy2: # APPROACH FROM RIGHT
-                if self.vy == -5.0 or self.vy == 0.0:
-                    self.vx = 0.0
-                    self.vy = -5.0
-                elif self.vy == -5.0:
-                    self.vx = 0.0
-                    self.vy = 5.0
-                else:
-                    continue
-
-            if (y2 > oy1 - 10.0 and y2 < oy1 + 10.0) and x2 > ox1 and x1 < ox2: # APPROACH FROM TOP
-                if self.vx == -10.0 or self.vx == 0.0:
-                    self.vx = -10.0
-                    self.vy = 0.0
-                elif self.vx == 10.0:                
-                    self.vx = 10.0
-                    self.vy = 0.0
-                else:
-                    continue
-
-            if (y1 < oy2 + 10.0 and y1 > oy2 - 10.0) and x1 > ox1 and x2 < ox2: # APPROACH FROM BOTTOM
-                if self.vx == -10.0 or self.vx == 0.0:
-                    self.vx = -10.0
-                    self.vy = 0.0
-                elif self.vx == 10.0:
-                    self.vx = 10.0
-                    self.vy = 0.0
-                else:
-                    continue
-
-    def treasureTrack(self):
-        c = -1
+    def treasureTrack(self, vx, vy):        
+        c = -1        
         if self.run == True:
             if self.done == False:                
 
                 for l in locationlist:
 
                     while l.treasure == True:
-
                         x1, y1, x2, y2 = canvas.coords(self.robot)
-                        
-                        self.bypassLandmark(x1, y1, x2, y2)
-                        self.trapCollision(x1, y1, x2, y2, traps[0])
-                        self.trapCollision(x1, y1, x2, y2, traps[1])
+                        lx1, ly1, lx2, ly2 = canvas.coords(l.lndmrk)                        
 
-                        lx1, ly1, lx2, ly2 = canvas.coords(l.lndmrk)
-                            
-                        if (x2 < lx1 - 20.0) and (y2 < ly1 - 20.0): # Approaching from top left.
-                            self.vx = 10.0
-                            self.vy = 5.0
+                        self.bypassLandmark(x1, y1, x2, y2, lx1, ly1, lx2, ly2)
+                        self.lightResponse(x1, y1, x2, y2)
+                        self.trapCollision(x1, y1, x2, y2, traps[0])
+                        self.trapCollision(x1, y1, x2, y2, traps[1])                   
+
+                        if (x2 < lx1 - 20.0) and (y2 < ly1 - 20.0): # Approaching from top left.                            
+                            vx = 10.0
+                            vy = 5.0
                         if (x2 < lx1 - 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom left.
-                            self.vx = 10.0
-                            self.vy = -5.0
+                            vx = 10.0
+                            vy = -5.0
                         if (x1 > lx2 + 20.0) and (y2 < ly1 - 20.0): # Approaching from top right.
-                            self.vx = -10.0
-                            self.vy = 5.0
+                            vx = -10.0
+                            vy = 5.0
                         if (x1 > lx2 + 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom right.
-                            self.vx = -10.0
-                            self.vy = -5.0
+                            vx = -10.0
+                            vy = -5.0
 
                         if (x2 < lx1 - 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
-                            self.vx = 10.0
-                            self.vy = 0.0
+                            vx = 10.0
+                            vy = 0.0
                         if (x1 > lx2 + 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
-                            self.vx = -10.0
-                            self.vy = 0.0
+                            vx = -10.0
+                            vy = 0.0
                         if (y2 < ly1 - 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
-                            self.vx = 0.0
-                            self.vy = 5.0
+                            vx = 0.0
+                            vy = 5.0
                         if (y1 > ly2 + 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
-                            self.vx = 0.0
-                            self.vy = -5.0
+                            vx = 0.0
+                            vy = -5.0
 
                         if ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
                             print l
@@ -197,21 +148,111 @@ class Robot:
                             CollectedList.append(Label(image=l.treasureID))
                             CollectedList[c].place(x=CollectedImagex[c], y=CollectedImagey[c])
                             self.points = self.points + treasurelist[c].points
-                            InfoLabels[2].config(text=self.points)
-                            for n in range (0,2):
-                                traps[n].points = treasurelist[c].points
-                                traps[n].previous = l.treasureID
-                                traps[n].colpos = c
+                            InfoLabels[2].config(text=self.points)                          
+                            
+                        self.rXPos += vx
+                        self.rYPos += vy            
 
-                        self.rXPos += self.vx
-                        self.rYPos += self.vy            
+                        canvas.coords(self.robot, x1 + vx, y1 + vy, x2 + vx, y2 + vy)
 
-                        canvas.coords(self.robot, x1 + self.vx, y1 + self.vy, x2 + self.vx, y2 + self.vy)
-                        InfoLabels[0].config(text="x:" + str(int(x1)) + " y:" + str(int(y1)))
                         canvas.update()                
                         time.sleep(0.1)
 
-    # def lightResponse(self):
+    def trapCollision(self, x1, y1, x2, y2, trap):        
+        if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
+            if trap.hit == False:
+                trap.collision()
+                self.points -= 10
+
+    def bypassLandmark(self, x1, y1, x2, y2, lx1, ly1, lx2, ly2):           
+
+        if (x2 > lx1 - 10.0 and x2 < lx1 + 10.0) and y2 > ly1 and y1 < ly2: # APPROACH FROM LEFT
+            if self.vy == -5.0 or self.vy == 0.0:
+                self.vx = 0.0
+                self.vy = -5.0
+            elif self.vy == 5.0:
+                self.vx = 0.0
+                self.vy = 5.0            
+            
+        if (x1 < lx2 + 10.0 and x1 > lx2 - 10.0) and y2 > ly1 and y1 < ly2: # APPROACH FROM RIGHT
+            if self.vy == -5.0 or self.vy == 0.0:
+                self.vx = 0.0
+                self.vy = -5.0
+            elif self.vy == -5.0:
+                self.vx = 0.0
+                self.vy = 5.0
+
+
+        if (y2 > ly1 - 10.0 and y2 < ly1 + 10.0) and x2 > lx1 and x1 < lx2: # APPROACH FROM TOP
+            if self.vx == -10.0 or self.vx == 0.0:
+                self.vx = -10.0
+                self.vy = 0.0
+            elif self.vx == 10.0:                
+                self.vx = 10.0
+                self.vy = 0.0
+
+
+        if (y1 < ly2 + 10.0 and y1 > ly2 - 10.0) and x1 > lx1 and x2 < lx2: # APPROACH FROM BOTTOM
+            if self.vx == -10.0 or self.vx == 0.0:
+                self.vx = -10.0
+                self.vy = 0.0
+            elif self.vx == 10.0:
+                self.vx = 10.0
+                self.vy = 0.0
+
+
+    def lightResponse(self, x1, y1, x2, y2):
+        if (x1 > 0.0) and (x2 < 213.5):
+            self.tagFormat(section1)
+            
+            if tag == "Red":
+                self.vx = 0.0
+                self.vy = 0.0
+            elif tag == "Amber":
+                self.vx = self.vx / 2
+                self.vy = self.vy / 2  
+
+
+        if (x1 > 213.5) and (x2 < 427.0):
+            self.tagFormat(section2)
+
+            if tag == "Red":
+                self.vx = 0.0
+                self.vy = 0.0
+            elif tag == "Amber":
+                self.vx = self.vx / 2
+                self.vy = self.vy / 2                
+
+
+        if (x1 > 427.0) and (x2 < 640.5):
+            self.tagFormat(section3)
+
+            if tag == "Red":
+                self.vx = 0.0
+                self.vy = 0.0
+            elif tag == "Amber":
+                self.vx = self.vx / 2
+                self.vy = self.vy / 2   
+
+
+        if (x1 > 640.5) and (x2 < 854.0):
+            self.tagFormat(section4)
+
+            if tag == "Red":
+                self.vx = 0.0
+                self.vy = 0.0
+            elif tag == "Amber":
+                self.vx = self.vx / 2
+                self.vy = self.vy / 2                 
+     
+
+    def tagFormat(self, section):
+        # Function for removing parenteses, commas and quotation marks from light tags.
+        global tag
+        tag = str(canvas.gettags(section))
+        tag = tag.replace("('", "")
+        tag = tag.replace("',)", "")
+
          
 class Countdown:
     def __init__(self, label):
@@ -613,7 +654,6 @@ def Start():
     print locationlist
     
     R1.robotLoad() # Draw R1 onto screen
-    R1.treasureTrack()
 
 def Disable():
     E.config(state=DISABLED) #Disables text entry box
