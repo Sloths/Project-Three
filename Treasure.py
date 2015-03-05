@@ -207,7 +207,6 @@ class Robot:
                         self.rYPos += self.vy            
 
                         canvas.coords(self.robot, x1 + self.vx, y1 + self.vy, x2 + self.vx, y2 + self.vy)
-                        
                         InfoLabels[0].config(text="x:" + str(int(x1)) + " y:" + str(int(y1)))
                         canvas.update()                
                         time.sleep(0.1)
@@ -581,24 +580,24 @@ class Trap(image):
         ChangeThought(4) #Displays text from thoughts nr.4
         R1.points = R1.points - self.points #Deducts points of last collected treasure
         InfoLabels[2].config(text=R1.points) #Displays updated points to user
-        if self.previous == coinImage:
-            coinGreyImage = (Label(image=coinGImage))
-            coinGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
-        elif self.previous == chestImage:
-            chestGreyImage = (Label(image=chestGImage))
-            chestGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
-        elif self.previous == greenImage:
-            greenGreyImage =(Label(image=jewelGImage))
-            greenGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
-        elif self.previous == redImage:
-            redGreyImage = (Label(image=jewelGImage))
-            redGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
+        if self.previous == coinImage: #Check what previous treasure collected was
+            coinGreyImage = (Label(image=coinGImage)) #Create image label with coin greyed out
+            coinGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos]) #Place image in correct position
+        elif self.previous == chestImage: #Check what previous treasure collected was
+            chestGreyImage = (Label(image=chestGImage)) #Create image label with chest greyed out
+            chestGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos]) #Place image in correct position
+        elif self.previous == greenImage: #Check what previous treasure collected was
+            greenGreyImage =(Label(image=jewelGImage)) #Create image label with jewel greyed out
+            greenGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos]) #Place image in correct position
+        elif self.previous == redImage: #Check what previous treasure collected was
+            redGreyImage = (Label(image=jewelGImage)) #Create image label with jewel greyed out
+            redGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos]) #Place image in correct position
         self.spawn(self.xpos, self.ypos, "trap.gif",'trap') #Creates trap image (unhides)
         #f=canvas.create_image(429,263,image=flashImage, tag="flash")
         self.hit = True #Changes hit to true so robot will not hit again
                 
 def Start():
-    Disable()
+    Disable() #Runs function to disable settings
     ChangeThought(2) #Displays text from thoughts nr.2
     global intPlay
     intPlay += 1
@@ -617,55 +616,12 @@ def Start():
     R1.treasureTrack()
 
 def Disable():
-    E.config(state=DISABLED)
-    for n in range (0,7):
+    E.config(state=DISABLED) #Disables text entry box
+    for n in range (0,7): #For loop through buttons to disable all
         ButtonList[n].config(state=DISABLED)
-    for n in range (0,4):
+    for n in range (0,4): #For loop through buttons to disable all
         TreasureButtons[n].config(state=DISABLED)
-    
 
-MapOneLandMarks()
-        
-traps = []
-for n in range(0,2):
-    traps.append(Trap())
-    traps[n].create()
-
-treasureitems = [] # empty list to populate with treasure 
-treasurex = [840,835] # create a fixed x position for treasure 
-treasurey = [138, 178, 217, 254] # give different y position for treasure 
-
-#iterate through loop and use treasure class to populate 
-for n in range(0,4):
-    treasureitems.append(treasure())
-
-frames = []
-FrameHeight = [158, 85, 85, 480, 165, 140, 158]
-FrameWidth = [854, 180, 220, 175, 160, 160, 175]
-FramePlacementx = [11, 275, 476, 872, 880, 880, 872]
-FramePlacementy = [500, 565, 565, 11, 128, 344, 500]
-for n in range(0,7):
-    frames.append(Frame(bd=1, relief=SUNKEN, height=FrameHeight[n], width=FrameWidth[n]))
-    frames[n].place(x=FramePlacementx[n], y=FramePlacementy[n])
-
-TreasureButtons = [] # creating empty list to be popualted by treasure image for buttons 
-TreasureButtonImage = [coinImage, greenImage, redImage, chestImage] #  # images for each treasure button in a list
-
-#lambda is an an anonymous function without defining specific attributes
-# it will call the treasure index first [0] and then create it with the index for each treasure x and & y coords,
-#once down, the image is loaded and tag is placed 
-TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'treasure'),
-                         lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'treasure'),
-                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'treasure'),
-                         lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'treasure')]
-
-TreasureButtonPlacementy = [130, 168, 208, 247] # placement for each buttons on window 
-for n in range(0,4): # iterates through each treasure item 0-3 (4 objects)
-    # update treasure button list with button function, called the window to place it, the image of the treasure, and the command to execute the button,
-    #and then placement coords for each button
-    TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n])) 
-    TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
-    
 #These functions below are linked to the buttons for starting position on the GUI, they load up different positions
 # for the robot to spawn in.
 def FirstButton():
@@ -686,53 +642,92 @@ def FithButton():
 def SixthButton():
     R1.setSpawn(600, 410)
     ChangeThought(1) #Displays text from thoughts nr.1
+    
+MapOneLandMarks() #Function to load the landmarks
+        
+traps = [] #Empty list to store trap objects
+for n in range(0,2): #For loop to create trap objects
+    traps.append(Trap()) #Add trap object to list
+    traps[n].create() #Create trap object
 
-ButtonList = []
-ButtonString = ["Start", "1", "2", "3", "4", "5", "6"]
-ButtonPlacementx = [878, 877, 902, 927, 952, 977, 1002]
-ButtonPlacementy = [505, 77, 77, 77, 77, 77, 77]
-ButtonWidth = [22, 2, 2, 2, 2, 2, 2]
-ButtonCommand = [Start, FirstButton, SecondButton, ThirdButton, FourthButton, FithButton, SixthButton]
-for n in range (0,7):
-    ButtonList.append(Button(window, text=ButtonString[n], height=1, width=ButtonWidth[n], command=ButtonCommand[n]))
-    ButtonList[n].place(x=ButtonPlacementx[n], y=ButtonPlacementy[n])
+treasureitems = [] # empty list to populate with treasure 
+treasurex = [840,835] # create a fixed x position for treasure 
+treasurey = [138, 178, 217, 254] # give different y position for treasure 
 
-#Creating labels
-LabelList = []
+#iterate through loop and use treasure class to populate 
+for n in range(0,4):
+    treasureitems.append(treasure())
+
+frames = [] #Empty list to store frames used in GUI
+FrameHeight = [158, 85, 85, 480, 165, 140, 158] #List containing frame heights
+FrameWidth = [854, 180, 220, 175, 160, 160, 175] #List containing frame widths
+FramePlacementx = [11, 275, 476, 872, 880, 880, 872] #List containing frame x pos
+FramePlacementy = [500, 565, 565, 11, 128, 344, 500] #List containing frame y pos
+for n in range(0,7): #For loop to create frame GUI elements
+    frames.append(Frame(bd=1, relief=SUNKEN, height=FrameHeight[n], width=FrameWidth[n])) #Creating frames in list
+    frames[n].place(x=FramePlacementx[n], y=FramePlacementy[n]) #Placing frames in correct positions
+
+TreasureButtons = [] # creating empty list to be popualted by treasure image for buttons 
+TreasureButtonImage = [coinImage, greenImage, redImage, chestImage] #  # images for each treasure button in a list
+
+#lambda is an an anonymous function without defining specific attributes
+# it will call the treasure index first [0] and then create it with the index for each treasure x and & y coords,
+#once down, the image is loaded and tag is placed 
+TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'treasure'),
+                         lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'treasure'),
+                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'treasure'),
+                         lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'treasure')]
+
+TreasureButtonPlacementy = [130, 168, 208, 247] # placement for each buttons on window 
+for n in range(0,4): # iterates through each treasure item 0-3 (4 objects)
+    # update treasure button list with button function, called the window to place it, the image of the treasure, and the command to execute the button,
+    #and then placement coords for each button
+    TreasureButtons.append(Button(window, image =TreasureButtonImage[n], command=TreasureButtonCommand[n])) 
+    TreasureButtons[n].place(x=884, y=TreasureButtonPlacementy[n])
+    
+ButtonList = [] #Empty list used to hold buttons
+ButtonString = ["Start", "1", "2", "3", "4", "5", "6"] #List containing button strings
+ButtonPlacementx = [878, 877, 902, 927, 952, 977, 1002] #List containing button x pos
+ButtonPlacementy = [505, 77, 77, 77, 77, 77, 77] #List containing button y pos
+ButtonWidth = [22, 2, 2, 2, 2, 2, 2] #List containing button width
+ButtonCommand = [Start, FirstButton, SecondButton, ThirdButton, FourthButton, FithButton, SixthButton] #List containing commands for buttons
+for n in range (0,7): #For loop used to create buttons
+    ButtonList.append(Button(window, text=ButtonString[n], height=1, width=ButtonWidth[n], command=ButtonCommand[n])) #Creating buttons
+    ButtonList[n].place(x=ButtonPlacementx[n], y=ButtonPlacementy[n]) #Placement of buttons in correct place
+
+
+LabelList = [] #Empty list used to hold labels
 LabelStrings = ["Position:", "Status:", "Points:", "Currently Looking For:", "Collected Treasure:", "Thoughts:", "Time Limit:", "Starting Point:", "Treasure Selection:", "Coin - 10 Points",
-                "Jewel - 20 Points", "Ruby - 30 Points", "Chest - 50 Points", "Drag and drop on landmarks", "Wishlist:"]
-LabelPlacementx = [15, 15, 15, 15, 270, 470, 877, 877, 877, 930, 925, 927, 927, 876, 877]
-LabelPlacementy = [540, 570, 600, 630, 540, 540, 35, 55, 106, 137, 175, 215, 255, 293, 320]
-LabelSize = [12, 12, 12, 12, 12, 12, 10, 10, 10, 10, 10, 10, 10, 10, 10]
-for n in range (0,15):
-    LabelList.append(Label(font=('Helvetica', LabelSize[n]), text=LabelStrings[n]))
-    LabelList[n].place(x=LabelPlacementx[n], y=LabelPlacementy[n])
+                "Jewel - 20 Points", "Ruby - 30 Points", "Chest - 50 Points", "Drag and drop on landmarks", "Wishlist:"] #List containing label strings
+LabelPlacementx = [15, 15, 15, 15, 270, 470, 877, 877, 877, 930, 925, 927, 927, 876, 877] #List containing label x pos
+LabelPlacementy = [540, 570, 600, 630, 540, 540, 35, 55, 106, 137, 175, 215, 255, 293, 320] #List containing label y pos
+LabelSize = [12, 12, 12, 12, 12, 12, 10, 10, 10, 10, 10, 10, 10, 10, 10] #List containing label size
+for n in range (0,15): #For loop used to create labels
+    LabelList.append(Label(font=('Helvetica', LabelSize[n]), text=LabelStrings[n])) #Creating labels
+    LabelList[n].place(x=LabelPlacementx[n], y=LabelPlacementy[n]) #Placement of labels
 
-InfoLabels = []
-InfoLabelString = ["", "", "0"]
-InfoPlacementx = [80, 66, 66]
-InfoPlacementy = [540, 570, 600]
-for n in range (0, 3):
-    InfoLabels.append(Label(font=('Helvetica', 12), text=InfoLabelString[n]))
-    InfoLabels[n].place(x=InfoPlacementx[n], y=InfoPlacementy[n])
+InfoLabels = [] #Empty list used to hold info labels
+InfoLabelString = ["", "", "0"] #List containing label strings
+InfoPlacementx = [80, 66, 66] #List containing label x pos
+InfoPlacementy = [540, 570, 600] #List containing label y pos
+for n in range (0, 3): #For loop used to create labels
+    InfoLabels.append(Label(font=('Helvetica', 12), text=InfoLabelString[n])) #Creating labels
+    InfoLabels[n].place(x=InfoPlacementx[n], y=InfoPlacementy[n]) #Placement of labels
 
-pirateLabel = Label(image=pirateImage)
-pirateLabel.place(x=720, y=530)
-clock=Label(image=ClockG)
-clock.place(x=916, y=534)
+pirateLabel = Label(image=pirateImage) #Creating pirate image
+pirateLabel.place(x=720, y=530) #Placement of pirate images
+clock=Label(image=ClockG) #Creating clock image
+clock.place(x=916, y=534) #Placement of clock images
 
-CollectedList = []
-CollectedImage = [coinImage, greenImage, redImage, chestImage]
-CollectedImagex = [280, 315, 345, 375]
-CollectedImagey = [575, 575, 575, 575]
+CollectedList = [] #Empty list used to hold collected treasure
+CollectedImage = [coinImage, greenImage, redImage, chestImage] #List containing collected images
+CollectedImagex = [280, 315, 345, 375] #Collected images x placement
+CollectedImagey = [575, 575, 575, 575] #Collected images y placement
 
-rbName=Label(font=('Helvetica', 18, 'underline'), text='Virtual Robot Pirate')
-settings=Label(font=('Helvetica', 12, 'underline'), text='Settings')
-rbName.place(x=15, y=505)
-settings.place(x=877, y=13)
-
-#Placement of canvas
-canvas.place(x=10, y=10)
+rbName=Label(font=('Helvetica', 18, 'underline'), text='Virtual Robot Pirate') #Creating heading label
+settings=Label(font=('Helvetica', 12, 'underline'), text='Settings') #Creating heading label
+rbName.place(x=15, y=505) #Placement of heading label
+settings.place(x=877, y=13) #Placement of heading label
 
 #Creates countdown label
 countdown=Label(font=('Helvetica', 20), text='00:00')
@@ -744,10 +739,10 @@ E.insert(0, "01:00")
 #placement of entry
 E.place(x= 947,y= 37)
 
-lightlist = []
-for n in range(1,5):
-    lightlist.append(Light(n))
-    lightlist[n-1].CreateLight()
+lightlist = [] #Empty list used to store light objects
+for n in range(1,5): #For loop to create lights
+    lightlist.append(Light(n)) #Add light object to list
+    lightlist[n-1].CreateLight() #Create light
     
 #create thoughts label
 thoughts = ("Change settings to start!", "Click Start!", "Ahoy, Matey!", "Batten down the hatches!",
@@ -758,6 +753,9 @@ thoughtLabel.place(x=480, y=567)
 
 def ChangeThought(number):
     thoughtLabel.config(text=thoughts[number])
+
+#Placement of canvas
+canvas.place(x=10, y=10)
 
 #Drawing line around canvas
 whole=canvas.create_rectangle(2, 481, 855, 2)
