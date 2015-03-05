@@ -27,6 +27,10 @@ greenImage = PhotoImage(file="greenjewel.gif")
 redImage = PhotoImage(file="redjewel.gif")
 chestImage = PhotoImage(file="chest.gif")
 pirateImage = PhotoImage(file="pirate.gif")
+coinGImage = PhotoImage(file="coin-grey.gif")
+jewelGImage = PhotoImage(file="jewel-grey.gif")
+chestGImage = PhotoImage(file="chest-grey.gif")
+
 ClockG = PhotoImage(file="clock-grey.gif")
 Clock1 = PhotoImage(file="1.gif")
 Clock15 = PhotoImage(file="1.5.gif")
@@ -96,7 +100,6 @@ class Robot:
         if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
             if trap.hit == False:
                 trap.collision()
-                self.points -= 10
 
     def bypassLandmark(self, x1, y1, x2, y2):
         for o in obstacles:
@@ -197,7 +200,8 @@ class Robot:
                             InfoLabels[2].config(text=self.points)
                             for n in range (0,2):
                                 traps[n].points = treasurelist[c].points
-                            
+                                traps[n].previous = l.treasureID
+                                traps[n].colpos = c
 
                         self.rXPos += self.vx
                         self.rYPos += self.vy            
@@ -559,6 +563,8 @@ class Trap(image):
         self.ypos = 0 #Initilise ypos
         self.hit = False #Initilise hit as false till trap has been hit
         self.points = 0 #Set points as zero
+        self.previous = "" #Holds previous treasure collected
+        self.colpos = 0 #Holds position of collected image picture
         
     def create(self): #Creates the x,y position of trap to check in 
         self.xpos = random.randint(25,829) #Random xpos within canvas
@@ -574,6 +580,18 @@ class Trap(image):
         ChangeThought(4) #Displays text from thoughts nr.4
         R1.points = R1.points - self.points #Deducts points of last collected treasure
         InfoLabels[2].config(text=R1.points) #Displays updated points to user
+        if self.previous == coinImage:
+            coinGreyImage = (Label(image=coinGImage))
+            coinGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
+        elif self.previous == chestImage:
+            chestGreyImage = (Label(image=chestGImage))
+            chestGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
+        elif self.previous == greenImage:
+            greenGreyImage =(Label(image=jewelGImage))
+            greenGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
+        elif self.previous == redImage:
+            redGreyImage = (Label(image=jewelGImage))
+            redGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos])
         self.spawn(self.xpos, self.ypos, "trap.gif",'trap') #Creates trap image (unhides)
         #f=canvas.create_image(429,263,image=flashImage, tag="flash")
         self.hit = True #Changes hit to true so robot will not hit again
