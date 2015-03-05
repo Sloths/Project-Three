@@ -195,6 +195,8 @@ class Robot:
                             CollectedList[c].place(x=CollectedImagex[c], y=CollectedImagey[c])
                             self.points = self.points + treasurelist[c].points
                             InfoLabels[2].config(text=self.points)
+                            for n in range (0,2):
+                                traps[n].points = treasurelist[c].points
                             
 
                         self.rXPos += self.vx
@@ -504,84 +506,77 @@ class treasure(image):
 
         image.replace(".gif", "") # replace treasure in wishlist with correct sorted treasure, highest to lowest 
         wishlist.append(image) # append the wishlist with images of treasures, using the base class attributes 
-        placement = wishlist.index(image) 
+        placement = wishlist.index(image) #Get index of wishlist item
 
-        if placement == 0:  
-            lbl1 = Label(image=i)
-            lbl1.place(x=wishlistx[0], y=wishlisty[0])
-        elif placement == 1:
-            lbl2 = Label(image=i)
-            lbl2.place(x=wishlistx[1], y=wishlisty[1])
-        elif placement == 2:
-            lbl3 = Label(image=i)
-            lbl3.place(x=wishlistx[2], y=wishlisty[2])
-        elif placement == 3:
-            lbl4 = Label(image=i)
-            lbl4.place(x=wishlistx[3], y=wishlisty[3])
+        if placement == 0: #Check for placement of wishlist item 
+            lbl1 = Label(image=i) #Create image label
+            lbl1.place(x=wishlistx[0], y=wishlisty[0]) #Place image label in position 1
+        elif placement == 1: #Check for placement of wishlist item 
+            lbl2 = Label(image=i) #Create image label
+            lbl2.place(x=wishlistx[1], y=wishlisty[1]) #Place image label in position 2
+        elif placement == 2: #Check for placement of wishlist item 
+            lbl3 = Label(image=i) #Create image label
+            lbl3.place(x=wishlistx[2], y=wishlisty[2]) #Place image label in position 3
+        elif placement == 3: #Check for placement of wishlist item 
+            lbl4 = Label(image=i) #Create image label
+            lbl4.place(x=wishlistx[3], y=wishlisty[3]) #Place image label in position 4
 
-        treasurelist.append(self)
+        treasurelist.append(self) #Add treasure object to list
         
     def create(self,x,y,image,tag): # call the base class to use its attributes 
         self.spawn(x,y,image,tag) # using spawn function from image class 
         self.wishList(image) # the wishlist will use the image class for its functions 
 
-    def locate(self):
-        pos = canvas.coords(self.location)
-        xpos = pos[0]
-        ypos = pos[1]
-        i = 0
-        for o in obstacles:
-            i = i + 1
-            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
-            if (xpos > ox1 and xpos < ox2) and (ypos > oy1 and ypos < oy2):
-                lnd = obstacles[i-1]
-                locationlist.append(lnd)
-                locationlist[-1].treasure = True
-                if self.points == 10:
-                    locationlist[-1].treasureID = coinImage
+    def locate(self): #Function to get landmark treasure is in
+        pos = canvas.coords(self.location) #Get coords of treasure object
+        xpos = pos[0] #Seperate x coords
+        ypos = pos[1] #Seperate y coords
+        i = 0 #Start i at 0
+        for o in obstacles: #Loop through landmark objects
+            i = i + 1 #Increment i
+            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk) #Get coords of landmark object
+            if (xpos > ox1 and xpos < ox2) and (ypos > oy1 and ypos < oy2): #Check if treasure object is within landmark object
+                lnd = obstacles[i-1] #Get landmark object
+                locationlist.append(lnd) #Add landmark object to list
+                locationlist[-1].treasure = True #Landmakr has treasure item
+                if self.points == 10: #Check what treasure the landmark has in it
+                    locationlist[-1].treasureID = coinImage #Change treasureID to coin
                     #ChangeThought(4) #Displays text from thoughts nr.4
-                elif self.points == 20:
-                    locationlist[-1].treasureID = greenImage
+                elif self.points == 20: #Check what treasure the landmark has in it
+                    locationlist[-1].treasureID = greenImage #Change treasureID to green jewel
                     #ChangeThought(5) #Displays text from thoughts nr.5
-                elif self.points == 30:
-                    locationlist[-1].treasureID = redImage
+                elif self.points == 30: #Check what treasure the landmark has in it
+                    locationlist[-1].treasureID = redImage #Change treasureID to red jewel
                     #ChangeThought(8) #Displays text from thoughts nr.8
-                elif self.points == 50:
-                    locationlist[-1].treasureID = chestImage
+                elif self.points == 50: #Check what treasure the landmark has in it
+                    locationlist[-1].treasureID = chestImage #Change treasureID to chest
                     #ChangeThought(6) #Displays text from thoughts nr.6
           
-class Trap(image):
+class Trap(image): 
     def __init__(self):
-        image.__init__(self)
-        self.xpos = 0
-        self.ypos = 0
-        self.hit = False
-        self.points = 0
-
-    #def points(self):
-        #get points from last collected treasure
+        image.__init__(self) #Use the init from image class to create images, inheritance 
+        self.xpos = 0 #Initilise xpos
+        self.ypos = 0 #Initilise ypos
+        self.hit = False #Initilise hit as false till trap has been hit
+        self.points = 0 #Set points as zero
         
     def create(self): #Creates the x,y position of trap to check in 
-        self.xpos = random.randint(25,829)
-        self.ypos = random.randint(25,455)
-        for o in obstacles:            
-            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk)
-            if (self.xpos > ox1 - 35.0 and self.xpos < ox2 + 35.0) and (self.ypos > oy1 - 35.0 and self.ypos < oy2 + 35.0):
-                self.create()
-            else:
-                self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
+        self.xpos = random.randint(25,829) #Random xpos within canvas
+        self.ypos = random.randint(25,455) #Random ypos within canvas
+        for o in obstacles: #Loop through landmarks        
+            ox1, oy1, ox2, oy2 = canvas.coords(o.lndmrk) #Get landmark coords
+            if (self.xpos > ox1 - 35.0 and self.xpos < ox2 + 35.0) and (self.ypos > oy1 - 35.0 and self.ypos < oy2 + 35.0): #Check if within landmark
+                self.create() #Recurrsive function to retry spawn
+            else: 
+                self.spawn(self.xpos, self.ypos, "trap.gif",'trap') #Create trap, will not be in final program
                       
-    def collision(self):
-        ChangeThought(3) #Displays text from thoughts nr.3
-        print "hit"
-        self.spawn(self.xpos, self.ypos, "trap.gif",'trap')
+    def collision(self): #Function called when robot within xpos and ypos of trap
+        ChangeThought(4) #Displays text from thoughts nr.4
+        R1.points = R1.points - self.points #Deducts points of last collected treasure
+        InfoLabels[2].config(text=R1.points) #Displays updated points to user
+        self.spawn(self.xpos, self.ypos, "trap.gif",'trap') #Creates trap image (unhides)
         #f=canvas.create_image(429,263,image=flashImage, tag="flash")
-        self.hit = True
-        #show image of trap
-        #deduct points from score
-        #change pirate thought
-        
-                
+        self.hit = True #Changes hit to true so robot will not hit again
                 
 def Start():
     Disable()
