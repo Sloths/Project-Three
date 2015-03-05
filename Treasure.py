@@ -698,7 +698,7 @@ for n in range (0,7): #For loop used to create buttons
 
 LabelList = [] #Empty list used to hold labels
 LabelStrings = ["Position:", "Status:", "Points:", "Currently Looking For:", "Collected Treasure:", "Thoughts:", "Time Limit:", "Starting Point:", "Treasure Selection:", "Coin - 10 Points",
-                "Jewel - 20 Points", "Ruby - 30 Points", "Chest - 50 Points", "Drag and drop on landmarks", "Wishlist:"] #List containing label strings
+                "Jewel - 20 Points", "Ruby - 30 Points", "Chest - 50 Points", "Drag And Drop On Landmarks", "Wishlist:"] #List containing label strings
 LabelPlacementx = [15, 15, 15, 15, 270, 470, 877, 877, 877, 930, 925, 927, 927, 876, 877] #List containing label x pos
 LabelPlacementy = [540, 570, 600, 630, 540, 540, 35, 55, 106, 137, 175, 215, 255, 293, 320] #List containing label y pos
 LabelSize = [12, 12, 12, 12, 12, 12, 10, 10, 10, 10, 10, 10, 10, 10, 10] #List containing label size
