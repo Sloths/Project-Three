@@ -271,7 +271,7 @@ class Countdown:
                     self.done = True
                     self.second = 0
                     self.minute = 0
-                    ChangeThought(7) #Displays text from thoughts nr.7
+                    ChangeThought(7) #Displays text from thoughts
             
             #Generate 4 random numbers between 1 - 3 for lights
             # lights change every 5 seconds
