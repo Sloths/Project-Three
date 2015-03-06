@@ -157,8 +157,8 @@ class Robot:
                         InfoLabels[0].config(text="x:" + str(int(x1)) + " y:" + str(int(y1)))
                         canvas.update()                
                         time.sleep(0.1)
-                    main.Finished() #Stop timer
-                    lookingLabel.place_forget() #Removed looking for image
+                main.Finished() #Stop timer
+                lookingLabel.place_forget() #Removed looking for image
 
     def trapCollision(self, x1, y1, x2, y2, trap):        
         if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
