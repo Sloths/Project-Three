@@ -91,7 +91,6 @@ class Robot:
 
             if (self.rXPos > ox1 - 10.0 and self.rXPos < ox2 + 10.0) and (self.rYPos > oy1 - 10.0 and self.rYPos < oy2 + 10.0):
                 self.robotLoad()
-
             else:
                 self.robot = canvas.create_rectangle(self.rXPos, self.rYPos, self.rXPos + 10.0, self.rYPos + 10.0, fill = "blue")
                 self.run = True
@@ -101,9 +100,7 @@ class Robot:
         c = -1        
         if self.run == True:
             if self.done == False:                
-
                 for l in locationlist:
-
                     while l.treasure == True:
                         x1, y1, x2, y2 = canvas.coords(self.robot)
                         lx1, ly1, lx2, ly2 = canvas.coords(l.lndmrk)                        
@@ -113,45 +110,44 @@ class Robot:
                         self.trapCollision(x1, y1, x2, y2, traps[1])                   
 
                         if (x2 < lx1 - 20.0) and (y2 < ly1 - 20.0): # Approaching from top left.                            
-                            vx = self.lightResponse(x1, y1, x2, y2, 10.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, 5.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, 10.0) #Running lightReponse with 10 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, 5.0) #Running lightReponse with 5 volocity
                         if (x2 < lx1 - 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom left.
-                            vx = self.lightResponse(x1, y1, x2, y2, 10.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, -5.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, 10.0) #Running lightReponse with 10 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, -5.0) #Running lightReponse with -5 volocity
                         if (x1 > lx2 + 20.0) and (y2 < ly1 - 20.0): # Approaching from top right.
-                            vx = self.lightResponse(x1, y1, x2, y2, -10.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, 5.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, -10.0) #Running lightReponse with -10 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, 5.0) #Running lightReponse with 5 volocity
                         if (x1 > lx2 + 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom right.
-                            vx = self.lightResponse(x1, y1, x2, y2, -10.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, -5.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, -10.0) #Running lightReponse with -10 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, -5.0) #Running lightReponse with -5 volocity
 
                         if (x2 < lx1 - 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
-                            vx = self.lightResponse(x1, y1, x2, y2, 10.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, 0.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, 10.0) #Running lightReponse with 10 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, 0.0) #Running lightReponse with 0 volocity
                         if (x1 > lx2 + 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
-                            vx = self.lightResponse(x1, y1, x2, y2, -10.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, 0.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, -10.0) #Running lightReponse with -10 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, 0.0) #Running lightReponse with 0 volocity
                         if (y2 < ly1 - 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
-                            vx = self.lightResponse(x1, y1, x2, y2, 0.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, 5.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, 0.0) #Running lightReponse with 0 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, 5.0) #Running lightReponse with 5 volocity
                         if (y1 > ly2 + 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
-                            vx = self.lightResponse(x1, y1, x2, y2, 0.0)
-                            vy = self.lightResponse(x1, y1, x2, y2, -5.0)
+                            vx = self.lightResponse(x1, y1, x2, y2, 0.0) #Running lightReponse with 0 volocity
+                            vy = self.lightResponse(x1, y1, x2, y2, -5.0) #Running lightReponse with -5 volocity
 
                         if ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
-                            print l
-                            print "treasure collected"
-                            l.treasure = False
-                            c = c + 1
-                            canvas.delete(treasurelist[c].location)
-                            CollectedList.append(Label(image=l.treasureID))
-                            CollectedList[c].place(x=CollectedImagex[c], y=CollectedImagey[c])
-                            self.points = self.points + treasurelist[c].points
-                            for n in range (0,2):
-                                traps[n].points = treasurelist[c].points
-                                traps[n].previous = l.treasureID
-                                traps[n].colpos = c
-                            InfoLabels[2].config(text=self.points)                          
+                            ChangeThought(5)
+                            l.treasure = False #Changing landmark to not have treasure
+                            c = c + 1 #Increment counter
+                            canvas.delete(treasurelist[c].location) #Delete treasure image
+                            CollectedList.append(Label(image=l.treasureID)) #Add treasure to collected list
+                            CollectedList[c].place(x=CollectedImagex[c], y=CollectedImagey[c]) #Place image in collected treasure
+                            self.points = self.points + treasurelist[c].points #Add points to robots total
+                            for n in range (0,2): #Add points to trap items so it can be removed
+                                traps[n].points = treasurelist[c].points #Get points
+                                traps[n].previous = l.treasureID #Get previous id
+                                traps[n].colpos = c #Get position
+                            InfoLabels[2].config(text=self.points) #Display updated points                          
                             
                         self.rXPos += vx
                         self.rYPos += vy            
@@ -160,6 +156,7 @@ class Robot:
                         InfoLabels[0].config(text="x:" + str(int(x1)) + " y:" + str(int(y1)))
                         canvas.update()                
                         time.sleep(0.1)
+                    main.Finished() #Stop timer
 
     def trapCollision(self, x1, y1, x2, y2, trap):        
         if (x2 > trap.xpos and x1 < trap.xpos + 30.0) and (y2 > trap.ypos and y1 < trap.ypos + 30.0):
@@ -209,13 +206,16 @@ class Robot:
             
             if tag == "Red":
                 vol = 0.0
-                InfoLabels[1].config(text=tag) 
+                InfoLabels[1].config(text=tag)
+                ChangeThought(3)
             elif tag == "Amber":
                 vol = vol / 2
                 InfoLabels[1].config(text=tag)
+                ChangeThought(4)
             elif tag == "Green":
                 vol = vol
                 InfoLabels[1].config(text=tag)
+                ChangeThought(6)
 
 
         if (x1 > 213.5) and (x2 < 427.0):
@@ -224,12 +224,15 @@ class Robot:
             if tag == "Red":
                 vol = 0.0
                 InfoLabels[1].config(text=tag)
+                ChangeThought(3)
             elif tag == "Amber":
                 vol = vol / 2
                 InfoLabels[1].config(text=tag)
+                ChangeThought(4)
             elif tag == "Green":
                 vol = vol
                 InfoLabels[1].config(text=tag)
+                ChangeThought(6)
 
         if (x1 > 427.0) and (x2 < 640.5):
             self.tagFormat(section3)
@@ -237,12 +240,15 @@ class Robot:
             if tag == "Red":
                 vol = 0
                 InfoLabels[1].config(text=tag)
+                ChangeThought(3)
             elif tag == "Amber":
                 vol = vol / 2
                 InfoLabels[1].config(text=tag)
+                ChangeThought(4)
             elif tag == "Green":
                 vol = vol
                 InfoLabels[1].config(text=tag)
+                ChangeThought(6)
                 
         if (x1 > 640.5) and (x2 < 854.0):
             self.tagFormat(section4)
@@ -250,12 +256,15 @@ class Robot:
             if tag == "Red":
                 vol = 0
                 InfoLabels[1].config(text=tag)
+                ChangeThought(3)
             elif tag == "Amber":
                 vol = vol / 2
                 InfoLabels[1].config(text=tag)
+                ChangeThought(4)
             elif tag == "Green":
                 vol = vol
                 InfoLabels[1].config(text=tag)
+                ChangeThought(6)
                 
         return vol
 
@@ -289,9 +298,11 @@ class Countdown:
         self.ticks = (self.second + (self.minute * 60)) - 1
         self.totalTime = (self.second + (self.minute * 60)) - 1   
  
-    def Done(self): #Change to done if robot is done
+    def Finished(self): #Change to done if robot is done
         #used so that the countdown still displays time
         self.done = True
+        ChangeThought(9)
+        InfoLabels[1].config(text="Done")
          
     def Count(self):
         # when the countdown has seven eighths of the totalTime to go
@@ -326,6 +337,8 @@ class Countdown:
                     self.second = 0
                     self.minute = 0
                     ChangeThought(7) #Displays text from thoughts
+                    R1.run = False
+                    R1.done = False
             
             #Generate 4 random numbers between 1 - 3 for lights
             # lights change every 5 seconds
@@ -599,16 +612,12 @@ class treasure(image):
                 locationlist[-1].treasure = True #Landmakr has treasure item
                 if self.points == 10: #Check what treasure the landmark has in it
                     locationlist[-1].treasureID = coinImage #Change treasureID to coin
-                    #ChangeThought(4) #Displays text from thoughts nr.4
                 elif self.points == 20: #Check what treasure the landmark has in it
                     locationlist[-1].treasureID = greenImage #Change treasureID to green jewel
-                    #ChangeThought(5) #Displays text from thoughts nr.5
                 elif self.points == 30: #Check what treasure the landmark has in it
                     locationlist[-1].treasureID = redImage #Change treasureID to red jewel
-                    #ChangeThought(8) #Displays text from thoughts nr.8
                 elif self.points == 50: #Check what treasure the landmark has in it
                     locationlist[-1].treasureID = chestImage #Change treasureID to chest
-                    #ChangeThought(6) #Displays text from thoughts nr.6
           
 class Trap(image): 
     def __init__(self):
@@ -649,6 +658,7 @@ class Trap(image):
         self.spawn(self.xpos, self.ypos, "trap.gif",'trap') #Creates trap image (unhides)
         #f=canvas.create_image(429,263,image=flashImage, tag="flash")
         self.hit = True #Changes hit to true so robot will not hit again
+        ChangeThought(8) #Display thought 8
                 
 def Start():
     Disable() #Runs function to disable settings
@@ -656,16 +666,13 @@ def Start():
     global intPlay
     intPlay += 1
     if intPlay <= 1:
-        #global main
+        global main
         main = Countdown(countdown)
         main.getTime()
         main.Count()
     SortTreasure(treasurelist)
-    print treasurelist
     for n in range (0, len(treasurelist)):
         treasurelist[n].locate()
-    print locationlist
-    
     R1.robotLoad() # Draw R1 onto screen
 
 def Disable():
@@ -799,7 +806,7 @@ for n in range(1,5): #For loop to create lights
     
 #create thoughts label
 thoughts = ("Change settings to start!", "Click Start!", "Ahoy, Matey!", "Batten down the hatches!",
-            "Aaaarrrrgggghhhh", "Me Booty!", "Heave Ho!", "Avast ye, time up!", "Shiver me timbers!")
+            "Aaaarrrrgggghhhh", "Me Booty!", "Heave Ho!", "Avast ye, time up!", "Shiver me timbers!", "Blimey! Done!")
 thoughtLabel = Label(font=("Helvetica", 12), text=thoughts[0]) #Displays text from thoughts nr.0
 
 thoughtLabel.place(x=480, y=567)
