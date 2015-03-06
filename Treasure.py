@@ -109,35 +109,34 @@ class Robot:
                         lx1, ly1, lx2, ly2 = canvas.coords(l.lndmrk)                        
 
                         self.bypassLandmark(x1, y1, x2, y2, lx1, ly1, lx2, ly2)
-                        self.lightResponse(x1, y1, x2, y2)
                         self.trapCollision(x1, y1, x2, y2, traps[0])
                         self.trapCollision(x1, y1, x2, y2, traps[1])                   
 
                         if (x2 < lx1 - 20.0) and (y2 < ly1 - 20.0): # Approaching from top left.                            
-                            vx = 10.0
-                            vy = 5.0
+                            vx = self.lightResponse(x1, y1, x2, y2, 10.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, 5.0)
                         if (x2 < lx1 - 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom left.
-                            vx = 10.0
-                            vy = -5.0
+                            vx = self.lightResponse(x1, y1, x2, y2, 10.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, -5.0)
                         if (x1 > lx2 + 20.0) and (y2 < ly1 - 20.0): # Approaching from top right.
-                            vx = -10.0
-                            vy = 5.0
+                            vx = self.lightResponse(x1, y1, x2, y2, -10.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, 5.0)
                         if (x1 > lx2 + 20.0) and (y1 > ly2 + 20.0): # Approaching from bottom right.
-                            vx = -10.0
-                            vy = -5.0
+                            vx = self.lightResponse(x1, y1, x2, y2, -10.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, -5.0)
 
                         if (x2 < lx1 - 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
-                            vx = 10.0
-                            vy = 0.0
+                            vx = self.lightResponse(x1, y1, x2, y2, 10.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, 0.0)
                         if (x1 > lx2 + 20.0) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
-                            vx = -10.0
-                            vy = 0.0
+                            vx = self.lightResponse(x1, y1, x2, y2, -10.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, 0.0)
                         if (y2 < ly1 - 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
-                            vx = 0.0
-                            vy = 5.0
+                            vx = self.lightResponse(x1, y1, x2, y2, 0.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, 5.0)
                         if (y1 > ly2 + 20.0) and ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)):
-                            vx = 0.0
-                            vy = -5.0
+                            vx = self.lightResponse(x1, y1, x2, y2, 0.0)
+                            vy = self.lightResponse(x1, y1, x2, y2, -5.0)
 
                         if ((x2 > lx1 - 20.0) and (x1 < lx2 + 20.0)) and ((y2 > ly1 - 20.0) and (y1 < ly2 + 20.0)):
                             print l
@@ -204,50 +203,61 @@ class Robot:
                 self.vy = 0.0
 
 
-    def lightResponse(self, x1, y1, x2, y2):
+    def lightResponse(self, x1, y1, x2, y2, vol):
         if (x1 > 0.0) and (x2 < 213.5):
             self.tagFormat(section1)
             
             if tag == "Red":
-                self.vx = 0.0
-                self.vy = 0.0
+                vol = 0.0
+                InfoLabels[1].config(text=tag) 
             elif tag == "Amber":
-                self.vx = self.vx / 2
-                self.vy = self.vy / 2  
+                vol = vol / 2
+                InfoLabels[1].config(text=tag)
+            elif tag == "Green":
+                vol = vol
+                InfoLabels[1].config(text=tag)
 
 
         if (x1 > 213.5) and (x2 < 427.0):
             self.tagFormat(section2)
 
             if tag == "Red":
-                self.vx = 0.0
-                self.vy = 0.0
+                vol = 0.0
+                InfoLabels[1].config(text=tag)
             elif tag == "Amber":
-                self.vx = self.vx / 2
-                self.vy = self.vy / 2                
-
+                vol = vol / 2
+                InfoLabels[1].config(text=tag)
+            elif tag == "Green":
+                vol = vol
+                InfoLabels[1].config(text=tag)
 
         if (x1 > 427.0) and (x2 < 640.5):
             self.tagFormat(section3)
 
             if tag == "Red":
-                self.vx = 0.0
-                self.vy = 0.0
+                vol = 0
+                InfoLabels[1].config(text=tag)
             elif tag == "Amber":
-                self.vx = self.vx / 2
-                self.vy = self.vy / 2   
-
-
+                vol = vol / 2
+                InfoLabels[1].config(text=tag)
+            elif tag == "Green":
+                vol = vol
+                InfoLabels[1].config(text=tag)
+                
         if (x1 > 640.5) and (x2 < 854.0):
             self.tagFormat(section4)
 
             if tag == "Red":
-                self.vx = 0.0
-                self.vy = 0.0
+                vol = 0
+                InfoLabels[1].config(text=tag)
             elif tag == "Amber":
-                self.vx = self.vx / 2
-                self.vy = self.vy / 2                 
-     
+                vol = vol / 2
+                InfoLabels[1].config(text=tag)
+            elif tag == "Green":
+                vol = vol
+                InfoLabels[1].config(text=tag)
+                
+        return vol
 
     def tagFormat(self, section):
         # Function for removing parenteses, commas and quotation marks from light tags.
