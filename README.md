@@ -3,7 +3,11 @@ The task we decided to implement was the Advanced scenario. The specification re
 
 ## Installation
  
-Add screenshots of program running and showing main features
+The program can be run from the Python compiler IDLE, when the program runs you will be shown the GUI shown below. To run the virtual robot treasure hunt enter a time limit, select a starting point and then drag and drop some treasure into landmarks. The screenshots below show the programs initial start and the virtual robot finding treasure.
+
+![Initial Start](https://github.com/Sloths/Project-Three/blob/master/screenshots/initial_start.jpg?raw=true)
+
+![Running](https://github.com/Sloths/Project-Three/blob/master/screenshots/play.jpg?raw=true)
  
 ## Future Enhancements
  
