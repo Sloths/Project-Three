@@ -22,24 +22,24 @@ window.resizable(width=FALSE, height=FALSE) #Disabled resizable function of wind
 window.deiconify() #Redraw window in correct position
 
 #Importing images to use through out program
-coinImage = PhotoImage(file="coin.gif")
-greenImage = PhotoImage(file="greenjewel.gif")
-redImage = PhotoImage(file="redjewel.gif")
-chestImage = PhotoImage(file="chest.gif")
-pirateImage = PhotoImage(file="pirate.gif")
-coinGImage = PhotoImage(file="coin-grey.gif")
-jewelGImage = PhotoImage(file="jewel-grey.gif")
-chestGImage = PhotoImage(file="chest-grey.gif")
+coinImage = PhotoImage(file="assets/coin.gif")
+greenImage = PhotoImage(file="assets/greenjewel.gif")
+redImage = PhotoImage(file="assets/redjewel.gif")
+chestImage = PhotoImage(file="assets/chest.gif")
+pirateImage = PhotoImage(file="assets/pirate.gif")
+coinGImage = PhotoImage(file="assets/coin-grey.gif")
+jewelGImage = PhotoImage(file="assets/jewel-grey.gif")
+chestGImage = PhotoImage(file="assets/chest-grey.gif")
 
-ClockG = PhotoImage(file="clock-grey.gif")
-Clock1 = PhotoImage(file="1.gif")
-Clock15 = PhotoImage(file="1.5.gif")
-Clock2 = PhotoImage(file="2.gif")
-Clock25 = PhotoImage(file="2.5.gif")
-Clock3 = PhotoImage(file="3.gif")
-Clock35 = PhotoImage(file="3.5.gif")
-Clock4 = PhotoImage(file="4.gif")
-Clock45 = PhotoImage(file="4.5.gif")
+ClockG = PhotoImage(file="assets/clock-grey.gif")
+Clock1 = PhotoImage(file="assets/1.gif")
+Clock15 = PhotoImage(file="assets/1.5.gif")
+Clock2 = PhotoImage(file="assets/2.gif")
+Clock25 = PhotoImage(file="assets/2.5.gif")
+Clock3 = PhotoImage(file="assets/3.gif")
+Clock35 = PhotoImage(file="assets/3.5.gif")
+Clock4 = PhotoImage(file="assets/4.gif")
+Clock45 = PhotoImage(file="assets/4.5.gif")
 
 #Importing png using PIL
 #flash = Image.open("flash.png")
@@ -79,7 +79,7 @@ class Robot:
         self.points = 0 #Integer to display points of robot
         self.run = False #Used for when robot should run
         self.done = False #Used for when robot is done i.e. got all treasures
-        self.shipSprite = PhotoImage(file = "ship.gif")
+        self.shipSprite = PhotoImage(file = "assets/ship.gif")
 
     def setSpawn(self, xpos, ypos): #Function to set spawn variables
         self.rXPos = xpos #Setting xpos
@@ -560,19 +560,19 @@ class treasure(image):
         self.points = 0 # set points to default '0', it will change once each treasure is populated in wishlist 
 
     def wishList(self, image):
-        if image == "coin.gif":
+        if image == "assets/coin.gif":
             TreasureButtons[0].config(state="disabled") # disbale each treasure button once pressed, index indicates fist item'coin' 
             i = coinImage # used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
             self.points = 10 # giving treasure a point value 
-        elif image == "greenjewel.gif":
+        elif image == "assets/greenjewel.gif":
             TreasureButtons[1].config(state="disabled")# disbale each treasure button once pressed, index indicates fist item'green jewel' 
             i = greenImage# used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
             self.points = 20 # giving treasure a point value
-        elif image == "redjewel.gif":
+        elif image == "assets/redjewel.gif":
             TreasureButtons[2].config(state="disabled")# disbale each treasure button once pressed, index indicates fist item'red jewel' 
             i = redImage# used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
             self.points = 30 # giving treasure a point value
-        elif image == "chest.gif":
+        elif image == "assets/chest.gif":
             TreasureButtons[3].config(state="disabled")# disbale each treasure button once pressed, index indicates fist item'chest' 
             i = chestImage# used to iterate thrhough list so it can be sorted in order, highest to lowest, once collected 
             self.points = 50 # giving treasure a point value
@@ -639,7 +639,7 @@ class Trap(image):
             if (self.xpos > ox1 - 35.0 and self.xpos < ox2 + 35.0) and (self.ypos > oy1 - 35.0 and self.ypos < oy2 + 35.0): #Check if within landmark
                 self.create() #Recurrsive function to retry spawn
             else: 
-                self.spawn(self.xpos, self.ypos, "trap.gif",'trap') #Create trap, will not be in final program
+                self.spawn(self.xpos, self.ypos, "assets/trap.gif",'trap') #Create trap, will not be in final program
                       
     def collision(self): #Function called when robot within xpos and ypos of trap
         ChangeThought(4) #Displays text from thoughts nr.4
@@ -657,7 +657,7 @@ class Trap(image):
         elif self.previous == redImage: #Check what previous treasure collected was
             redGreyImage = (Label(image=jewelGImage)) #Create image label with jewel greyed out
             redGreyImage.place(x=CollectedImagex[self.colpos], y=CollectedImagey[self.colpos]) #Place image in correct position
-        self.spawn(self.xpos, self.ypos, "trap.gif",'trap') #Creates trap image (unhides)
+        self.spawn(self.xpos, self.ypos, "assets/trap.gif",'trap') #Creates trap image (unhides)
         #f=canvas.create_image(429,263,image=flashImage, tag="flash")
         self.hit = True #Changes hit to true so robot will not hit again
         ChangeThought(8) #Display thought 8
@@ -735,10 +735,10 @@ TreasureButtonImage = [coinImage, greenImage, redImage, chestImage] #  # images 
 #lambda is an an anonymous function without defining specific attributes
 # it will call the treasure index first [0] and then create it with the index for each treasure x and & y coords,
 #once down, the image is loaded and tag is placed 
-TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "coin.gif",'treasure'),
-                         lambda: treasureitems[1].create(treasurex[0], treasurey[1], "greenjewel.gif",'treasure'),
-                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "redjewel.gif",'treasure'),
-                         lambda: treasureitems[3].create(treasurex[1], treasurey[3], "chest.gif",'treasure')]
+TreasureButtonCommand = [lambda: treasureitems[0].create(treasurex[0], treasurey[0], "assets/coin.gif",'treasure'),
+                         lambda: treasureitems[1].create(treasurex[0], treasurey[1], "assets/greenjewel.gif",'treasure'),
+                         lambda: treasureitems[2].create(treasurex[0], treasurey[2], "assets/redjewel.gif",'treasure'),
+                         lambda: treasureitems[3].create(treasurex[1], treasurey[3], "assets/chest.gif",'treasure')]
 
 TreasureButtonPlacementy = [130, 168, 208, 247] # placement for each buttons on window 
 for n in range(0,4): # iterates through each treasure item 0-3 (4 objects)
