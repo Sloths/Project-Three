@@ -1,22 +1,31 @@
 # Project Three - Virtual Robot Treasure Hunt 2.0
 The task we decided to implement was the Advanced scenario. The specification requirements were to allow the user to select the robot's position and set the countdown value. Also the user should be able to choose and place the treasures for the robot to find in the arena. The collected treasures should be put into a list and be sorted once the countdown reaches zero. Furthermore hidden traps should be placed in the arena and if encountered by the robot, the last treasure collected should be removed from the list and the treasure's point value should be deducted from the total points.
 
-Add description of our program 
-
 ## Installation
  
 Add screenshots of program running and showing main features
  
 ## Future Enhancements
  
-Add planned enhancements to program
+Due to time issues we were unable to finish the program to the standard we had hoped for, however we have created a list of enhancements that we would implement if we had a larger time scale.
+
+* Add second robot
+* Make robots avoid landmarks
+* Make robots go to every landmark to 'check' if treasure is there
+* Add images for each map background
+* Add controlable robot for user to race AI robots
+* Implement a pirate ship images for the robot
+* Map creator
+* More than one map
+* More treasure options
+* Trap screen flash when hit
  
 ## Credits
  
 | Person        | Role                   |
 | ------------- |:----------------------:|
 | Chris         | Robot Movement         |
-| Gurjeet       | Treasure, Image                |
+| Gurjeet       | Treasure, Image        |
 | Harry         | GUI, Traps & Sorting   |
 | Jessica       | Countdown              |
 | Raz           | Robot Thoughts         |
