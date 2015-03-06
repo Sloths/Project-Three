@@ -102,6 +102,7 @@ class Robot:
             if self.done == False:                
                 for l in locationlist:
                     while l.treasure == True:
+                        lookingLabel.config(image=l.treasureID) #Update currently looking for
                         x1, y1, x2, y2 = canvas.coords(self.robot)
                         lx1, ly1, lx2, ly2 = canvas.coords(l.lndmrk)                        
 
@@ -778,6 +779,8 @@ pirateLabel = Label(image=pirateImage) #Creating pirate image
 pirateLabel.place(x=720, y=530) #Placement of pirate images
 clock=Label(image=ClockG) #Creating clock image
 clock.place(x=916, y=534) #Placement of clock images
+lookingLabel = Label() #Label for currently looking for images
+lookingLabel.place (x=180, y=615) #Placement of label
 
 CollectedList = [] #Empty list used to hold collected treasure
 CollectedImage = [coinImage, greenImage, redImage, chestImage] #List containing collected images
